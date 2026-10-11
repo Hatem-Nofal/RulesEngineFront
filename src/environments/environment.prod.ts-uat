@@ -1,0 +1,35 @@
+import { Environment } from '@abp/ng.core';
+
+const baseUrl = 'https://cmfrontend-uat.ehealth.com.eg';
+
+const oAuthConfig = {
+  issuer: 'https://cmbackend-uat.ehealth.com.eg/',
+  redirectUri: baseUrl,
+  clientId: 'EhealthClaims_App',
+  // responseType: 'code',
+  scope: 'offline_access EhealthClaims',
+  requireHttps: true,
+};
+
+export const environment = {
+  production: true,
+  application: {
+    baseUrl,
+    name: 'EhealthClaims',
+  },
+  oAuthConfig,
+  apis: {
+    default: {
+      url: 'https://cmbackend-uat.ehealth.com.eg',
+      rootNamespace: 'EhealthClaims',
+    },
+    AbpAccountPublic: {
+      url: oAuthConfig.issuer,
+      rootNamespace: 'AbpAccountPublic',
+    },
+  },
+  remoteEnv: {
+    url: '/getEnvConfig',
+    mergeStrategy: 'deepmerge'
+  }
+} as Environment;

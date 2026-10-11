@@ -1,0 +1,30 @@
+<div class="dropdown-container card flex justify-center mb-0">
+  @if (label) {
+    <label class="form-label fs-14"
+      >{{ label }}
+      @if (isRequired) {
+        <span class="text-danger">*</span>
+      }
+    </label>
+  }
+  <p-select
+    [disabled]="isDisabled"
+    [options]="options"
+    [(ngModel)]="value"
+    optionLabel="name"
+    [filter]="true"
+    filterBy="name"
+    [showClear]="true"
+    [placeholder]="label"
+    class="w-full md:w-56"
+    optionValue="id"
+    (onChange)="onSelect($any($event.value))"
+    (onFilter)="onFilter($event.filter)"
+  >
+    <ng-template let-option #item>
+      <div class="flex items-center gap-2">
+        <div>{{ option.name }}</div>
+      </div>
+    </ng-template>
+  </p-select>
+</div>

@@ -1,0 +1,5 @@
+{
+  "apiPort": 443,
+  "apiProtocol": "https",
+  "apiHost": "pricingplatform-qc.ehealth.com.eg/"
+}

@@ -1,0 +1,219 @@
+
+
+<div class="row mt-2" [formGroup]="formGroup">
+
+
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [isRequired]="formGroup.get('hofNid')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::HOF:HOFNID' | abpLocalization"
+      [type]="'text'"
+      [formControlName]="'hofNid'"
+      [isdisabled]="formGroup.get('hofNid').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('hofNid')"></app-forms-error>
+  </div>
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-radio
+      [label]="'RuleApplication::HOF:IsHOFEgyptian' | abpLocalization"
+      [options]="egyptianOptions"
+      [formControlName]="'isHofEgyptian'"
+    >
+    </app-custom-radio>
+    <app-forms-error [control]="formGroup.get('isHofEgyptian')"></app-forms-error>
+  </div>
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [isRequired]="formGroup.get('hofFirstName')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::HOF:HOFFristName' | abpLocalization"
+      [type]="'text'"
+      [formControlName]="'hofFirstName'"
+      [isdisabled]="formGroup.get('hofFirstName').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('hofFirstName')"></app-forms-error>
+  </div>
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [isRequired]="formGroup.get('hogFullName')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::HOF:HOFFullName' | abpLocalization"
+      [type]="'text'"
+      [formControlName]="'hogFullName'"
+      [isdisabled]="formGroup.get('hogFullName').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('hogFullName')"></app-forms-error>
+  </div>
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [isRequired]="formGroup.get('mobilePhone')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::HOF:HOFmobileNumber' | abpLocalization"
+      [type]="'number'"
+      [formControlName]="'mobilePhone'"
+      [isdisabled]="formGroup.get('mobilePhone').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('mobilePhone')"></app-forms-error>
+  </div>
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [isRequired]="formGroup.get('familyMembersCount')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::HOF:HOFHOFfamilyCount' | abpLocalization"
+      [type]="'number'"
+      [formControlName]="'familyMembersCount'"
+      appMaxCharacters
+      maxChar="2"
+      [isdisabled]="true"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('familyMembersCount')"></app-forms-error>
+  </div>
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [isRequired]="formGroup.get('familyDeathsCount')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::HOF:HOFHOFDeathCount' | abpLocalization"
+      [type]="'number'"
+      [formControlName]="'familyDeathsCount'"
+      [isdisabled]="formGroup.get('familyDeathsCount').disabled"
+      appMaxCharacters
+      maxChar="2"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('familyDeathsCount')"></app-forms-error>
+  </div>
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-textarea
+      [isRequired]="formGroup.get('familyAddress')?.hasValidator(Validators.required)"
+      [label]="'RuleApplication::Families:FamilyAddress' | abpLocalization"
+      [formControlName]="'familyAddress'"
+      [maxLength]="1000"
+      appMaxCharacters
+      maxChar="1000"
+      [isdisabled]="formGroup.get('familyAddress').disabled"
+    >
+    </app-custom-textarea>
+    <app-forms-error [control]="formGroup.get('familyAddress')"></app-forms-error>
+  </div>
+
+  <!-- Another Address (Radio) -->
+  <div class="row">
+    <div class="col-lg-6 col-sm-12 mb-3">
+      <app-custom-radio
+        [label]="'RuleApplication::Families:AnotherAddress' | abpLocalization"
+        [options]="anotherAddressOptions"
+        [formControlName]="'hasDifferentAddress'"
+      >
+      </app-custom-radio>
+      <app-forms-error [control]="formGroup.get('hasDifferentAddress')"></app-forms-error>
+    </div>
+
+    <!-- New Address (conditional) -->
+    <div
+      class="col-lg-6 col-sm-12 mb-3"
+      *ngIf="formGroup.get('hasDifferentAddress')?.value === true"
+    >
+      <app-custom-textarea
+        [isRequired]="formGroup.get('newAddress')?.hasValidator(Validators.required)"
+        [label]="'RuleApplication::Families:NewAddress' | abpLocalization"
+        [formControlName]="'newAddress'"
+        [maxLength]="1000"
+        appMaxCharacters
+        maxChar="1000"
+        [isdisabled]="formGroup.get('newAddress').disabled"
+      >
+      </app-custom-textarea>
+      <app-forms-error [control]="formGroup.get('newAddress')"></app-forms-error>
+    </div>
+  </div>
+
+  <!-- Governorate -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-dropdown
+      [options]="governoratList"
+      [label]="'RuleApplication::Families:HousingGovernorate' | abpLocalization"
+      [formControlName]="'housingGovernorateId'"
+      [isDisabled]="formGroup.get('familyAddress')?.value?.length < 2"
+    >
+    </app-custom-dropdown>
+    <app-forms-error [control]="formGroup.get('housingGovernorateId')"></app-forms-error>
+  </div>
+
+  <!-- District -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-dropdown
+      [options]="districtList"
+      [label]="'RuleApplication::Families:District' | abpLocalization"
+      [formControlName]="'districtId'"
+      [isDisabled]="!formGroup.get('housingGovernorateId').value"
+    >
+    </app-custom-dropdown>
+    <app-forms-error [control]="formGroup.get('districtId')"></app-forms-error>
+  </div>
+
+  <!-- Primary Care Unit -->
+  <!-- <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-dropdown
+      [options]="providerList"
+      [label]="'RuleApplication::Families:PrimaryCareUnit' | abpLocalization"
+      [formControlName]="'primaryCareUnitId'"
+      
+    >
+    </app-custom-dropdown>
+    <app-forms-error [control]="formGroup.get('primaryCareUnitId')"></app-forms-error>
+  </div> -->
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [label]="'RuleApplication::Families:HomePhoneNumber' | abpLocalization"
+      [type]="'text'"
+      [formControlName]="'homePhone'"
+      [maxLength]="8"
+      appMaxCharacters
+      maxChar="8"
+      (keydown.space)="$event.preventDefault()"
+      [appNumber]="true"
+      [isdisabled]="formGroup.get('homePhone').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('homePhone')"></app-forms-error>
+  </div>
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [label]="'RuleApplication::Families:WorkPhoneNumber' | abpLocalization"
+      [type]="'text'"
+      [formControlName]="'workPhone'"
+      [maxLength]="11"
+      [minLength]="8"
+      appMaxCharacters
+      maxChar="11"
+      [appNumber]="true"
+      (keydown.space)="$event.preventDefault()"
+      [isdisabled]="formGroup.get('workPhone').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('workPhone')"></app-forms-error>
+  </div>
+
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-input
+      [label]="'RuleApplication::Families:NearestPhoneNumber' | abpLocalization"
+      [type]="'text'"
+      [formControlName]="'nearestPhone'"
+      [minLength]="8"
+      [maxLength]="11"
+      appMaxCharacters
+      maxChar="11"
+      [appNumber]="true"
+      (keydown.space)="$event.preventDefault()"
+      [isdisabled]="formGroup.get('nearestPhone').disabled"
+    >
+    </app-custom-input>
+    <app-forms-error [control]="formGroup.get('nearestPhone')"></app-forms-error>
+  </div>
+</div>

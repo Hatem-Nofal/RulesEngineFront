@@ -1,0 +1,154 @@
+/* Table Wrapper for responsive scroll */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto; // horizontal scroll only inside table wrapper
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Workflow Table */
+.workflow-table {
+  min-width: 900px; // prevents table from shrinking too much
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(25, 118, 210, 0.1);
+
+  th,
+  td {
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  td {
+    white-space: normal; // allow wrapping inside cells
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #e3f2fd;
+  }
+}
+
+/* Icons */
+.icon-cell {
+  text-align: center;
+}
+.icon-cell i {
+  font-size: 20px;
+}
+
+.true-icon {
+  color: #4caf50;
+}
+
+.false-icon {
+  color: #f44336;
+}
+
+/* Buttons */
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  &.view {
+    background-color: #1976d2;
+    color: white;
+
+    &:hover {
+      background-color: #1565c0;
+      transform: translateY(-1px);
+    }
+  }
+
+  &.delete {
+    background-color: #e63946;
+    color: white;
+
+    &:hover {
+      background-color: #c62828;
+      transform: translateY(-1px);
+    }
+  }
+
+  &.nav {
+    background-color: #023e8a;
+    color: white;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 14px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  select,
+  input {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    text-align: center;
+    width: 70px;
+  }
+
+  span {
+    font-weight: 500;
+    color: #1976d2;
+  }
+}
+
+/* Spinner Overlay */
+.spinner-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  gap: 10px;
+
+  p {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1976d2;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .workflow-table th:nth-child(2),
+  .workflow-table td:nth-child(2),
+  .workflow-table th:nth-child(3),
+  .workflow-table td:nth-child(3) {
+    display: none; // hide less critical columns on small screens
+  }
+}

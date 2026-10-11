@@ -1,0 +1,192 @@
+<div class="card">
+  <!-- Table Controls -->
+  <!-- <div class="flex justify-between items-center mb-4">
+    <div class="flex gap-2">
+      @if (configSignal().filterable) {
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="globalFilterValue"
+          (input)="onFilter($event.target.value)"
+          placeholder="Search..."
+          class="p-inputtext-sm"
+        />
+      </span>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-filter-slash"
+        (click)="clearFilters()"
+        class="p-button-outlined p-button-sm"
+      >
+        Clear
+      </button>
+      }
+    </div>
+  </div> -->
+
+  <!-- Data Table -->
+  <p-table
+    #dataTable
+    [value]="primengTableHelper.records"
+    [columns]="columnsSignal()"
+    [lazy]="true"
+    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+    [loading]="primengTableHelper.isLoading"
+    [rowHover]="true"
+    [scrollable]="configSignal().scrollable"
+    [resizableColumns]="configSignal().resizableColumns"
+    [selectionMode]="configSignal().selectable ? 'multiple' : null"
+    [(selection)]="selectedItems"
+    (onLazyLoad)="getRecordsIfNeeds($event)"
+    [sortMode]="configSignal().sortMode"
+    [sortField]="configSignal().defaultSortField"
+    [sortOrder]="configSignal().defaultSortOrder"
+    styleClass="p-datatable-sm p-datatable-gridlines"
+    [globalFilterFields]="configSignal().globalFilterFields"
+    [responsiveLayout]="configSignal().responsive ? 'scroll' : 'stack'"
+    [totalRecords]="primengTableHelper.totalRecordsCount"
+    (onPage)="onPageChange($event)"
+    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+  >
+    <!-- Column Headers -->
+    <ng-template pTemplate="header">
+      <tr>
+        @if (configSignal().selectable) {
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        } @for (col of columnsSignal(); track col.field) {
+        <th [pSortableColumn]="col.field" [style.width]="col.width">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field" *ngIf="col.sortable"></p-sortIcon>
+        </th>
+        }
+      </tr>
+    </ng-template>
+
+    <!-- Table Body -->
+    <ng-template pTemplate="body" let-rowData>
+      <tr>
+        <!-- Selectable Checkbox -->
+        @if (configSignal().selectable) {
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
+        }
+
+        <!-- Dynamic Column Rendering -->
+        @for (col of columnsSignal(); track col.field) {
+        <td [ngSwitch]="col.type">
+          @switch (col.type) { @case ('date') { @if(formatCellValue(rowData[col.field], col) !==
+          '-'){
+          {{ formatCellValue(rowData[col.field], col) | date : col.format }}
+          }@else{
+          {{ formatCellValue(rowData[col.field], col) }}
+          } } @case ('date-time') {
+          {{ formatCellValue(rowData[col.field], col) }}
+          } @case ('boolean') {
+          <p-checkbox [binary]="true" [ngModel]="rowData[col.field]" [readonly]="true"></p-checkbox>
+          } @case ('status') {
+          <p-tag
+            [value]="rowData[col.field]"
+            [severity]="getSeverity(rowData[col.field], col)"
+          ></p-tag>
+          } @case ('number') {
+          {{ formatCellValue(rowData[col.field], col) }}
+          } @case ('link') { 
+            @if(canShowLink(col, rowData)) {
+          <a [routerLink]="col.routerLink + (rowData?.batchECMDto?.id || rowData?.id )">
+            {{ formatCellValue(rowData[col.field], col) }}
+          </a>
+          }@else{
+          {{ formatCellValue(rowData[col.field], col) }}
+          } } @default {
+          {{ formatCellValue(rowData[col.field], col) }}
+          } }
+        </td>
+        }
+
+        <!-- Actions Column -->
+        @if (items.length) {
+        <td class="td-table">
+          <div class="dropdown">
+            <button
+              type="button"
+              class="btn btn-link"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu py-2">
+              @for (item of items; track $index) {
+              <li style="cursor: pointer">
+                <!--RouterLink with No Query params -->
+                @if (item.type === 'link' && (!item.showWhen || item.showWhen(rowData))) {
+                <a [routerLink]="item.path + rowData.id" class="dropdown-item">
+                  <i [class]="item.icon"></i> {{ item.label }}
+                </a>
+                }
+                <!-- RouterLink with Query Params -->
+                @if (item.type === 'queryLink') {
+                <a
+                  [routerLink]="item.path"
+                  [queryParams]="{ queryKey: rowData.id }"
+                  class="dropdown-item"
+                >
+                  <i [class]="item.icon"></i> {{ item.label }}
+                </a>
+                }
+                <!-- Assign to () -->
+               @if (item.type === 'action' && (!item.showWhen || item.showWhen(rowData))) {
+<a
+  (click)="item.action(rowData?.id, rowData?.organizationId, rowData)"
+  class="dropdown-item"
+>
+  <i [class]="item.icon"></i> {{ item.label }}
+</a>
+}
+              </li>
+              }
+            </ul>
+          </div>
+        </td>
+        }
+      </tr>
+    </ng-template>
+
+    <!-- Empty Message -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td
+          [attr.colspan]="columnsSignal().length + (configSignal().selectable ? 1 : 0) + 1"
+          class="text-center"
+        >
+          No records found
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Paginator -->
+  <!-- <p-paginator #paginator [rows]="configSignal().rowsPerPage" [totalRecords]="paginationInfoSignal().totalItems"
+    [rowsPerPageOptions]="[5, 10, 25, 50]" (onPageChange)="onPageChange($event)" [showCurrentPageReport]="true"
+    styleClass="p-paginator-bottom" [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries'">
+  </p-paginator> -->
+  <p-paginator
+    class="p-paginator-right"
+    styleClass="rounded-[8px]"
+    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+    #paginator
+    (onPageChange)="onPageChange($event)"
+    [totalRecords]="primengTableHelper.totalRecordsCount"
+    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+    [showCurrentPageReport]="true"
+    [currentPageReportTemplate]="'Total Records : ' + primengTableHelper.totalRecordsCount"
+  ></p-paginator>
+</div>
+<!-- <div class="card"> -->
+<!-- </div> -->

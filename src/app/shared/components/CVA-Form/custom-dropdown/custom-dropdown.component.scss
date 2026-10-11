@@ -1,0 +1,20 @@
+select.form-select option:checked,
+select.form-select option:focus,
+select.form-select option:active {
+  background: #264da3 !important;
+}
+.form-control,
+.form-select {
+  background-color: transparent !important;
+  &:disabled {
+    background-color: #f4f9fa !important;
+    color: #616161 !important;
+  }
+  &::placeholder {
+    color: #686b6e;
+  }
+}
+label {
+  font-weight: 600;
+  // color: black;
+}

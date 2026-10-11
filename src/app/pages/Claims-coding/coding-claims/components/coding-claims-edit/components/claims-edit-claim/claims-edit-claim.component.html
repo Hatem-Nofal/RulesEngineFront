@@ -1,0 +1,138 @@
+<div class="form-group" style="height: 65vh; overflow: visible">
+  <form [formGroup]="formGroup">
+    <div class="row w-100">
+      <!-- message for the flags  -->
+      <div class="col-12 mt-1" *ngIf="data.nid_Valid_Flag !== 'correct' && data.nid_Valid_Flag">
+        <div class="message">
+          <i class="bi bi-exclamation-circle"></i>
+          {{ originalPateintFlagMessage() }}
+        </div>
+      </div>
+      <div class="col-12 mt-1">
+        <app-custom-input
+          appMaxCharacters
+          maxChar="14"
+          [isRequired]="true"
+          [formControlName]="'patientNid'"
+          [label]="'Patient ID'"
+          [type]="'text'"
+          [isdisabled]="formGroup.disabled"
+        ></app-custom-input>
+        <app-forms-error [control]="this.formGroup.controls['patientNid']"></app-forms-error>
+      </div>
+      <!-- original patient id returned according to enum flag -->
+      <div class="col-12 mt-1" id="specialInput" *ngIf="data.nid_Valid_Flag !== 'correct'">
+        <app-custom-input
+          [customClass]="'unique-background'"
+          [isdisabled]="true"
+          [formControlName]="'originalPatientNid'"
+          [label]="'Original Patient Id'"
+          [type]="'text'"
+        ></app-custom-input>
+      </div>
+      <div class="col-6 mt-1">
+        <app-custom-input
+          [isdisabled]="formGroup.disabled"
+          [formControlName]="'encounterId'"
+          [label]="'Encounter ID'"
+          [type]="'text'"
+          appMaxCharacters
+          maxChar="15"
+        ></app-custom-input>
+        <app-forms-error [control]="this.formGroup.controls['encounterId']"></app-forms-error>
+      </div>
+      <div class="col-6 mt-1">
+        <div class="custom-input">
+          <div class="mb-2">
+            <label class="form-label fs-14">Services Type </label>
+            <input class="form-control" type="text" [value]="data.serviceType" [disabled]="true" />
+          </div>
+        </div>
+        <!-- <app-custom-input [isdisabled]="formGroup.disabled" [formControlName]="'services_type'" [label]="'Services Type'" [disabled]="true"
+        [type]="'text'"></app-custom-input>
+
+      <app-forms-error [control]="this.formGroup.controls['services_type']"></app-forms-error> -->
+      </div>
+      <div class="col-6 mt-1">
+        <!-- !this.formGroup.controls['visitStartDate'].value ? minYear : data?.serviceTypeId != 2 ? data?.visit_Start_Date:''  -->
+        <app-custom-input
+          [min]="minYear"
+          [isRequired]="true"
+          [isdisabled]="formGroup.disabled"
+          [formControlName]="'visitStartDate'"
+          [label]="'Start Time'"
+          [type]="'datetime-local'"
+        ></app-custom-input>
+        <app-forms-error [control]="this.formGroup.controls['visitStartDate']"></app-forms-error>
+        @if ( this.formGroup.errors?.['visitStartDate']) {
+        <app-forms-error
+          [message]="this.formGroup.errors?.['visitStartDate']"
+        ></app-forms-error>
+        }
+      </div>
+
+      <div class="col-6 mt-1" *ngIf="data.serviceType === 'InPatient'">
+        <app-custom-input
+          [isRequired]="data.serviceType === 'InPatient'"
+          [isdisabled]="formGroup.disabled"
+          [formControlName]="'visitEndDate'"
+          [label]="'End Time'"
+          [type]="'datetime-local'"
+          [min]="this.formGroup.controls['visitStartDate'].value"
+        ></app-custom-input>
+        <app-forms-error [control]="this.formGroup.controls['visitEndDate']"></app-forms-error>
+        @if (this.formGroup.errors?.['endDateBeforeStartDate'] ||
+        this.formGroup.errors?.['customError']) {
+        <app-forms-error
+          [message]="this.formGroup.errors?.['customError'] || 'End date must be after start date.'"
+        ></app-forms-error>
+        }
+      </div>
+      <div class="col-6 mt-1">
+        <app-custom-dropdown
+          [formControlName]="'physicianId'"
+          [label]="'Clinician'"
+          [disabled]="true"
+          [options]="clinicianOptions"
+        ></app-custom-dropdown>
+
+        <app-forms-error [control]="this.formGroup.controls['clinician']"></app-forms-error>
+      </div>
+      <div class="col-6 mt-1">
+        <app-custom-dropdown-multiple
+          [isDisabled]="formGroup.disabled"
+          [formControlName]="'claimsTags'"
+          [label]="'Claim Tags'"
+          [options]="claimsTagOptions"
+          [selectedOptions]="formGroup.controls['claimsTags'].value"
+        ></app-custom-dropdown-multiple>
+
+        <app-forms-error [control]="this.formGroup.controls['claimsTags']"></app-forms-error>
+      </div>
+      @if(data.serviceType === 'InPatient'){
+      <div class="col-6 mt-1">
+        <app-custom-input
+          [isdisabled]="true"
+          formControlName="encounterStartTypeName"
+          [label]="'Encounter Start Type'"
+          [type]="'text'"
+        ></app-custom-input>
+      </div>
+      <div class="col-6 mt-1">
+        <app-custom-input
+          [isdisabled]="true"
+          formControlName="encounterEndTypeName"
+          [value]="'mohamed'"
+          [label]="'Encounter End Type'"
+          [type]="'text'"
+        ></app-custom-input>
+      </div>
+      }
+      <!-- <div class="col-6 mt-1">
+      <app-custom-input [formControlName]="'batch_id'" [label]="'Batch ID'" [type]="'text'"></app-custom-input>
+
+      <app-forms-error [control]="this.formGroup.controls['patient_id']"></app-forms-error>
+    </div> -->
+    </div>
+  </form>
+</div>

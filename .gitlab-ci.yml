@@ -1,0 +1,3 @@
+include:
+    project: 'ehealth-dev/pipelines/new-reg-frontend'
+    file: '.gitlab-ci-frontend.yml'

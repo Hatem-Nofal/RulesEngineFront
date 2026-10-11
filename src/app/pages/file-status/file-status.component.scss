@@ -1,0 +1,23 @@
+.file-card {
+  max-width: none !important;
+}
+.status-inprogress {
+  background-color: #f0ad4e; /* orange */
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+
+.status-completed {
+  background-color: #5cb85c; /* green */
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+
+.status-failed {
+  background-color: #d9534f; /* red */
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 10px;
+}

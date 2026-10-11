@@ -1,0 +1,141 @@
+<div class="card flex justify-content-center align-items-center">
+  <p-card
+    header="Claim Validation"
+    class="azure-card claim-card"
+    [style]="{ width: '55vw', margin: 'auto' }"
+  >
+    @if (!selectedClaimId || selectedWorkflowIds.length == 0) {
+      <p-message severity="warn" icon="pi pi-exclamation-circle" style="font-size: 15px">
+        Please select batch at first. <br />
+        Please select at least one claim and one workflow.
+      </p-message>
+    }
+
+    <div class="card flex justify-content-center my-2">
+      <p-select
+        [options]="batches"
+        [(ngModel)]="selectedBatchId"
+        optionLabel="ehealth_Batch_code"
+        [optionValue]="'id'"
+        placeholder="Select Batch"
+        filter="true"
+        filterBy="number"
+        (onFilter)="onBatchSearchChange($event)"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="itemSize"
+        [lazy]="true"
+        scrollHeight="200px"
+        (onLazyLoad)="onBatchesLazyLoad($event)"
+        (onChange)="onBatchSearchChange($event)"
+      >
+      </p-select>
+    </div>
+
+    <div class="card flex justify-content-center my-2">
+      <p-select
+        [options]="claims"
+        [(ngModel)]="selectedClaimId"
+        optionLabel="number"
+        [optionValue]="'id'"
+        placeholder="Select Claim"
+        filter="true"
+        filterBy="number"
+        (onFilter)="onclaimSearchChange($event)"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="itemSize"
+        [lazy]="true"
+        scrollHeight="200px"
+        (onLazyLoad)="onclaimsLazyLoad($event)"
+      >
+      </p-select>
+    </div>
+
+    <div class="card flex justify-content-center my-2">
+      <p-multiSelect
+        [options]="workflows"
+        [(ngModel)]="selectedWorkflowIds"
+        optionLabel="workflowName"
+        [optionValue]="'id'"
+        display="chip"
+        placeholder="Select Workflows"
+      ></p-multiSelect>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="d-flex justify-content-end mt-1 gap-4">
+        <p-button
+          *abpPermission="claimPermissions.Claims_ValidateClaim"
+          [disabled]="!selectedClaimId || selectedWorkflowIds.length == 0 || isLoading"
+          label="Validate Claim"
+          severity="primary"
+          class="validate-claim-button"
+          icon="pi pi-lock"
+          (click)="validateClaim()"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+
+  @if (failureList?.length > 0) {
+    <p-card class="my-3 p-3" [style]="{ width: '95%' }">
+      <p-message severity="error" icon="pi pi-exclamation-triangle" style="font-size: 15px">
+        Claim Validations ({{ failureList.length }})
+      </p-message>
+
+      <p-table
+        #dataTable
+        class="mt-2 mx-0"
+        [value]="failureList"
+        styleClass="p-datatable-striped failure-table"
+        [rowHover]="true"
+        [scrollable]="true"
+        scrollHeight="600px"
+        scrollDirection="both"
+        [paginator]="true"
+        [rows]="50"
+        [rowsPerPageOptions]="[25, 50, 100, 250, 500]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} records"
+        [trackBy]="trackByRow"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Patient Id</th>
+            <th>Claim No.</th>
+            <th>WorkFlow Name</th>
+            <th>Rule</th>
+            <th>Error Message</th>
+            <th class="text-center">Error Type</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rule>
+          <tr>
+            <td>{{ rule.patientId }}</td>
+            <td>{{ rule.claimNumber }}</td>
+            <td>{{ rule.workFlowName }}</td>
+            <td>{{ rule.rule }}</td>
+            <td>{{ rule.errorMessage }}</td>
+            <td class="text-center">
+              <span
+                [ngClass]="{
+                  'flag-error': (rule.errorType || '').toLowerCase() === 'error',
+                  'flag-warning': (rule.errorType || '').toLowerCase() === 'warning',
+                  'flag-validation': (rule.errorType || '').toLowerCase() === 'validation'
+                }"
+              >
+                {{ rule.errorType }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">No validation failures found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  }
+</div>

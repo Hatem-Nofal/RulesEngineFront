@@ -1,0 +1,70 @@
+<section class="container">
+  <div class="row align-items-center main-section gap-2">
+    <div class="col-sm-12 col-md-12">
+      <div class="welcome-text">
+        <h2>Welcome to MCP System</h2>
+        <p>Manage, track, and resolve claims efficiently with our easy-to-use system.</p>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-12">
+      <!-- Right side: Image -->
+      <div class="row cards-section align-items-center justify-content-center">
+        <div class="col-sm-6 col-md-4 col-lg-auto" *abpPermission="claimsProcessingPermissions">
+          <div class="card text-center shadow-sm">
+            <a class="card-body" routerLink="/coding-claims/all">
+              <div class="card-icon">
+                <i class="bi bi-file-earmark-medical"></i>
+              </div>
+              <h5 class="card-title mt-3">Coding Claims</h5>
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-auto" *abpPermission="batchesProcessingPermissions">
+          <div class="card text-center shadow-sm">
+            <a class="card-body" routerLink="/coding-batches/all">
+              <div class="card-icon">
+                <i class="bi bi-box"></i>
+              </div>
+              <h5 class="card-title mt-3">Coding Batches</h5>
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-auto" *abpPermission="myTasksPermissionsEntry">
+          <div class="card text-center shadow-sm">
+            <a class="card-body" routerLink="/my-tasks/entry">
+              <div class="card-icon">
+                <i class="bi bi-check-square"></i>
+              </div>
+              <h5 class="card-title mt-3">MyTasks-Entry</h5>
+            </a>
+          </div>
+        </div>
+          <div class="col-sm-6 col-md-4 col-lg-auto" *abpPermission="myTasksPermissionsAudit">
+          <div class="card text-center shadow-sm">
+            <a class="card-body" routerLink="/my-tasks/audit">
+              <div class="card-icon">
+                <i class="bi bi-ui-checks-grid"></i>
+              </div>
+              <h5 class="card-title mt-3">MyTasks-Audit</h5>
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-auto" *abpPermission="digitalArchivePermissions">
+          <div class="card text-center shadow-sm">
+            <a class="card-body" routerLink="/digital-archive/providers">
+              <div class="card-icon">
+                <i class="bi bi-person-badge"></i>
+              </div>
+              <h5 class="card-title mt-3">Providers</h5>
+            </a>
+          </div>
+        </div>
+
+      </div>
+      <!-- <div class="image-container">
+                <img src="../../../../../assets/images/login/signup-hero1-1.svg" alt="Claim Management Image">
+            </div> -->
+    </div>
+  </div>
+
+</section>

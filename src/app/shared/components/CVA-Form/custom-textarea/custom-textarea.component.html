@@ -1,0 +1,20 @@
+<div class="custom-input">
+  <div>
+    <label *ngIf="label" class="form-label fs-14">
+      {{ label }} <span *ngIf="isRequired" class="text-danger">*</span>
+    </label>
+    <textarea
+      #textareaEl
+      class="form-control"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+      [disabled]="isdisabled || disabled"
+      [placeholder]="label || placeholder"
+      [attr.maxlength]="maxLength"
+    ></textarea>
+  </div>
+  <div class="debug-info" *ngIf="isDebugMode">
+    <p>Is Disabled: {{ disabled }}</p>
+    <p>Is Touched: {{ isTouched }}</p>
+  </div>
+</div>

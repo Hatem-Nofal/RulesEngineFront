@@ -1,0 +1,18 @@
+<div class="custom-input">
+  <div class="">
+    <label *ngIf="label" class="form-label fs-14"
+      >{{ label }} <span *ngIf="isRequired" class="text-danger">*</span>
+    </label>
+    <div>
+      <p-datepicker
+        [(ngModel)]="value"
+        [minDate]="min"
+        [maxDate]="max"
+        dateFormat="dd-mm-yy"
+        placeholder="dd/mm/yyyy"
+        (ngModelChange)="onInput($event)"
+        [disabled]="isdisabled"
+        />
+    </div>
+  </div>
+</div>

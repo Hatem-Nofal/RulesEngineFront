@@ -1,0 +1,85 @@
+<section class="px-0">
+  <!-- <button class="sidebar-toggle" (click)="toggleSidebar()">
+    @switch (isSidebarCollapsedSignal()) {
+    @case (true) {
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+      <path
+        d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
+    </svg>
+    }
+    @case (false) {
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+      <path
+        d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+    </svg>
+    }
+    }
+  </button> -->
+  <!-- <p>sidebar</p> -->
+  <!--  header with logo -->
+  <div class="image m-auto d-flex align-items-center justify-content-between">
+    <a routerLink="">
+      <img
+        src="./assets/images/logo/ehealth-logo-white.png"
+        class="img-responsive"
+        width="60%"
+        alt="logo"
+      />
+    </a>
+
+    <button class="sidebar-toggle-btn btn d-md-none px-2" (click)="toggleSidebar()">
+      <i class="bi bi-list" style="font-size: 24px; color: white"></i>
+    </button>
+  </div>
+  <hr class="m-0" style="color: white" />
+  <!-- panel menu -->
+  <div class="card flex justify-center mt-2 mb-3" *ngIf="isSidebarCollapsedSignal()">
+    <p-panelmenu [model]="items" styleClass="w-full md:w-80" [multiple]="true">
+      <ng-template #item let-item>
+        <ng-container *ngIf="item.routerLink; else urlRef">
+          <a
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLink]="item.routerLink"
+            class="flex align-items-center cursor-pointer ps-2 pe-1"
+          >
+            <i [class]="item.icon" style="font-size: 1.3rem"></i>
+            <span class="ml-2" style="font-size: 15px">
+              {{ '::Menu:' + item.label | abpLocalization }}
+            </span>
+          </a>
+        </ng-container>
+        <ng-template #urlRef>
+          <a
+            *ngIf="item.url; else noLink"
+            routerLinkActive="active"
+            [routerLink]="item.url"
+            class="flex align-items-center cursor-pointer ps-2 pe-1"
+          >
+            <i [class]="item.icon" style="font-size: 1.3rem"></i>
+            <span class="ml-2" style="font-size: 15px">
+              {{ '::Menu:' + item.label | abpLocalization }}
+            </span>
+          </a>
+          <ng-template #noLink>
+            <span
+              class="flex items-center w-100 cursor-pointer text-surface-700 dark:text-surface-0 ps-2 pe-1"
+            >
+              <i [class]="item.icon" style="font-size: 1.3rem"></i>
+              <span class="ml-2" style="font-size: 15px">
+                {{ '::Menu:' + item.label | abpLocalization }}
+              </span>
+            </span>
+            <i *ngIf="item.items" class="bi bi-chevron-down pe-2 ml-auto"></i>
+          </ng-template>
+        </ng-template>
+      </ng-template>
+    </p-panelmenu>
+  </div>
+  <!-- <div class="dark-Button flex justify-center mt-2 mb-3 ps3 pe-1">
+    <div class="form-check form-switch ps-2 pe-1">
+      <i id="theme-icon" [class]="themeIcon"></i>
+      <label for="flexSwitchCheckChecked" class="form-label ms-2">{{themeName}}</label>
+    </div>
+  </div> -->
+</section>

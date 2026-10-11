@@ -1,0 +1,140 @@
+<section class="claims-create" >
+  <div class="claims-batch info">
+    <div class="card mb-2">
+      <!-- <a routerLink="/coding-batches/list" class="me-2" style="cursor: pointer; color: black">
+        <i class="bi bi-arrow-left-short me-1"></i> Back
+      </a> -->
+      <div class="card-header p-0 m-0 d-flex justify-content-between align-item-center">
+        <h4 class="p-0 m-0 ms-2" style="color: #274da5; font-weight: 600">
+          <i class="bi bi-chevron-double-right" style="font-size: 13px;"></i>
+          View Batch</h4>
+        <button class="btn-primary p-1 d-flex rounded border-0 edit_btn me-2">
+          <i class="bi bi-pencil-square me-1" style="color: white"></i>
+          <a
+            [routerLink]="['/coding-batches/edit', batchId]"
+            class="d-block"
+            style="cursor: pointer; color: white"
+            >Edit Batch</a
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row align-item-stretch">
+    <div class ="col-8">
+      <div class="claim-info p-3 ms-3">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>UHIA ID:</strong> {{ batchDetails?.uhia_Batch_code || ' ' }}</p>
+            <p><strong>EHealth code:</strong> {{ batchDetails?.ehealth_Batch_code }}</p>
+            <p><strong>Service Date:</strong> {{ batchDetails?.service_Date |  date: 'MMMM yyyy' }}</p>
+            <p><strong>Reception Date:</strong> {{ batchDetails?.reception_Date | date: 'short'}}</p>
+            <p><strong>Batch Serial:</strong> {{ batchDetails?.serial }}</p>
+            <p><strong>UHIA Claims Count:</strong> {{ batchDetails?.claims_Count | number:'1.0'  }}</p>
+            <p><strong>Status:</strong> {{ batchDetails?.status }}</p>
+          </div>
+
+          <div class="col-md-6">
+            <p><strong>Service Type:</strong> {{ batchDetails?.type }}</p>
+            <p><strong>New Claims:</strong> {{ batchDetails?.new_Claims }}</p>
+            <p><strong>Draft Claims:</strong> {{ batchDetails?.draft_Claims }}</p>
+            <p><strong>EHealth Claims Count:</strong> {{ batchDetails?.eHealth_Claims_Count  | number:'1.0-3'  }}</p>
+            <p><strong>Claimed Net:</strong> {{ batchDetails?.claims_Amount | number:'1.0-3' }}</p>
+            <p><strong>Entered Net:</strong> {{ batchDetails?.entered_Net  | number:'1.0-3'  }}</p>
+            <p><strong>Provider:</strong> {{ batchDetails?.provider.provider_Name }}</p>
+          </div>
+        </div>
+
+        <!-- Export Links -->
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="claim-info p-3  me-3 h-100">
+        <h5 class="p-0 m-0" style="color: #274da5; font-weight: 600">More Options</h5>
+        <div class="d-flex align-item-center flex-column gap-1 ms-2 mt-2">
+          <!-- inpateint type only -->
+          @if(batchDetails?.type_id == 2){  
+            <a  *ngIf="permission.getGrantedPolicy(BatchesCodingExportsIPPermission)" (click)="getIPExcel(batchDetails.facilityCode,batchDetails?.uhia_Batch_code,batchDetails?.ehealth_Batch_code)" class="d-block" style="cursor: pointer">
+              <i class="bi bi-download me-1"></i>
+              Export IP Excel</a
+            >
+          }
+          <!--  outspateint and ER only  -->
+          @if(batchDetails?.type_id == 3 ||batchDetails?.type_id == 1){
+            <a *ngIf="permission.getGrantedPolicy(BatchesCodingExportsBatchExcelDetailsPPermission)"  (click)="getExcel(batchDetails.facilityCode, batchDetails?.uhia_Batch_code,batchDetails?.ehealth_Batch_code)" class="d-block" style="cursor: pointer">
+              <i class="bi bi-download me-1"></i>
+              Export Excel</a
+            >
+          }
+        
+        
+          <a  *ngIf="permission.getGrantedPolicy(BatchesCodingExportsOperationalPPermission)" (click)="getOperationExcel(batchDetails?.ehealth_Batch_code)" class="d-block" style="cursor: pointer">
+            <i class="bi bi-download me-1"></i>
+            Export Operation Excel</a
+          >
+          <a *ngIf="permission.getGrantedPolicy(BatchesCodingExportsReconciliationPPermission)" (click)="getReconciliationExcel( batchDetails?.ehealth_Batch_code)" class="d-block" style="cursor: pointer">
+            <i class="bi bi-download me-1"></i>Export Reconciliation Excel</a
+          >
+          <a *ngIf="permission.getGrantedPolicy(BatchesCodingExportsWithDescriptionPPermission)" (click)="getWithDescExcel(batchDetails?.provider.provider_Name ,batchDetails?.uhia_Batch_code  ,batchDetails?.ehealth_Batch_code)" class="d-block" style="cursor: pointer">
+            <i class="bi bi-download me-1"></i>Export Excel with Description</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim-info p-3 mt-3  mx-3">
+    <div class="row">
+
+      <div class="col-12">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="p-0 m-0" style="color: #274da5; font-weight: 600">History</h5>
+
+          <button
+            class="btn-primary p-1 d-flex align-items-center rounded border-0 history_btn"
+            id="toggleHistory"
+            (click)="toggleHistory()"
+          >
+            <i class="{{ showHistory ? 'pi pi-eye-slash me-1' : 'pi pi-eye me-1' }}"></i>
+            {{ showHistory ? 'HIDE' : 'SHOW' }}
+          </button>
+        </div>
+
+        <div>
+          <!-- History Table -->
+          <div class="card mt-3" *ngIf="showHistory">
+            <div class="card-body p-0">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-center">Modified Date & Time</th>
+                    <th class="text-center">Modified By</th>
+                    <th class="text-center">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (batchDetails?.batchLogs?.length > 0) {
+                    @for (batchLog of batchDetails.batchLogs; let i = $index; track $index) {
+                      <tr>
+                        <td class="text-center">{{ batchLog?.create_timestamp | date: 'short' }}</td>
+                        <td class="text-center">{{ batchLog?.actionUser }}</td>
+                        <td class="text-center">
+                          <span class="badge bg-info text-dark">{{ batchLog?.batchStatus }}</span>
+                        </td>
+                      </tr>
+                    }
+                  } @else {
+                    <tr>
+                      <td colspan="3" class="text-center text-muted">No history available</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

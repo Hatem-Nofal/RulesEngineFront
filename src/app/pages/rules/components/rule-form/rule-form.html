@@ -1,0 +1,472 @@
+@if(loading){ }@else {
+<div class="card flex justify-content-center align-items-center">
+  <p-card
+    [header]="rule?.id == 0 ? 'Create Rule' : 'Edit Rule'"
+    class="azure-card"
+    [style]="{ width: '55vw', margin: 'auto' }"
+  >
+    <form [formGroup]="ruleForm" (ngSubmit)="save()" class="rule-form">
+    <div class="flex flex-col gap-1">
+      <p-select
+        formControlName="workflowName"
+        [options]="workflows"
+        optionLabel="workflowName"
+        optionValue="workflowName"
+        placeholder="Select a Workflow"
+        [filter]="true"
+        filterBy="workflowName"
+        (onFilter)="onWorkflowFilter($event)"
+        class="w-100"
+        (onChange)="onWorkflowChange($event)"
+      ></p-select>
+
+      <p-message
+        *ngIf="ruleForm.get('workflowName')?.invalid && (ruleForm.get('workflowName')?.touched || formSubmitted)"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        Workflow is required.
+      </p-message>
+    </div>
+
+      <div class="flex flex-col gap-1">
+        <input
+          pInputText
+          type="text"
+          id="ruleName"
+          placeholder="Enter Rule Name"
+          name="ruleName"
+          formControlName="ruleName"
+          required
+          class="w-100"
+        />
+        @if (ruleForm.get('ruleName')?.invalid && (ruleForm.get('ruleName')?.touched ||
+        ruleForm.submitted)) {
+        <p-message severity="error" size="small" variant="simple">Rule Name is required.</p-message>
+        }
+      </div>
+      <label
+        ><p-checkbox
+          [binary]="true"
+          formControlName="enabled"
+          value="true"
+          id="enabled"
+          name="enabled"
+        />
+        Enabled</label
+      >
+      <div class="flex flex-col gap-1">
+        <input
+          pInputText
+          type="text"
+          id="errorMessage"
+          placeholder="Enter Error Message"
+          name="errorMessage"
+          formControlName="errorMessage"
+          class="w-100"
+        />
+        @if (ruleForm.get('errorMessage')?.invalid && (ruleForm.get('errorMessage')?.touched ||
+        ruleForm.submitted)) {
+        <p-message severity="error" size="small" variant="simple"
+          >Error Message is required.</p-message
+        >
+        }
+      </div>
+      <div class="flex flex-col gap-1">
+        <p-select
+          formControlName="errorType"
+          [options]="errorTypes"
+          optionLabel="name"
+          optionValue="code"
+          placeholder="Select a type"
+          class="w-100"
+          name="errorType"
+          required
+        />
+        @if (ruleForm.get('errorType')?.invalid && (ruleForm.get('errorType')?.touched ||
+        ruleForm.submitted)) {
+        <p-message severity="error" size="small" variant="simple"
+          >Error Type is required.</p-message
+        >
+        }
+      </div>
+      <div class="input-wrapper">
+        <label class="input-title">Expression</label>
+        <span class="input-span"  >{{rule.expression}}</span>
+      </div>
+
+      @if(showActivityQuantityByAgeRangeCard()){
+      <label>Min Patient Age*</label>
+      <div>
+        <p-inputNumber
+          formControlName="minPatientAge"
+          [min]="0"
+          [useGrouping]="false"
+          placeholder="Enter Minimum Patient Age"
+          class="w-100"
+          required
+        ></p-inputNumber>
+        <p-message
+          *ngIf="ruleForm.get('minPatientAge')?.invalid && (ruleForm.get('minPatientAge')?.touched || formSubmitted)"
+          severity="error"
+          size="small"
+          variant="simple"
+          >Minimum patient age is required.</p-message
+        >
+      </div>
+
+      <label>Max Patient Age*</label>
+      <div>
+        <p-inputNumber
+          formControlName="maxPatientAge"
+          [min]="0"
+          [useGrouping]="false"
+          placeholder="Enter Maximum Patient Age"
+          class="w-100"
+          required
+        ></p-inputNumber>
+        <p-message
+          *ngIf="ruleForm.get('maxPatientAge')?.invalid && (ruleForm.get('maxPatientAge')?.touched || formSubmitted)"
+          severity="error"
+          size="small"
+          variant="simple"
+          >Maximum patient age is required.</p-message
+        >
+      </div>
+      }
+      <div class="activity-card" *ngIf="showPrimaryActivityCard()">
+        <h3>Primary Activity</h3>
+
+        <div class="activity-row">
+          <div class="flex flex-col gap-1 activity-field w-full">
+            <p-select
+              formControlName="selectedActivity"
+              [options]="activities"
+              optionLabel="description"
+              optionValue="id"
+              placeholder="Select Activity Types*"
+              class="w-100"
+              name="selectedActivity"
+              required
+              (onChange)="onActivitySelectionChange($event)"
+            />
+            @if (ruleForm.get('selectedActivity')?.invalid &&
+            (ruleForm.get('selectedActivity')?.touched || ruleForm.submitted)) {
+            <p-message severity="error" size="small" variant="simple"
+              >Activity Type is required.</p-message
+            >
+            }
+          </div>
+
+          <div class="flex flex-col gap-1 activity-field w-full">
+            <p-multiSelect
+              #msMedications
+              name="selectedMedications"
+              formControlName="selectedMedications"
+              [options]="medicationOptions"
+              optionLabel="description"
+              optionValue="id"
+              filter="true"
+              filterBy="code"
+              (onFilter)="onSearchActivityTypeSearch($event)"
+              display="chip"
+              class="w-100"
+              placeholder="Select Activities*"
+              panelStyleClass="ms-panel-xscroll"
+              required
+            >
+              <ng-template pTemplate="item" let-med>
+                <div class="flex align-items-center gap-2">
+                  <span class="font-medium">{{ med.code }}</span>
+                  <span>-</span>
+                  <span>{{ med.description }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="selectedItem" let-med>
+                {{ med.code }} - {{ med.description }}
+              </ng-template>
+            </p-multiSelect>
+
+            @if (ruleForm.get('selectedMedications')?.invalid &&
+            (ruleForm.get('selectedMedications')?.touched || ruleForm.submitted)) {
+            <p-message severity="error" size="small" variant="simple"
+              >Activities are required.</p-message
+            >
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-card" *ngIf="showSecondActivityCard()">
+        <h3>Secondary Activity</h3>
+
+        <div class="activity-row">
+          <div class="flex flex-col gap-1 activity-field w-full">
+            <p-select
+              formControlName="selectedActivity2"
+              [options]="activities2"
+              optionLabel="description"
+              optionValue="id"
+              placeholder="Select Activity Types*"
+              class="w-100"
+              name="selectedActivity2"
+              required
+              filterBy="code"
+              (onChange)="onActivitySelectionChange2($event)"
+            />
+            @if (ruleForm.get('selectedActivity2')?.invalid &&
+            (ruleForm.get('selectedActivity2')?.touched || ruleForm.submitted)) {
+            <p-message severity="error" size="small" variant="simple"
+              >Activity Type is required.</p-message
+            >
+            }
+          </div>
+
+          <div class="flex flex-col gap-1 activity-field w-full">
+            <p-multiSelect
+              #msMedications2
+              name="selectedMedications2"
+              formControlName="selectedMedications2"
+              [options]="medicationOptions2"
+              optionLabel="description"
+              optionValue="id"
+              [filter]="true"
+              filterBy="code"
+              display="chip"
+              class="w-100"
+              required
+              placeholder="Select Activities"
+              (onFilter)="onSearchActivityTypeSearch2($event)"
+              panelStyleClass="ms-panel-xscroll"
+            >
+              <ng-template pTemplate="item" let-med>
+                <div class="flex align-items-center gap-2">
+                  <span class="font-medium">{{ med.code }}</span>
+                  <span>-</span>
+                  <span>{{ med.description }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="selectedItem" let-med>
+                {{ med.code }} - {{ med.description }}
+              </ng-template>
+            </p-multiSelect>
+
+            @if (ruleForm.get('selectedMedications2')?.invalid &&
+            (ruleForm.get('selectedMedications2')?.touched || ruleForm.submitted)) {
+            <p-message severity="error" size="small" variant="simple"
+              >Activities are required.</p-message
+            >
+            }
+          </div>
+        </div>
+      </div>
+      @if(showSelecteddiagnosisWithQuantity()){
+      <div class="diagnosis-quantity-group">
+        <div class="flex flex-col gap-1 diagnosis-dropdown w-full">
+          <p-select
+            formControlName="selecteddiagnosisWithQuantity"
+            name="selecteddiagnosisWithQuantity"
+            [options]="diagnosisOptions"
+            optionLabel="description"
+            placeholder="Select Diagnosis*"
+            class="w-100"
+            required
+            [filter]="true"
+            [filterFields]="['code','description']"
+            required
+          >
+            <ng-template pTemplate="item" let-diag>
+              <div class="flex align-items-center gap-2">
+                <span class="font-medium">{{ diag.code }}</span>
+                <span>-</span>
+                <span>{{ diag.description }}</span>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-diag>
+              {{ diag.code }} - {{ diag.description }}
+            </ng-template>
+          </p-select>
+
+          @if (ruleForm.get('selecteddiagnosisWithQuantity')?.invalid &&
+          (ruleForm.get('selecteddiagnosisWithQuantity')?.touched|| ruleForm.submitted)) {
+          <p-message severity="error" size="small" variant="simple"
+            >Diagnosis is required.</p-message
+          >
+          }
+        </div>
+      </div>
+      } @if(showSelectedDiagnoses()){
+      <div>
+        <div class="flex flex-col gap-1 full-width">
+          <p-multiSelect
+            #msDiagnoses
+            formControlName="selectedDiagnoses"
+            [options]="diagnosisOptions"
+            optionLabel="description"
+            optionValue="id"
+            [filter]="true"
+            filterBy="code"
+            (onFilter)="onFilterSelectedDiagnoses($event)"
+            display="chip"
+            class="w-100"
+            placeholder="Select Diagnosis*"
+            panelStyleClass="ms-panel-xscroll"
+            required
+          >
+            <ng-template pTemplate="item" let-diag>
+              {{ diag.code }} - {{ diag.description }}
+            </ng-template>
+          </p-multiSelect>
+          @if (ruleForm.get('selectedDiagnoses')?.invalid &&
+          (ruleForm.get('selectedDiagnoses')?.touched|| ruleForm.submitted)) {
+          <p-message severity="error" size="small" variant="simple"
+            >Diagnoses are required.</p-message
+          >
+          }
+        </div>
+      </div>
+      } @if(show('isDrugToDrug','isDiagnosisWithSpecificDiagnosis')){
+      <div>
+        <div class="flex flex-col gap-1 full-width">
+          <p-multiSelect
+            #msDiagnoses2
+            formControlName="selectedDiagnoses2"
+            [options]="diagnosisOptions2 || []"
+            optionLabel="description"
+            optionValue="id"
+            [filter]="true"
+            filterBy="code"
+            (onFilter)="onFilterSelectedDiagnoses2($event)"
+            display="chip"
+            class="w-100"
+            placeholder="Select Diagnoses (Second List)*"
+            panelStyleClass="ms-panel-xscroll"
+            required
+          >
+            <ng-template pTemplate="item" let-diag>
+              {{ diag.code }} - {{ diag.description }}
+            </ng-template>
+          </p-multiSelect>
+          @if (ruleForm.get('selectedDiagnoses2')?.invalid &&
+          (ruleForm.get('selectedDiagnoses2')?.touched )) {
+          <p-message severity="error" size="small" variant="simple"
+            >Diagnoses are required.</p-message
+          >
+          }
+        </div>
+      </div>
+
+      } @if(show('isHaveQuantity','isDrugOverDose','isActivityQuantityByAgeRange')){
+      <!-- Quantity operator + value (when have quantity / overdose / age-range) -->
+      <label> Quantity Operator* </label>
+      <div class="age-control">
+        <div class="age-input-group">
+          <p-select
+            formControlName="quantityOperator"
+            [options]="['==','>','<','>=','<=']"
+            placeholder="Select operator"
+            class="w-100"
+            required
+          />
+          <p-message
+            *ngIf="ruleForm.get('quantityOperator')?.invalid && (ruleForm.get('quantityOperator')?.touched || formSubmitted)"
+            severity="error"
+            size="small"
+            variant="simple"
+            >quantity Operator required.</p-message
+          >
+        </div>
+      </div>
+
+      } @if(show('isHaveQuantity','isDrugOverDose','isActivityQuantityByAgeRange')){
+      <div>
+        <p-inputNumber
+          formControlName="quantity"
+          [min]="1"
+          [useGrouping]="false"
+          placeholder="Enter Quantity"
+          class="w-100"
+          required
+        ></p-inputNumber>
+        <p-message
+          *ngIf="ruleForm.get('quantity')?.invalid && (ruleForm.get('quantity')?.touched || formSubmitted)"
+          severity="error"
+          size="small"
+          variant="simple"
+          >Quantity must be ≥ 1.</p-message
+        >
+      </div>
+      } @if(show('isPatientAgeActivities','isPatientAgeDiagnosis')){
+      <label> Patient Age Operator* </label>
+      <div class="age-control">
+        <div class="age-input-group">
+          <p-select
+            formControlName="ageOperator"
+            [options]="['==','>','<','>=','<=']"
+            placeholder="Select operator"
+            class="w-100"
+            required
+          />
+          <p-message
+            *ngIf="ruleForm.get('ageOperator')?.invalid && (ruleForm.get('ageOperator')?.touched || formSubmitted)"
+            severity="error"
+            size="small"
+            variant="simple"
+            >Age Operator required.</p-message
+          >
+        </div>
+      </div>
+      }
+      <!-- Age operator + age -->
+
+      @if(show('isPatientAgeActivities', 'isPatientAgeDiagnosis')){
+      <label> Patient Age* </label>
+      <div>
+        <p-inputNumber
+          formControlName="patientAge"
+          [min]="0"
+          [useGrouping]="false"
+          placeholder="Enter Patient Age"
+          class="w-100"
+          required
+        ></p-inputNumber>
+        <p-message
+          *ngIf="ruleForm.get('patientAge')?.invalid && (ruleForm.get('patientAge')?.touched || formSubmitted)"
+          severity="error"
+          size="small"
+          variant="simple"
+          >Patient Age required.</p-message
+        >
+      </div>
+      }
+
+      <!-- Gender -->
+      @if(show('isPatientGenderDiagnosis','isPatientGenderActivities') ){
+      <div>
+        <label>Patient Gender*</label>
+        <p-select
+          formControlName="patientGender"
+          [options]="['Male','Female']"
+          placeholder="Select Gender"
+          class="w-100"
+          required
+        />
+        <p-message
+          *ngIf="ruleForm.get('patientGender')?.invalid && (ruleForm.get('patientGender')?.touched || formSubmitted)"
+          severity="error"
+          size="small"
+          variant="simple"
+          >Patient Gender required.</p-message
+        >
+      </div>
+      }
+      <button [disabled]="ruleForm.invalid" type="submit" class="btn save">
+        <i class="pi pi-save me-1"></i>Save
+      </button>
+    </form>
+  </p-card>
+</div>
+
+}

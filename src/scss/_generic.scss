@@ -1,0 +1,379 @@
+/**  =====================
+      Generic-class css start
+========================== **/
+/*====== Padding , Margin css starts ======*/
+$i: 0;
+@while $i<=50 {
+  .p {
+    &-#{$i} {
+      padding: #{$i}px;
+    }
+
+    &-t-#{$i} {
+      padding-top: #{$i}px;
+    }
+
+    &-b-#{$i} {
+      padding-bottom: #{$i}px;
+    }
+
+    &-l-#{$i} {
+      padding-left: #{$i}px;
+    }
+
+    &-r-#{$i} {
+      padding-right: #{$i}px;
+    }
+  }
+  .m {
+    &-#{$i} {
+      margin: #{$i}px;
+    }
+
+    &-t-#{$i} {
+      margin-top: #{$i}px;
+    }
+
+    &-b-#{$i} {
+      margin-bottom: #{$i}px;
+    }
+
+    &-l-#{$i} {
+      margin-left: #{$i}px;
+    }
+
+    &-r-#{$i} {
+      margin-right: #{$i}px;
+    }
+  }
+  $i: $i + 5;
+}
+/*====== Padding , Margin css ends ======*/
+
+/*====== text-color, background color css starts ======*/
+@each $value in $color-name {
+  $i: index($color-name, $value);
+  .bg-#{$value} {
+    background: nth($color-color, $i);
+  }
+  .text-#{$value} {
+    color: nth($color-color, $i);
+  }
+}
+/*====== text-color css ends ======*/
+/*====== Card top border css starts ======*/
+@each $value in $color-name {
+  $i: index($color-name, $value);
+  .card-border-#{$value} {
+    border-top: 4px solid nth($color-color, $i);
+  }
+}
+/*====== Card top border ends ======*/
+/*====== Font-size css starts ======*/
+$i: 10;
+@while $i<=80 {
+  .f-#{$i} {
+    font-size: #{$i}px;
+  }
+  $i: $i + 2;
+}
+/*====== Font-size css ends ======*/
+/*====== Font-weight css starts ======*/
+$i: 100;
+@while $i<=900 {
+  .f-w-#{$i} {
+    font-weight: #{$i};
+  }
+  $i: $i + 100;
+}
+/*====== Font-weight css ends ======*/
+
+/*************** benefit page *************/
+.packageComponent,
+.packageComponentSummary {
+  background-color: #ffffff;
+  border-radius: 17px;
+  // overflow: hidden;
+}
+
+.packageComponentSummary {
+  padding: 15px;
+}
+
+.table.two tbody td .menuRestyle button {
+  display: flex;
+  text-align: justify;
+  border-bottom: 1px solid #e7e7e7;
+  padding: 10px 20px;
+}
+
+.table.two .thead-dark th {
+  vertical-align: baseline;
+  min-width: 150px !important;
+}
+
+.table.two .thead-dark th:first-child {
+  min-width: auto !important;
+}
+
+.table.two .thead-dark th small {
+  font-size: 12px;
+  color: rgba(225, 225, 225, 0.5);
+  font-weight: normal;
+}
+
+.table.two tbody td b span {
+  color: #999;
+}
+
+.panelHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 25px;
+  h5 {
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  span {
+    color: #000;
+    font-size: 16px;
+  }
+}
+
+.table tbody td .menuRestyle button {
+  display: flex;
+  text-align: justify;
+  border-bottom: 1px solid #e7e7e7;
+  padding: 10px 20px;
+}
+
+.package-component-stepper-holder {
+  .pStepper {
+    background-color: #e4eaf4;
+    height: 100%;
+    padding: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    ul {
+      padding: 0;
+      margin: 5px 0;
+      li {
+        list-style: none;
+        display: flex;
+        vertical-align: middle;
+        justify-items: center;
+        align-items: center;
+        margin-top: 20px;
+        color: #999999;
+        position: relative;
+        white-space: nowrap;
+        cursor: pointer;
+        .stepNumber {
+          width: 25px;
+          height: 25px;
+          display: flex;
+          position: relative;
+          border-radius: 15px;
+          border: 1px solid #999999;
+          align-items: center;
+          vertical-align: middle;
+          justify-content: center;
+          color: #999999;
+        }
+        .stepNumber:after {
+          content: "";
+          position: absolute;
+          width: 1px;
+          height: 20px;
+          border-right: 1px dashed #999999;
+          bottom: 25px;
+          left: 12px;
+        }
+      }
+      li:hover {
+        color: #274da5;
+        .stepNumber {
+          border: 1px solid #274da5;
+          color: #274da5;
+        }
+      }
+      li.active {
+        color: #274da5;
+        .stepNumber {
+          border: 1px solid #274da5;
+          color: #274da5;
+        }
+        .stepNumber:after {
+          border-right: 1px dashed #274da5;
+        }
+      }
+    }
+  }
+  .pStepContent {
+    background-color: #ffffff;
+  }
+}
+
+::ng-deep .en span.stepNumber {
+  margin-right: 8px !important;
+}
+::ng-deep .Ar span.stepNumber {
+  margin-left: 8px !important;
+}
+
+.package-component-stepper-holder
+  .pStepper
+  ul
+  li:first-child
+  .stepNumber::after {
+  display: none !important;
+}
+
+.description.two {
+  font-size: 14px;
+  color: #999999 !important;
+  font-weight: bold;
+}
+
+/******* table new style ********/
+.tableNewStyle {
+  width: 100%;
+}
+
+.tableNewStyle th {
+  background-color: #daf2f7;
+  color: #274da5;
+  vertical-align: baseline;
+}
+
+::ng-deep .en .tableNewStyle th:first-child {
+  -webkit-border-top-left-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+::ng-deep .en .tableNewStyle th:last-child {
+  -webkit-border-top-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-bottomright: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+::ng-deep .Ar .tableNewStyle th:last-child {
+  -webkit-border-top-left-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+::ng-deep .Ar .tableNewStyle th:first-child {
+  -webkit-border-top-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-bottomright: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.tableNewStyle th,
+.tableNewStyle td {
+  height: 30px;
+  padding: 15px;
+}
+
+.tableNewStyle th small {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.tableNewStyle td {
+  border-bottom: 1px solid #f1f1f1;
+  color: #000000;
+  font-weight: bold;
+}
+
+.tableNewStyle.selectFirst tr th:first-child {
+  color: #7c9aa0;
+}
+
+.tableNewStyle.selectFirst tr td:first-child {
+  background-color: #f7f9fc;
+}
+
+/******* End of table new style *************/
+
+::ng-deep .en .facitityTableHolder {
+  width: 100%;
+  padding-right: 30px;
+}
+
+::ng-deep .Ar .facitityTableHolder {
+  width: 100%;
+  padding-left: 30px;
+}
+
+.packageComponent .btn {
+  max-height: 35px;
+}
+
+.summaryHolder {
+  border-top: 1px solid #f1f1f1;
+}
+
+.summaryHolder.two {
+  border-top: none;
+}
+
+.summaryHolder small {
+  height: 30px;
+  line-height: 15px;
+  display: flex;
+  align-items: flex-end;
+  text-align: center;
+  justify-content: center;
+}
+
+.summaryHolder.two small {
+  height: 15px;
+}
+
+.summaryHolder h4,
+.summaryHolder h3 {
+  text-align: center;
+  margin-top: 5px;
+}
+.summaryHolder *[class*="col-"] {
+  position: relative;
+}
+.summaryHolder *[class*="col-"]::before {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 40px;
+  border-right: 1px solid #f1f1f1;
+  right: 0;
+  top: 20px;
+}
+
+.summaryHolder *[class*="col-"]:first-child::before,
+.summaryHolder *[class*="col-"]:last-child::before {
+  display: none;
+}
+
+.priceUnit {
+  font-weight: bold !important;
+  color: #afbcce;
+}
+
+/*********** end of benefit page **********/

@@ -1,0 +1,101 @@
+.sidebar-toggle-btn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+// ::ng-deep .p-button {
+//   background-color: #bb1b10 !important;
+//   color: white !important;
+// }
+// .header-section{
+//   &>*{
+//     color: #264da3;
+//   }
+// }
+.name {
+  font-weight: 600;
+}
+.role {
+  color: #bb1b10;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+// .language ::ng-deep .p-button {
+//   background-color: transparent !important;
+//   color: black !important;
+//   border: none;
+// }
+// ::ng-deep .p-button:not(:disabled):hover {
+// border: none !important;
+// }
+::ng-deep .p-button-label {
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.app-name {
+  font-size: 1.5rem;
+  font-weight: 600; 
+  margin: 0;
+  color: #274da5;
+  letter-spacing: 1px;
+  display: inline-block;
+  background: linear-gradient(90deg, #ff3b3f, #274da5);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.profile-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e63946, #274da5);
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+// .logout-button{
+//   border: 1px solid #bb1b10 ;
+// }
+::ng-deep .p-button-text.p-button-danger {
+  background-color: #bb1b10 !important;
+  color: white !important;
+  font-size: 14px !important;
+}
+::ng-deep.p-button-text.p-button-danger:not(:disabled):hover {
+  background-color: white !important;
+  color: #bb1b10 !important;
+  border: 1px solid #bb1b10 !important;
+}
+
+::ng-deep .p-button-text.p-button-success {
+  background-color:rgb(191 183 182 / 33%) !important;
+  color: #bb1b10 !important;
+}
+
+::ng-deep .p-button.p-button-success .bi-globe {
+  background: linear-gradient(90deg, #ff3b3f, #274da5); /* Red to Blue Gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.2rem; /* Adjust size if needed */
+  transition: transform 0.3s ease-in-out;
+}
+.global-btn ::ng-deep .p-button-success{
+  background-color: transparent !important;
+}
+

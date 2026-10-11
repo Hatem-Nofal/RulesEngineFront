@@ -1,0 +1,16 @@
+.dropdown-toggle::after {
+  display: none;
+}
+.btn.show {
+  border-color: transparent;
+  border: none;
+}
+::ng-deep .p-datatable-scrollable > .p-datatable-table-container {
+  overflow: unset !important;
+}
+.td-table {
+  overflow: unset !important;
+}
+::ng-deep .p-datatable-scrollable-table > thead.p-datatable-thead {
+  top: -18px;
+}

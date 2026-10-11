@@ -1,0 +1,44 @@
+<form [formGroup]="form" class="form-section" (ngSubmit)="submit()">
+  <div class="row gap-4 w-100">
+    @for (control of dynamicControls; track $index; let i = $index) {
+
+      <div class="col">
+        @switch (control.type) {
+          @case ('text') {
+            <app-custom-input appTrimInputs [formControlName]="control.name" [label]="control.label" [type]="control.type"></app-custom-input>
+          }
+          @case ('number') {
+            <app-custom-input appTrimInputs  [formControlName]="control.name" [label]="control.label" [type]="control.type"></app-custom-input>
+          }
+          @case ('month') {
+            <app-custom-input appTrimInputs [formControlName]="control.name" [label]="control.label" [type]="control.type"></app-custom-input>
+          }
+          @case ('checkbox') {
+            <app-custom-checkbox [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-custom-checkbox>
+    
+          }
+          @case ('dropdown') {
+            <app-custom-dropdown [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-custom-dropdown>
+          }
+          @case ('filterDropdown') {
+            <app-drop-down-search [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-drop-down-search>
+          }
+          @case ('radio') {
+            <app-custom-radio [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-custom-radio>
+          }
+        } 
+        <app-forms-error [control]="this.form.controls[control.name]" ></app-forms-error>
+      
+      </div>
+   
+    }
+
+  </div>
+  <div class="d-flex gap-1">
+    <button type="submit" class=" btn form-btn btn-primary">Search</button>
+    <button type="button" class=" btn form-btn"  style="background-color: #bb1b10;  color: white;"(click)="formReset()">Reset</button>
+  </div>
+
+ 
+</form>
+

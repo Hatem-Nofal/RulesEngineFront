@@ -1,0 +1,31 @@
+.claim-info {
+    position: relative;
+  background-color: rgb(245 245 245 / 55%);
+  border: 1px solid #ddd; 
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* Optional: Softens edges */
+    // .edit_btn{
+    //     position: absolute;
+    //     right: 20px;
+    //     top: 20px;
+    //     color: black;
+    //     padding: 15px 20px;
+    // }
+    a{
+        color: black;
+        font-weight: 500;
+        i{
+            color: #ff3b3f;
+        }
+    }
+    .history_btn{
+        color: white;
+        font-family: 14px;
+    }
+}
+.table{
+    th{
+        color: black;
+    font-weight: 600;
+    }
+}

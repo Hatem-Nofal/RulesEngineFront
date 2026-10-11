@@ -1,0 +1,27 @@
+<div class="custom-input">
+  <div class="">
+    <label dir="ltr" *ngIf="label" class="form-label fs-14"
+      >{{ label }} <span *ngIf="isRequired" class="text-danger">*</span>
+    </label>
+    <input
+      [class]="customClass"
+      class="form-control"
+      [type]="type"
+      [value]="value"
+      (input)="onInput($event)"
+      (blur)="onBlur($event)"
+      [disabled]="isdisabled"
+      [placeholder]="label"
+      [min]="min"
+      [max]="max"
+    />
+  </div>
+  <!-- <label >{{ label }}</label> -->
+  <!-- <input [type]="type" [value]="value" (input)="onInput($event)" (blur)="onBlur()" [disabled]="disabled" /> -->
+  <!-- Debug section -->
+  <div class="debug-info" *ngIf="isDebugMode">
+    <p>Current Value: {{ value }}</p>
+    <p>Is Disabled: {{ disabled }}</p>
+    <p>Is Touched: {{ isTouched }}</p>
+  </div>
+</div>

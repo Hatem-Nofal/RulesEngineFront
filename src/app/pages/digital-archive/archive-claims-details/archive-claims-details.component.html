@@ -1,0 +1,115 @@
+<section class="cliams-edit">
+  <div class="clim-batch info">
+    <div class="card mb-0">
+      <div class="card-header p-0 m-0">
+        <h4 class="p-0 m-0">Claim Info</h4>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3" style="height: 100%">
+    <div class="col-sm-12 col-md-7 iframeSection" style="position: relative; min-height: 46em">
+      <div style="position: sticky; top: 3%; left: 0; z-index: 1000">
+        <iframe id="evidence-frame" [src]="iframeUrl" width="100%" style="height:46em;"></iframe>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-5">
+      <div class="row">
+        <div class="col-12 p-2">
+          <button class="btn btn-danger w-100" [disabled]="fileload" (click)="openPdf()">
+            <i class="bi bi-folder2-open me-1"></i> Open PDF
+          </button>
+        </div>
+      </div>
+      
+      <div class="card-body row justify-content-center">
+        <div class="row">
+
+          <div class="col-6">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <img src="./assets/images/icons/barcode.png" width="30px" height="30px" />
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong>UHIA Code</strong>
+                  {{ claimDetails?.number }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                  class="bi bi-person-vcard" viewBox="0 0 16 16">
+                  <path
+                    d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
+                  <path
+                    d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
+                </svg>
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong> e-Health Code</strong>
+                  {{ claimDetails?.batchECMDto?.ehealth_Batch_code }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mt-2">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <img src="./assets/images/icons/customer-service.png" width="30px" height="30px" />
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong>Type</strong>
+                  {{ claimDetails?.batchECMDto.type }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mt-2">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <i class="bi bi-calendar-check" style="font-size: 25px"></i>
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong>ProviderAra_name</strong>
+                  {{ claimDetails?.batchECMDto.providerAra_name}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mt-2">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <i class="bi bi-calendar-check" style="font-size: 25px"></i>
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong>UHIA Claim Code </strong>
+                  {{ claimDetails?.uhiaClaimCode }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mt-2">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <i class="bi bi-calendar-check" style="font-size: 25px"></i>
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong>EHealth claim no</strong>
+                  {{ claimDetails?.number }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mt-2">
+            <div class="batch-info py-2 col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <i class="bi bi-calendar-check" style="font-size: 25px"></i>
+                <p class="d-flex flex-column align-items-center m-0">
+                  <strong>Patient National ID</strong>
+                  {{ claimDetails?.patient_nid }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

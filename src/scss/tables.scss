@@ -1,0 +1,27 @@
+.noDataFound {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  *[class*="icon-"] {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    font-size: 100px;
+    color: #274da5;
+  }
+
+  .noDataMsg {
+    color: #666666;
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+    font-weight: 700;
+  }
+}
+
+.table-responsive {
+  padding-bottom: 20px;
+}

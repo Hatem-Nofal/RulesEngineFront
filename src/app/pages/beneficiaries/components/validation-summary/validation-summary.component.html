@@ -1,0 +1,17 @@
+
+<div class="validation-summary" *ngIf="errors && errors.length > 0">
+  <div class="summary-row">
+    <span class="summary-icon">❌</span>
+    <div class="summary-body">
+      <h4 class="summary-title">
+        {{ 'RuleApplication::Validation:PleaseFixErrors' | abpLocalization }}
+      </h4>
+      <ul class="summary-list">
+        <li class="summary-item" *ngFor="let err of errors">
+          <span class="summary-bullet">•</span>
+          <span>{{ err }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+server {
+    listen 8080;
+    server_name localhost;
+    client_max_body_size 900M; # Max body size for client requests
+
+    location / {
+        # Configuration for root location
+        dav_methods PUT DELETE MKCOL COPY MOVE;
+        create_full_put_path on;
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        try_files $uri /index.html; # Fallback to index.html for missing resources
+    }
+
+    # Error page configuration
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+}

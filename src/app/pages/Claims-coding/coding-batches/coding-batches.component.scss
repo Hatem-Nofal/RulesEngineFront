@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  // padding: 1rem;
+
+  .card {
+    background: white;
+    border-radius: 8px;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      padding: 1rem;
+      padding-top: 0px;
+      border-bottom: 1px solid #eee;
+
+      .card-title {
+        color: #333;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+  }
+}
+
+h3{
+  color: #274da5;
+  font-weight: 600;
+
+}
+button{
+  color: white !important;
+}
+.btn{
+  padding: 0.5rem 1.3rem !important;
+
+}
+
+::ng-deep .p-button-text.p-button-secondary{
+  color: #64748b !important;
+}

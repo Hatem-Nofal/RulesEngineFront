@@ -1,0 +1,31 @@
+.radio-group {
+  display: flex;
+  // flex-direction: column;
+  // gap: 10px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input[type="radio"] {
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+label {
+  cursor: pointer;
+  font-weight: 600;
+}
+.form-check-input:checked {
+  background-color:#264da3 !important ;
+  border-color: #264da3 !important ;
+}
+.form-check .form-check-input {
+  margin-left: 0px;
+}

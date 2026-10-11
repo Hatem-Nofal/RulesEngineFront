@@ -1,0 +1,38 @@
+.row {
+  position: relative;
+}
+.removeBtn {
+  color: #dc3545;
+}
+#addDiagnosisButton {
+  color: white;
+  width: 100%;
+}
+.accordion-button::after {
+  display: none;
+}
+.accordion-button {
+  padding: 0.7rem;
+}
+.accordion-item {
+  border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  margin: 0.4rem !important;
+}
+
+.index,
+.name {
+  color: #274da5;
+  font-weight: bold;
+  margin: 0 3px;
+}
+
+.type {
+  background-color: #f3f3f3;
+  color: #c00d49;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 0.8rem;
+  font-size: 0.85rem;
+}

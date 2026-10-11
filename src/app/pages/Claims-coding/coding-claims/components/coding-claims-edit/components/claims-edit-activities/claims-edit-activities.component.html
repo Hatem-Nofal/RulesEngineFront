@@ -1,0 +1,322 @@
+<!-- add this if you want to paginated data on scroll (scroll)="onScroll($event)" -->
+<div itemSize="1000" class="form-group" style="height: 65vh; overflow-x: hidden">
+  <form [formGroup]="formArray">
+    @if ((formArray.invalid || auditForm?.invalid)&& !formArray?.errors?.noActivity) {
+    <app-forms-error [message]="'Something Wrong on ' + invalidIndexes"></app-forms-error>
+
+    } @if (activities.invalid && formArray?.errors?.noActivity) {
+    <app-forms-error
+      [message]="'You must add at least one Activities before proceeding'"
+    ></app-forms-error>
+    } @if (formArray.invalid && visibleActivitiesArray.length>0) {
+    <app-forms-error
+      [message]="'We Found Activities Invalid Number ' + '#' + invalidIndexes"
+    ></app-forms-error>
+
+    }
+    <div class="accordion" id="activitiesAccordion" activitiesName="medicalDiagnosis">
+      @for (activity of visibleActivitiesArray | activityTypeFilter:activeType?.id :
+      activities?.controls ; track activity.controls?.trackId?.value; let i = $index) {
+      @if(!activity.controls?.isDeleted?.value){
+      <div class="accordion-item" [formGroup]="activity">
+        <h2
+          class="accordion-header d-flex justify-content-between activityHeader"
+          [id]="'activityHeading' + i"
+        >
+          <button
+            class="accordion-button"
+            (click)="toggleIndex(i)"
+            [class.collapsed]="i !== expandedIndex"
+            type="button"
+            [attr.data-bs-target]="'#activityCollapse' + i"
+            [attr.aria-expanded]="i === expandedIndex"
+            [attr.aria-controls]="'activityCollapse' + i"
+          >
+            <div
+              class="rounded-circle border-0 d-flex justify-content-center align-items-center me-1"
+              style="background-color: #274da5; font-weight: bold; width: 26px; height: 26px"
+            >
+              <ng-container
+                *ngIf="
+                  activityTypeMap && activityTypeMap[activity.get('activityTypeId')?.value] as type
+                "
+              >
+                <img width="15" height="15" [src]="type.icon" [alt]="type.name" />
+              </ng-container>
+            </div>
+
+            <span style="color: #274da5; font-weight: bold">
+              <!-- @if (!activityName) { -->
+              {{
+                '#' +
+                  getDisplayNumber(activity) +
+                  ' ' +
+                  (activity?.get('subActivitiesName')?.value || 'New Activity')
+              }}
+              <!--  (getActivityName(i,activity)|| 'New Activity') -->
+              <!-- }
+              (getActivityName(i,activity)|| 'New Activity')
+              @if(activityName) {
+              {{'#' + ( i+1 ) +" "+activityName }}
+              } -->
+            </span>
+          </button>
+          <div class="d-flex align-items-center">
+            @if(activity.controls?.gross?.value){
+            <span class="totalGross"> {{ activity.controls?.gross?.value }} </span>
+            } @if (!viewMood && !activateAuditStatus) {
+            <button class="btn removeBtn" type="button" (click)="removeActivity(activity)">
+              <i class="bi bi-trash"></i>
+            </button>
+            }
+          </div>
+        </h2>
+        @if (expandedIndex === i) {
+        <div
+          class="accordion-body p-0"
+          [class.hidden]="expandedIndex !== i"
+          [id]="'activityCollapse' + i"
+          [attr.aria-labelledby]="'activityHeading' + i"
+        >
+          <div class="accordion-body p-0">
+            @defer {
+            <div class="row m-auto p-2 pb-3 w-100 shadow-sm m-0">
+              <div class="col-6 mt-1">
+                <app-custom-dropdown
+                  [formControlName]="'activityTypeId'"
+                  [label]="'Activity Type'"
+                  [options]="activitiesSearchDropdownList"
+                  [selectedValue]="activity.get('activityTypeId')?.value || null"
+                  (change)="onChangeActivityType($event, i,activity);"
+                  ></app-custom-dropdown>
+                <app-forms-error [control]="activity.get('activityTypeId')"></app-forms-error>
+              </div>
+              <div class="col-6 mt-1">
+                <app-custom-input
+                  [isdisabled]="activateAuditStatus || viewMood"
+                  [formControlName]="'startTime'"
+                  [label]="'Start Time'"
+                  [type]="'datetime-local'"
+                  [min]="'2018-01-01T00:00'"
+                ></app-custom-input>
+                <app-forms-error [control]="activity.get('startTime')"></app-forms-error>
+              </div>
+              <div class="col-12 mt-1">
+                <app-custom-input-search
+                  #searchInput
+                  formControlName="subTypeId"
+                  label="Search Activity"
+                  *ngIf="i === expandedIndex"
+                  [items]="activityTypeList"
+                  [selectedItems]="selectedItems"
+                  [disabledOption]="
+                    activateAuditStatus || viewMood || activities.value[i]?.activityTypeId === ''
+                  "
+                  [isActivities]="true"
+                  (searchInputChange)="onSearchInputChange($event, i,activity)"
+                  (searchInputNameValue)="onSearchInputNameValue($event, i, activity)"
+                  (change)="onSelectSubTypeId($event, i,activity)"
+                ></app-custom-input-search>
+                <app-forms-error [control]="activity.get('subTypeId')"></app-forms-error>
+              </div>
+
+              <div class="col-3 col-md-3 mt-1">
+                <app-custom-input
+                  appNumbersWithDot
+                  (keyup)="changeValueType($event, 'quantity', i,activity)"
+                  [isdisabled]="activateAuditStatus || viewMood"
+                  [formControlName]="'quantity'"
+                  [label]="'Quantity'"
+                  [type]="'text'"
+                ></app-custom-input>
+                <app-forms-error [control]="activity.get('quantity')"></app-forms-error>
+
+              </div>
+
+              <div class="col-3 col-md-3 mt-1 gross-section">
+                <span
+                  *ngIf="activity.controls?.activityTypeId?.value == 2 && !this.activateAuditStatus"
+                  class="totalPrice"
+                  >{{ calculateDrugActivityPrice(activity) }}</span
+                >
+                <app-custom-input
+                  appNumbersWithDot
+                  (keyup)="changeValueType($event, 'gross', i,activity)"
+                  [isdisabled]="activateAuditStatus || viewMood"
+                  [formControlName]="'gross'"
+                  [label]="'Gross'"
+                  [type]="'text'"
+                ></app-custom-input>
+                <app-forms-error [control]="activity.get('gross')"></app-forms-error>
+
+              </div>
+
+              <div class="col-3 col-md-3 mt-1">
+                <app-custom-input
+                  appNumbersWithDot
+                  (keyup)="changeValueType($event, 'net', i,activity)"
+                  [isdisabled]="activateAuditStatus || viewMood"
+                  [formControlName]="'net'"
+                  [label]="'Net'"
+                  [type]="'text'"
+                ></app-custom-input>
+                <app-forms-error [control]="activity.get('net')"></app-forms-error>
+
+              </div>
+
+              <div class="col-3 col-md-3 mt-1">
+                <app-custom-input
+                  appNumbersWithDot
+                  (keyup)="changeValueType($event, 'patientShare', i,activity)"
+                  [isdisabled]="activateAuditStatus || viewMood"
+                  [formControlName]="'patientShare'"
+                  [label]="'Patient Share'"
+                  [type]="'text'"
+                ></app-custom-input>
+                <app-forms-error [control]="activity.get('patientShare')"></app-forms-error>
+
+              </div>
+              <app-forms-error [control]="activity"></app-forms-error>
+              <div class="col-12 mt-1">
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item custom-accordion-item border-0">
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button custom-accordion-header"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseTags"
+                        aria-expanded="true"
+                        aria-controls="collapseTags"
+                      >
+                        Activity Tags
+                        <i class="bi bi-chevron-down ms-2 toggle-icon"></i>
+                      </button>
+                    </h2>
+                    <div
+                      id="collapseTags"
+                      class="accordion-collapse collapse"
+                      [class.show]="activity.get('activityTags').value?.length > 0"
+                      data-bs-parent="#accordionExample"
+                    >
+                      <div class="accordion-body p-0 border-0">
+                        <app-custom-checkbox
+                          [options]="tagsOptions"
+                          [formControlName]="'activityTags'"
+                          [selectedValue]="activity.controls['activityTags'].value"
+                          [size]="'col-md-6 col-4'"
+                        >
+                        </app-custom-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            @if(activateAuditStatus){
+            <app-claims-audit-activity
+              [formGroup]="auditForm.controls[i]"
+              [data]="auditForm.controls[i].value"
+            ></app-claims-audit-activity>
+            } } @placeholder{
+
+            <div class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <div class="skeleton-line w-75 mb-2"></div>
+                <div class="skeleton-line w-50 mb-2"></div>
+                <div class="skeleton-line w-100 mb-2"></div>
+              </div>
+            </div>
+
+            }
+          </div>
+        </div>
+        }
+      </div>
+      } } @if (activities?.controls.length === 0) {
+      <div class="card d-flex justify-content-center align-items-center border p-2">
+        <span>No Activity Added</span>
+      </div>
+      }
+    </div>
+  </form>
+  @if (!viewMood && !activateAuditStatus) {
+  <div class="row mt-2">
+    <div class="col-4 align-content-center">
+      <button
+        type="button"
+        id="addActivityButton"
+        class="btn btn-sm btn-primary"
+        (click)="addActivity()"
+      >
+        <i class="bi bi-plus-lg pe-1 m-0"></i>
+        Add Activity
+      </button>
+    </div>
+    <div class="col-8 px-0">
+      <div class="d-flex align-items-center gap-1">
+        <span title="Dental" class="rounded-button rounded-circle" (click)="addActivity(1)"
+          ><img
+            width="20"
+            height="20"
+            src="../../../../../../../../assets/images/icons/tooth.png"
+            alt=""
+        /></span>
+        <span title="Drug" class="rounded-button rounded-circle" (click)="addActivity(2)"
+          ><img
+            width="20"
+            height="20"
+            src="../../../../../../../../assets/images/icons/medicine-9-svgrepo-com.png"
+            alt=""
+        /></span>
+        <span title="Procedure" class="rounded-button rounded-circle" (click)="addActivity(3)"
+          ><img
+            width="20"
+            height="20"
+            src="../../../../../../../../assets/images/icons/doctor-bag-svgrepo-com.png"
+            lt=""
+          />
+        </span>
+        <span title="Service Code" class="rounded-button rounded-circle" (click)="addActivity(4)">
+          <img
+            width="20"
+            height="20"
+            src="../../../../../../../../assets/images/icons/health-care-love-svgrepo-com.png"
+            alt=""
+          />
+        </span>
+        <span title="Consumables" class="rounded-button rounded-circle" (click)="addActivity(6)"
+          ><img
+            width="20"
+            height="20"
+            src="../../../../../../../../assets/images/icons/cart-shopping-svgrepo-com (1).png"
+            alt=""
+          />
+        </span>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+
+<!-- Floating Circle Button -->
+<div class="floating-filter-btn" (click)="toggleFilterDropdown()">
+  <i class="pi pi-filter"></i>
+  <!-- Use any icon library or text -->
+</div>
+
+<!-- Circular Dropdown -->
+<div class="circular-dropdown" *ngIf="showFilterDropdown">
+  <ul>
+    <li
+      class="d-flex align-items-center justify-content-center"
+      *ngFor="let type of activityTypes"
+      (click)="filterByType(type)"
+      [ngClass]="{ 'active-type': activeType?.id === type.id }"
+      [pTooltip]="type.name"
+      tooltipPosition="left"
+    >
+      <img width="20" height="20" [src]="type.icon" [alt]="type.name" />
+    </li>
+  </ul>
+</div>

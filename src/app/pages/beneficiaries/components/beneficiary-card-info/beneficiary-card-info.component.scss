@@ -1,0 +1,173 @@
+@import url(../beneficiary-form/beneficiary-form.component.scss);
+
+:host {
+  font-family: 'Cairo', sans-serif;
+}
+
+
+
+// ─── Base card (member card) ──────────────────────────────────────
+.hof-card-info {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;                    // p-5
+  margin-bottom: 12px;              // space-y-3
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  cursor: default;
+
+  // ─── Member hover → primary/30 border + primary/5 bg ─────────
+  &:hover {
+    border-color: color-mix(in srgb, #3b5ba5 30%, white);
+    background-color: color-mix(in srgb, #3b5ba5 5%, white);
+  }
+
+  // ─── HOF permanent state → primary/30 border + primary/5 bg ──
+  &.is-hof {
+    background: color-mix(in srgb, #3b5ba5 5%, white);   // bg-primary/5
+    border: 1px solid color-mix(in srgb, #3b5ba5 30%, white); // border-primary/30
+    padding: 24px;                  // p-6
+    border-inline-end: 5px solid #3b5ba5;
+
+    &:hover {
+      background: color-mix(in srgb, #3b5ba5 5%, white);
+      border-color: color-mix(in srgb, #3b5ba5 30%, white);
+    }
+
+    .member-name { color: #2c3e50; }
+  }
+}
+
+// ─── Top row ─────────────────────────────────────────────────────
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;             // mb-3
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.member-name {
+  font-size: 1rem;
+  font-weight: 600;                // font-semibold
+  color: #2c3e50;                  // text-foreground
+  margin-bottom: 4px;
+}
+
+.member-reg-number {
+  font-size: 0.875rem;            
+  color: #6c757d;                 
+}
+
+.card-tags {
+  display: flex;
+  gap: 8px;                       
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.875rem;             
+  font-weight: 500;
+  padding: 4px 12px;               
+  border-radius: 6px;             
+  border: 1px solid transparent;
+  line-height: 1.4;
+
+  &.badge-active {
+  background-color: color-mix(in srgb, #3b5ba5 10%, white);
+  border-color: #dee2e6;
+  color:#2c3e50;
+  }
+
+  &.badge-complete {
+    background-color: color-mix(in srgb, #3b5ba5 10%, white);
+    border-color: color-mix(in srgb, #3b5ba5 30%, white);
+    color: #3b5ba5;
+  }
+
+  &.badge-danger {
+    background-color: #f0f2f5;      
+    border-color: #dee2e6;          
+    color: #6c757d;                
+  }
+}
+
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;                     
+  margin-bottom: 12px;            
+}
+
+.info-item {
+  .p-header {
+    font-size: 0.875rem;          
+    color: #6c757d;                
+    font-weight: 400;
+    margin-bottom: 4px;            
+  }
+
+  .p-muted {
+    font-size: 0.875rem;          
+    color: #2c3e50 !important;    
+    font-weight: 500;              
+    margin-bottom: 0;
+  }
+}
+
+::ng-deep .hof-card-info .info-item .p-header {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;                     
+  padding-top: 12px;              
+  border-top: 1px solid #dee2e6;   
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+::ng-deep .card-actions .p-button .p-button-label {
+  font-size: 0.875rem !important;
+}
+
+.value {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.tag-yes {
+  background-color: color-mix(in srgb, #28a745 10%, white);
+  color: #28a745;
+}
+
+.tag-no {
+  background-color: #f0f2f5;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-top-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-tags {
+    justify-content: flex-start;
+  }
+}

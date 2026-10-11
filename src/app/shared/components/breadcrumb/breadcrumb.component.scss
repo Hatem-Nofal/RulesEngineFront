@@ -1,0 +1,64 @@
+// .breadcrumb {
+//   background-color: #ffff !important;
+//   padding: 0em 0.75em !important;
+
+//   .breadcrumb-item {
+//     display: flex;
+//     align-items: center;
+//   }
+
+//   &.active {
+//     color: #6c757d;
+//   }
+//   a {
+//     color: #007bff;
+//     text-decoration: none;
+
+//     &:hover {
+//       text-decoration: underline;
+//     }
+//   }
+// }
+
+.breadcrumb-nav {
+  background-color: #f8f9fa; /* Light background */
+  border-radius: 5px;
+
+}
+
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  list-style: none;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.breadcrumb-item {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.breadcrumb-item a , span {
+  text-decoration: none;
+  color: #274da5; /* Blue links */
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">>";
+  padding: 0 10px;
+  color: red; /* Red separator */
+}
+
+.breadcrumb-item.active {
+  color: #dc3545; /* Red for active breadcrumb */
+  font-weight: bold;
+}
+

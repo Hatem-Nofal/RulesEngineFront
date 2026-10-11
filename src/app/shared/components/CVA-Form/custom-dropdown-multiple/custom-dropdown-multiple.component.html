@@ -1,0 +1,8 @@
+<div class="dropdown-container">
+  @if(label){
+  <label class=" form-label fs-14">{{ label }}</label>
+  }
+  <p-multiSelect [options]="options || []" [(ngModel)]="selectedOptions" [placeholder]="'Select'"
+    [disabled]="isDisabled" (onChange)="onSelectionChange($event)" optionLabel="name" optionValue="id"
+    [showHeader]="showHeader" styleClass="w-100" [filter]="true" panelStyleClass="custom-multiselect-up"></p-multiSelect>
+</div>

@@ -1,0 +1,27 @@
+<main class="container-fluid p-0" style="overflow-x: hidden">
+  <div class="row flex-nowrap" [class.sidebar-collapsed]="!isSidebarCollapsed()">
+    <div
+      class="sidebar-wrapper p-0"
+      [class.collapsed]="!isSidebarCollapsed()"
+      [ngClass]="{ 'col-lg-2 col-sm-3': isSidebarCollapsed() }"
+      [@combinedSlideAnimation]="{ value: '', params: { start: start, end: end } }"
+    >
+      <app-sidebar></app-sidebar>
+    </div>
+    <div
+      class="main-content p-0"
+      [ngClass]="{ 'col-lg-10 col-sm-9': isSidebarCollapsed(), 'col-lg-12': !isSidebarCollapsed() }"
+    >
+      <div class="header-layout">
+        <app-header></app-header>
+        <app-breadcrumb></app-breadcrumb>
+      </div>
+      <div class="content-layout">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="footer-layout">
+        <app-footer></app-footer>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,55 @@
+.custom-input {
+  position: relative;
+  label {
+    font-weight: 600;
+  }
+}
+
+.custom-input .search-icon {
+  position: absolute;
+  inset-inline-end: 15px;
+  top: 50%;
+  cursor: pointer;
+}
+
+.custom-input .search-icon i {
+  font-size: 1.2em;
+}
+::ng-deep .p-inputtext:disabled {
+  &:disabled {
+    background-color: #f4f9fa !important;
+    color: #000000 !important;
+  }
+}
+::ng-deep .p-autocomplete.p-component.p-inputwrapper {
+  width: 100% !important;
+  &:disabled {
+    background-color: #f4f9fa !important;
+    color: #000000 !important;
+  }
+}
+::ng-deep .p-inputtext {
+  padding-inline-end: 2rem !important;
+  background: #ffffff;
+  padding: 0.675rem 1.6rem 0.675rem 0.675rem;
+  font-size: 14px;
+  border-radius: 10px;
+  height: 40px;
+  font-weight: 400;
+  width: 100% !important;
+  transition: background-color 0.2s, border-color 0.4s;
+  border-color: #e7e9ec;
+  color: #161616;
+  &:enabled:focus {
+    border-color: #e7e9ec !important;
+  }
+}
+
+::ng-deep .p-overlay {
+  left: 0px !important;
+  min-width: unset !important;
+  width: 100%;
+}
+::ng-deep .p-iconwrapper {
+  display: none !important;
+}

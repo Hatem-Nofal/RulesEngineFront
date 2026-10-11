@@ -1,0 +1,70 @@
+<div class="card flex justify-content-center align-items-center">
+  <p-card header="Batch Validation" class="azure-card" [style]="{ width: '55vw', margin: 'auto' }">
+    @if (selectedBatchIds.length== 0 ||selectedWorkflowIds.length== 0) {
+    <p-message severity="warn" icon="pi pi-exclamation-circle" style="font-size: 15px"
+      >Please select at least one batch and one workflow</p-message
+    >
+
+    }
+    <div class="card flex justify-content-center my-2">
+      <p-multiSelect
+        [options]="batches"
+        [(ngModel)]="selectedBatchIds"
+        optionLabel="ehealth_Batch_code"
+        [optionValue]="'id'"
+        placeholder="Select Batches"
+        display="chip"
+        filter="true"
+        filterBy="ehealth_Batch_code,UHIA_Batch_code"
+        (onFilter)="onBatchSearchChange($event)"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="itemSize"
+        [lazy]="false"
+        scrollHeight="200px" 
+        (onLazyLoad)="onBatchesLazyLoad($event)"
+      >
+        <!--  -->
+
+        <ng-template pTemplate="item" let-option>
+          {{ option.ehealth_Batch_code }} - {{ option.uhiA_Batch_code }}
+        </ng-template>
+
+        <!-- Selected chips (shown in the input after selection) -->
+        <ng-template pTemplate="selectedItem" let-option>
+          {{ option.ehealth_Batch_code }} - {{ option.uhiA_Batch_code }}
+        </ng-template>
+      </p-multiSelect>
+    </div>
+    <div class="card flex justify-content-center my-2">
+      <p-multiSelect
+        [options]="workflows"
+        [(ngModel)]="selectedWorkflowIds"
+        optionLabel="workflowName"
+        [optionValue]="'id'"
+        display="chip"
+        placeholder="Select Workflows"
+      />
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="d-flex w-100 justify-content-around mt-1 gap-4">
+        <p-button *abpPermission="ClaimsPermissions.Claims_ValidateBatch"
+          [disabled]="selectedBatchIds.length == 0 || selectedWorkflowIds.length == 0 || isLoading"
+          label="Validate Batch"
+          severity="primary"
+          class="w-100"
+          styleClass="w-100"
+          icon="pi pi-lock"
+          (click)="validateBatch()"
+        />
+        <p-button *abpPermission="ClaimsPermissions.Claims_ValidateDownloadBatchExcel"
+          label="Download Excel"
+          class="w-100 excel-button"
+          icon="pi pi-download"
+          styleClass="w-100"
+          (click)="downloadExcel()"
+        />
+      </div>
+    </ng-template>
+  </p-card>
+</div>

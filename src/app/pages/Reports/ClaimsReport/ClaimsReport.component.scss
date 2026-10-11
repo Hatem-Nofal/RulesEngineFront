@@ -1,0 +1,59 @@
+h5 {
+  color: #274da5;
+  font-weight: 600;
+}
+
+.claims-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    font-size: 14px;
+    padding:12px;
+    text-align: left;
+    border-bottom: 0.667px solid #e2e8f0;
+    font-weight: 600;
+    color: #334155;
+    vertical-align: middle;
+
+  }
+  td{
+   
+    font-weight: 400;
+  }
+
+  // thead.table-theme {
+  //   // background-color: #007bff; // Customize this as your theme
+  //   // color: white;
+
+  //   th {
+  //     font-weight: 600;
+  //     font-size: 1rem;
+  //   }
+  // }
+
+  // tbody {
+  //   tr {
+  //     transition: background-color 0.2s ease-in-out;
+
+  //     &:hover {
+  //       background-color: #f1f1f1;
+  //     }
+  //   }
+
+  //   .total-row {
+  //     background-color: #f9f9f9;
+
+  //     .bold {
+  //       font-weight: bold;
+  //       font-size: 1rem;
+  //     }
+  //   }
+  // }
+
+  // Optional: Zebra striping for rows if not using Bootstrap's default
+  // tr:nth-child(even) {
+  //   background-color: #f8f8f8;
+  // }
+}
+

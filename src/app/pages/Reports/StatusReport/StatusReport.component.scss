@@ -1,0 +1,73 @@
+/* General Layout */
+.main-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.welcome-text {
+  max-width: 60%;
+  text-align: center;
+  margin: auto;
+}
+
+.welcome-text h2 {
+  color: #274da5;
+  font-weight: 600;
+  font-size: 2.5rem;
+}
+
+.welcome-text p {
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  padding: 12px 24px;
+}
+
+/* Card Layout */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+  padding: 15px;
+  cursor: pointer;
+  border: none;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  background-color: #f8f9fa;
+}
+.small-icon i {
+  font-size: 2.2rem; /* smaller icon */
+}
+.card-body {
+  padding: 20px;
+}
+
+.card-icon {
+  //font-size: 3rem;
+  color: #274da5;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  // color: #e63946;
+  color: #274da5;
+}
+.card-title-content{
+  text-align: right !important;
+
+  font-weight: bold;
+  font-size: 1.2rem;
+  // color: #e63946;
+  color: #274da5;
+}

@@ -1,0 +1,12 @@
+.income-input {
+  position: relative;
+  .currency-label {
+    position: absolute;
+    inset-inline-end: 13px;
+    top: 24px;
+    padding: 6px 15px;
+    background-color: whitesmoke;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+}

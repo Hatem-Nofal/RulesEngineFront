@@ -1,0 +1,437 @@
+/* general */
+.customDialog .btn,
+.customBtns .btn,
+.customDialog.two .btn.two {
+  width: 150px !important;
+  height: 35px;
+  -webkit-border-radius: 18px;
+  -moz-border-radius: 18px;
+  border-radius: 18px;
+  padding: 7px 10px;
+}
+
+.customDialog.two .btn {
+  width: auto !important;
+}
+
+.customDialog.two td .btn {
+  height: 25px !important;
+  align-items: center;
+  justify-content: center;
+  width: 25px !important;
+}
+
+.customDialog .btn-primary,
+.customBtns .btn-primary {
+  background-color: #274da5;
+  color: #ffffff;
+}
+
+.customDialog .btn-primary:hover,
+.customBtns .btn-primary:hover {
+  background-color: #1b3c89;
+  color: #ffffff;
+}
+
+.customDialog .btn-outline-danger,
+.customBtns .btn-outline-danger {
+  border-color: #ca5e5e;
+  color: #ca5e5e;
+}
+
+.customDialog .btn-outline-danger:hover,
+.customBtns .btn-outline-danger:hover {
+  border-color: #af4a4a;
+  color: #af4a4a;
+  background-color: #ffffff;
+}
+
+/* End of general */
+
+/******** add dialog styling *********/
+.mediumDialog {
+  --bs-modal-width: 600px !important;
+}
+
+.largeDialog {
+  --bs-modal-width: 1100px !important;
+}
+
+.customDialog .modal-content {
+  border: 0px !important;
+  -webkit-border-radius: 29px !important;
+  -moz-border-radius: 29px !important;
+  border-radius: 29px !important;
+}
+
+.customDialog .modal-header {
+  justify-content: space-between !important;
+  background-color: #274da5;
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-top-right-radius: 20px;
+  -moz-border-radius-topleft: 20px;
+  -moz-border-radius-topright: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 75px;
+
+  .close {
+    border: 0px;
+    background: none;
+    color: #ffffff;
+    font-size: 30px;
+  }
+
+  h4 {
+    color: #ffffff;
+  }
+}
+
+.customDialog .modal-body {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.customDialog .modal-footer {
+  border-top: 0px;
+  padding-top: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/******** End of add dialog styling *********/
+
+/********* form styling **********/
+.formStying *[class*="col-"] {
+  margin: 10px 0;
+}
+
+.formStying *[class*="col-"] *[class*="col-"] {
+  margin: 0px 0;
+}
+
+.title_lines {
+  position: relative;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1;
+  overflow: hidden;
+  color: #1c2261;
+  font-family: arial;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  width: 100%;
+  display: block;
+}
+
+.Ar .title_lines {
+  text-align: right;
+}
+
+.en .title_lines {
+  text-align: left;
+}
+
+.title_lines:after {
+  position: absolute;
+  top: 51%;
+  overflow: hidden;
+  width: 98%;
+  height: 1px;
+  content: "\a0";
+  background-color: #f1f1f1;
+}
+
+.Ar .title_lines:after {
+  margin-left: 2%;
+}
+
+.en .title_lines:after {
+  margin-right: 2%;
+}
+
+.formElementHolder {
+  position: relative;
+}
+
+input.withPlaceHolder,
+select.withPlaceHolder {
+  height: 35px;
+}
+
+.withPlaceHolder {
+  width: 100%;
+  color: #000000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.withPlaceHolder[readonly],
+.p-inputtext[readonly] {
+  background-color: #f4f9fa !important;
+  opacity: 1;
+}
+
+.reviewed input.withPlaceHolder[readonly],
+.reviewed .p-inputtext[readonly] {
+  background-color: #f7fff8 !important;
+}
+
+.notReviewed input.withPlaceHolder[readonly],
+.notRreviewed .p-inputtext[readonly] {
+  background-color: #fff5f5 !important;
+}
+
+.withPlaceHolder~.floating-label,
+p-calendar~.floating-label {
+  display: none;
+}
+
+p-calendar input::placeholder {
+  font-size: 12px;
+  color: #999999;
+}
+
+.withPlaceHolder::placeholder {
+  font-size: 11px;
+  color: #999999;
+}
+
+.withPlaceHolder:not(:placeholder-shown)~.floating-label,
+p-calendar.p-inputwrapper-filled~.floating-label {
+  top: -9px;
+  padding: 0 5px;
+  background-color: #ffffff;
+  font-size: 11px;
+  opacity: 1;
+  position: absolute;
+  display: initial;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  color: #999999;
+  text-wrap: nowrap;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Ar .withPlaceHolder:not(:placeholder-shown)~.floating-label,
+.Ar p-calendar.p-inputwrapper-filled~.floating-label {
+  right: 6px;
+}
+
+.en .withPlaceHolder:not(:placeholder-shown)~.floating-label,
+.en p-calendar.p-inputwrapper-filled~.floating-label {
+  left: 6px;
+}
+
+select.withPlaceHolder:has(option:checked[value=""])~.floating-label {
+  display: none;
+}
+
+select.withPlaceHolder:has(option:checked[value=""]) {
+  color: #999999;
+  font-size: 12px;
+}
+
+select.withPlaceHolder option[value]:not(:empty) {
+  color: #000000;
+}
+
+textarea.withPlaceHolder {
+  resize: none;
+  height: 75px;
+}
+
+/********* End of form styling **********/
+.en .form-select {
+  background-position: right 0.75rem center !important;
+  // padding: 0.375rem 2.25rem 0.375rem 0.75rem !important;
+}
+
+.Ar .form-select {
+  background-position: left 0.75rem center !important;
+  // padding: 0.375rem 0.75rem 0.375rem 2.25rem !important;
+  margin-left: 1rem !important;
+}
+
+.withLabelDay::after {
+  content: "Days";
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  color: #999999;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.formStying .ng-select .ng-has-value {
+  overflow: initial;
+}
+
+.formStying .ng-select .ng-has-value .ng-placeholder {
+  display: initial;
+  top: -9px !important;
+  padding: 0 5px;
+  background-color: #ffffff;
+  font-size: 11px;
+  opacity: 1;
+  position: absolute;
+  display: initial;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  color: #999999;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  top: auto;
+}
+
+.formStying .ng-select .ng-select-container {
+  color: #333;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  min-height: 36px;
+  align-items: center;
+}
+
+.formStying .ng-dropdown-panel {
+  border: 1px solid #dee2e6;
+}
+
+.formStying .ng-select .ng-arrow-wrapper .ng-arrow {
+  display: none;
+}
+
+.formStying .ng-select .ng-arrow-wrapper {
+  background-image: url("../assets/icon/down-arrow.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+.en .formStying .ng-select .ng-arrow-wrapper {
+  background-position: left center;
+}
+
+.Ar .formStying .ng-select .ng-arrow-wrapper {
+  background-position: 10px center;
+}
+
+.formStying .ng-dropdown-panel.ng-select-bottom,
+.formStying .ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
+  top: 100%;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.formStying .ng-dropdown-panel.ng-select-top,
+.formStying .ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.formStying .ng-select .ng-select-container .ng-value-container .ng-place {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  border-color: #dee2e6;
+  box-shadow: none;
+}
+
+.formStying .form-select {
+  width: auto;
+}
+
+.datePickerHolder {
+  position: relative;
+}
+
+.datePickerHolder input {
+  background-image: url("../assets/icon/date_calendar_icon.svg");
+  background-repeat: no-repeat;
+  background-size: 15px;
+}
+
+.en .datePickerHolder input {
+  background-position: calc(100% - 10px) center !important;
+}
+
+.Ar .datePickerHolder input {
+  background-position: 10px center !important;
+}
+
+.datePickerHolder button.openDatePicker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+}
+
+.datePickerHolder button.ngb-dp-arrow-btn:hover {
+  background-color: transparent;
+  color: #000000;
+}
+
+.formStying .ng-select-disabled .ng-select-container {
+  background-color: #e9ecef;
+}
+
+.formStying .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.dp-picker-input {
+  width: 100% !important;
+}
+
+.details-page .cdk-overlay-pane {
+  display: none !important;
+}
+
+app-nav-item svg {
+  pointer-events: none !important;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+/* width */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: inset 0 0 2px grey;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+  background: #274da5;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+  background: #1e4191;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  padding-bottom: 0;
+}

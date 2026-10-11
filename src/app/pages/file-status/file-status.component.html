@@ -1,0 +1,59 @@
+<div class="card flex justify-content-center align-items-center">
+  <p-card
+    header="File Upload Status"
+    class="azure-card file-card"
+    [style]="{ width: '70vw', margin: 'auto' }"
+  >
+    <p-table
+      #dataTable
+      styleClass=" p-datatable-striped"
+      [value]="primengTableHelper.records"
+      [paginator]="false"
+      rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+      [lazy]="true"
+      [rowHover]="true"
+      ScrollWidth="100%"
+      [resizableColumns]="primengTableHelper.resizableColumns"
+      dataKey="name"
+      groupRowsBy="id"
+      (onLazyLoad)="getRules($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>File Name</th>
+          <th>Workflow Name</th>
+          <th>FileStatus</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rule>
+        <tr>
+          <td>{{ rule.fileName }}</td>
+          <td>{{ rule.workFlowName }}</td>
+          <td class="text-center">
+            <span
+              [ngClass]="{
+                'status-inprogress': rule.fileStatus === 'InProgress',
+                'status-completed': rule.fileStatus === 'Completed',
+                'status-failed': rule.fileStatus === 'Failed'
+              }"
+            >
+              {{ rule.fileStatus }}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div>
+      <p-paginator
+        class="mx-2"
+        [rows]="primengTableHelper.defaultRecordsCountPerPage"
+        #paginator
+        (onPageChange)="getRecordsIfNeeds($event)"
+        [totalRecords]="primengTableHelper.totalRecordsCount"
+        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+        [showCurrentPageReport]="true"
+        [currentPageReportTemplate]="'Total Records : ' + primengTableHelper.totalRecordsCount"
+      ></p-paginator>
+    </div>
+  </p-card>
+</div>

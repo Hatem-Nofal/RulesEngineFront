@@ -1,0 +1,12 @@
+.fix-margin {
+  margin-top: 1.9rem;
+}
+::ng-deep .p-dialog-content {
+  overflow: visible;
+}
+.message{
+    color: #7d1c1c;
+    padding: 2px;
+    border-radius: 20px;
+    font-size: 13px;
+}

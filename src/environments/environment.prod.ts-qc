@@ -1,0 +1,26 @@
+import { Environment } from '@abp/ng.core';
+
+const baseUrl = 'https://emrfrontend-qc.ehealth.com.eg';
+
+export const environment = {
+  production: false,
+  application: {
+    baseUrl,
+    name: 'RuleApplication',
+    logoUrl: '',
+  },
+  oAuthConfig: {
+    issuer: 'https://emrbackend-qc.ehealth.com.eg/',
+    redirectUri: baseUrl,
+    clientId: 'RuleApplication_App',
+    responseType: 'id_token token',
+    scope: 'openid profile offline_access RuleApplication',
+    requireHttps: false,
+  },
+  apis: {
+    default: {
+      url: 'https://emrbackend-qc.ehealth.com.eg',
+      rootNamespace: 'RuleApplication',
+    },
+  },
+} as Environment;

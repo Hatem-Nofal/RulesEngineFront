@@ -1,0 +1,67 @@
+.card {
+  width: 100%;
+  border: 2px solid;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 16px;
+  display: inline-block;
+  vertical-align: top;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-top {
+  height: 8px;
+}
+
+.card-header {
+  padding: 12px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.card-list {
+  margin: 0;
+}
+
+.card-list li {
+  margin: 16px 0;
+  i {
+    font-size: 26px;
+    color: #274da5 !important;
+  }
+}
+
+.title {
+  font-weight: 600;
+  font-size: 17px;
+  margin-right: 6px;
+  color: #274da5 !important;
+}
+
+.value {
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+.tag-yes {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.tag-no {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.card-header {
+  h3 {
+    color: #274da5 !important;
+    font-weight: 600;
+  }
+}

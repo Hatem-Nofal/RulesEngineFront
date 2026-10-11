@@ -1,0 +1,37 @@
+<form [formGroup]="formGroup" class="row m-auto p-2 w-100 shadow-sm m-0 ">
+  <h5>Auditing Activity</h5>
+  <div class="col-4 mt-1">
+    <app-custom-input appNumbersWithDot [min]="0" [formControlName]="'approvedAmount'" [label]="'Approved Amount'"
+      [type]="'number'"
+      (change)="onChangePrice(formGroup.controls.rejectedAmount.value,formGroup.controls.approvedAmount.value , 'approvedAmount')"></app-custom-input>
+  </div>
+
+  <div class="col-4 mt-1">
+    <app-custom-input appNumbersWithDot [min]="0" [formControlName]="'rejectedAmount'" [label]="'Rejected Amount'"
+      [type]="'number'"
+      (change)="onChangePrice(formGroup.controls.rejectedAmount.value,formGroup.controls.approvedAmount.value , 'rejectedAmount')"></app-custom-input>
+  </div>
+  <div class="col-4 fix-margin">
+    <button class="btn btn-danger" [ngClass]="haveReasons ? 'btn-danger':'btn-primary'" (click)="showDialog()">
+      {{addReasons ? 'Add Reasons':'Reasons'}}</button>
+  </div>
+  <app-forms-error [control]="formGroup"></app-forms-error>
+  <div class="col-12 mt-1">
+    <app-custom-checkbox [label]="'Activity Audit Tags'" [options]="option" [formControlName]="'activityTags'"
+      [selectedValue]="formGroup.controls.activityTags.value" [size]="'col-4'"></app-custom-checkbox>
+  </div>
+
+  <p-dialog header="Reasons" [modal]="true" [(visible)]="dialogReasons" [style]="{ width: '50rem' }">
+    <span class="p-text-secondary block mb-8">Rejection Details</span>
+    <div class="flex items-center gap-4 mb-4">
+      <app-custom-dropdown-multiple [options]="dropdownRejectionReasons" [formControlName]="'activityRejectionReasons'"
+        [selectedOptions]="data.activityRejectionReasons" [showHeader]="true"
+        [isDisabled]="!addReasons"></app-custom-dropdown-multiple>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="dialogReasons = false" />
+      <p-button label="Save" (click)="dialogReasons = false" />
+    </div>
+  </p-dialog>
+</form>

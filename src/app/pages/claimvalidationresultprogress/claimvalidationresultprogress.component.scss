@@ -1,0 +1,77 @@
+.page-wrap {
+  width: 100%;
+  padding: 12px 10px;
+}
+
+.big-card {
+  width: 95vw;        
+  max-width: 1300px; 
+  margin: auto;
+  border-radius: 14px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.status-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 110px;
+  text-align: center;
+}
+
+.status-inprogress {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-failed {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.error-box {
+  margin-top: 6px;
+  background: #fdecea;
+  color: #b00020;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.paginator-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.total-records {
+  font-size: 12px;
+  color: #555;
+  padding-left: 8px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  vertical-align: middle;
+  white-space: nowrap;
+}

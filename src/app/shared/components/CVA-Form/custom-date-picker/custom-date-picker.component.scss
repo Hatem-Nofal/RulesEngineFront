@@ -1,0 +1,31 @@
+.custom-input {
+  label {
+    font-weight: 600;
+  }
+  .debug-info {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    font-size: 12px;
+  }
+}
+
+::ng-deep .p-inputtext:disabled {
+  padding: 0rem 0.6rem 0rem 0.3rem !important;
+  font-size: 0.9rem;
+  background-color: #f4f9fa !important;
+}
+.unique-background {
+     background-color: #f7dede !important;
+   color: #7d1c1c !important;
+}
+.unique-background::placeholder{
+  color: #7d1c1c !important;
+}
+::ng-deep .p-datepicker.p-component.p-inputwrapper{
+    width: 100%;
+    input.p-inputtext.p-component.p-datepicker-input,.p-inputtext:disabled{
+        padding: 4px 10px !important;
+    }
+}

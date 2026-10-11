@@ -1,0 +1,416 @@
+<section class="cliams-edit">
+  <div class="clim-batch info">
+    <div class="card mb-0">
+      <div class="card-header p-0 m-0 d-flex justify-content-between align-items-center">
+        <h4 class="p-0 m-0">Batch Info</h4>
+        <div *abpPermission="this.claimsCodingPermissions.ClaimsCodingAll" class="card-header p-0 m-0 d-flex justify-content-between gap-2 align-items-end p-3 " style="background-color: whitesmoke; ">
+          <app-custom-input
+            style="width: 300px;"
+            [label]="'Encounter ID'"
+            [type]="'text'"
+            appMaxCharacters
+            maxChar="15"
+            [(ngModel)]="encounterId"
+             (keydown.enter)="searchEncounter()"
+             appTrimInputs
+          ></app-custom-input>
+          <button class="btn px-3 "  style="background-color: #10b981; color: white; height: 45px;"[disabled]="!encounterId" (click)="searchEncounter()">
+            Go to Claim
+          </button>
+        </div>
+        <!-- <button
+          (click)="openCliamDialog()"
+          class="btn mt-1 me-3 px-2"
+          style="background-color: #10b981; color: white; font-size: 16px"
+        >
+          <i class="bi bi-info-circle me-1"></i> Swtich Claim
+        </button> -->
+      </div>
+      <div class="card-body row justify-content-center">
+        <div class="batch-info py-2 col">
+          <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+            <img src="./assets/images/icons/barcode.png" width="30px" height="30px" />
+            <p class="d-flex flex-column align-items-center m-0">
+              <strong>UHIA Code</strong>{{ claimData?.uhia_Batch_code }}
+            </p>
+          </div>
+        </div>
+        <div class="batch-info py-2 col">
+          <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              fill="currentColor"
+              class="bi bi-person-vcard"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5"
+              />
+              <path
+                d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z"
+              />
+            </svg>
+            <p class="d-flex flex-column align-items-center m-0">
+              <strong> e-Health Code</strong>
+              {{ claimData?.ehealth_Batch_code }}
+            </p>
+          </div>
+        </div>
+        <div class="batch-info py-2 col">
+          <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+            <img src="./assets/images/icons/customer-service.png" width="30px" height="30px" />
+            <p class="d-flex flex-column align-items-center m-0">
+              <strong>Service Type</strong> {{ claimData?.serviceType }}
+            </p>
+          </div>
+        </div>
+        <div class="batch-info py-2 col">
+          <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              fill="currentColor"
+              class="bi bi-h-square"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11 4.002V12H9.67V8.455H6.33V12H5V4.002h1.33v3.322h3.34V4.002z" />
+              <path
+                d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"
+              />
+            </svg>
+            <div class="d-flex flex-column align-items-center m-0 text-center">
+              <strong>Provider</strong>
+              {{ (claimData?.providerName | slice : 0 : 25) + '...' }}
+            </div>
+          </div>
+        </div>
+        <div class="batch-info py-2 col">
+          <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+            <i class="bi bi-calendar-check" style="font-size: 25px"></i>
+            <p class="d-flex flex-column align-items-center m-0">
+              <strong>Service Date</strong>
+              {{ claimData?.service_Date | date }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="claim-info">
+    <div class="card mb-0">
+      <div class="card-header p-0 m-0 d-flex justify-content-between">
+        <h4 class="p-0 m-0">Claims Info</h4>
+      </div>
+      <div class="card-body row justify-content-start summary mb-0 gap-0">
+        <div class="col-8">
+          @if(!activateAudit){
+          <div class="row p-2 batch-info">
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <h5 class="mb-0">--</h5>
+                <div style="font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px">
+                  Entered
+                </div>
+                <div class="text-accent" style="font-size: 1.1rem">Claimed</div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center h-100">
+                <h5 class="mb-0" style="font-size: 1.2rem">Net</h5>
+                <div class="formatted-number">
+                  {{ (totalValues?.totalNet | formateWithoutRound : 3) || 0 }}
+                </div>
+                <div id="totalNet">
+                  {{
+                    claimData?.total_Net === null
+                      ? '-'
+                      : (claimData?.total_Net | formateWithoutRound : 3)
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center h-100">
+                <h5 class="mb-0" style="font-size: 1.2rem">Share</h5>
+                <div class="formatted-number">
+                  {{ (totalValues?.totalPatientShare | formateWithoutRound : 3) || 0 }}
+                </div>
+                <div>
+                  {{
+                    claimData?.total_patient_share === null
+                      ? '-'
+                      : (claimData?.total_patient_share | formateWithoutRound : 3)
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center h-100">
+                <h5 class="mb-0" style="font-size: 1.2rem">Gross</h5>
+                <div class="formatted-number">
+                  {{ (totalValues?.totalGross | formateWithoutRound : 3) || 0 }}
+                </div>
+                <div>
+                  {{
+                    claimData?.total_Gross === null
+                      ? '-'
+                      : (claimData?.total_Gross | formateWithoutRound : 3)
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+          }@else{
+          <div class="row p-2 batch-info">
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center gap-1 h-100">
+                <h5 class="mb-0">--</h5>
+                <div style="font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px">
+                  Entered
+                </div>
+                <div class="text-accent" style="font-size: 1.1rem">Audited</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center h-100">
+                <h5 class="mb-0" style="font-size: 1.2rem">Approved</h5>
+                <div class="formatted-number">
+                  {{ (totalValues?.totalApproved | formateWithoutRound : 3) || 0 }}
+                </div>
+                <div>
+                  {{
+                    claimData?.audit_Appr_Amt === null
+                      ? '-'
+                      : (claimData?.audit_Appr_Amt | formateWithoutRound : 3)
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center h-100">
+                <h5 class="mb-0" style="font-size: 1.2rem">Rejected</h5>
+                <div class="formatted-number">
+                  {{ (totalValues?.totalRejected | formateWithoutRound : 3) || 0 }}
+                </div>
+                <div id="totalNet">
+                  {{
+                    claimData?.audit_Rej_Amt === null
+                      ? '-'
+                      : (claimData?.audit_Rej_Amt | formateWithoutRound : 3)
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="d-flex align-items-center flex-column justify-content-center h-100">
+                <h5 class="mb-0" style="font-size: 1.2rem">Net</h5>
+                <div class="formatted-number">
+                  {{ (totalValues?.totalNet | formateWithoutRound : 3) || 0 }}
+                </div>
+                <div id="totalNet">
+                  {{
+                    claimData?.total_Net === 0
+                      ? '-'
+                      : (claimData?.total_Net | formateWithoutRound : 3)
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+        <div class="col-4">
+          <div class="d-flex flex-column justify-content-center h-100">
+            <button class="btn btn-danger" [disabled]="fileload" (click)="openPdf()">
+              <i class="bi bi-folder2-open me-1"></i> Open PDF
+            </button>
+            <button (click)="openDetailsDialog()" class="btn btn-primary mt-1">
+              <i class="bi bi-info-circle me-1"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="height: 100%">
+      <div class="col-sm-12 col-md-6 col-lg-6 iframeSection">
+        @defer (when iframeUrl ) {
+        <div>
+          <iframe
+            id="evidence-frame"
+            [attr.src]="iframeUrl"
+            width="100%"
+            style="height: 85vh"
+          ></iframe>
+        </div>
+        }
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6" style="height: 83vh">
+        <div class="card">
+          <form [formGroup]="claimForm">
+            <p-tabs value="claim">
+              <p-tablist>
+                <p-tab value="claim">Claim</p-tab>
+                <p-tab value="diagnosis">Diagnosis</p-tab>
+                <p-tab value="activities">Activities</p-tab>
+                <p-tab value="history">History</p-tab>
+              </p-tablist>
+
+              <!-- {{this.claimForm.value | json}} -->
+
+              <p-tabpanels>
+                <p-tabpanel value="claim">
+                  <app-claims-edit-claim
+                    [formGroup]="claimForm"
+                    [data]="claimData"
+                  ></app-claims-edit-claim>
+                </p-tabpanel>
+                <p-tabpanel value="diagnosis">
+                  <app-claims-edit-diagnosis
+                    [formArray]="medicalDiagnosis"
+                    [data]="claimForm"
+                    [diagnosisSearchDropdownList]="diagnosisSearchDropdownList"
+                    (disableDiagnoses)="getDisableDiagnoses($event)"
+                  ></app-claims-edit-diagnosis>
+                </p-tabpanel>
+
+                <p-tabpanel value="activities">
+                  <app-claims-edit-activities
+                    [formArray]="medicalActivities"
+                    [data]="claimData"
+                    (totalAuditChanged)="handleAuditTotals($event)"
+                    (disableActivities)="getDisableActivities($event)"
+                    (detailsCalculations)="detailsCalculations($event)"
+                    (activateAudit)="activateAuditUpdate($event)"
+                    (auditFormValue)="getAuditFormValue($event)"
+                    [activityTypeList]="activityTypeList"
+                  ></app-claims-edit-activities>
+                </p-tabpanel>
+
+                <p-tabpanel value="history">
+                  <div
+                    class="history-tab"
+                    style="height: 65vh; overflow-y: auto; overflow-x: hidden"
+                  >
+                    <app-shared-table
+                      [columns]="columns"
+                      [data]="claimData?.claimsLoggings"
+                      [config]="tableConfig"
+                    >
+                    </app-shared-table>
+                  </div>
+                </p-tabpanel>
+              </p-tabpanels>
+            </p-tabs>
+            @if (activateAudit && !inView) {
+            <div class="d-flex justify-content-between">
+              <button
+                type="submit"
+                class="btn m-2 btn-outline-primary"
+                (click)="confirmAuditSubmit(false)"
+                [disabled]="auditFormValue.invalid || disableSave"
+              >
+                Save As Draft
+              </button>
+              <div class="">
+                @if(claimData.batchStatusId !== 6){
+                <button
+                  class="btn m-2"
+                  style="color: white; background-color: #6710b9"
+                  (click)="navigateToEdit()"
+                >
+                  Go To Edit
+                </button>
+                }
+
+                <button
+                  type="submit"
+                  class="btn m-2"
+                  style="color: white; background-color: #10b981"
+                  (click)="confirmAuditSubmit(true)"
+                  [disabled]="auditFormValue.invalid || disableSave"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+            }@else if (!activateAudit &&!inView) {
+            <div class="d-flex justify-content-between">
+              <button
+                type="submit"
+                class="outlined m-2"
+                (click)="confirmSubmit(false)"
+                [disabled]="
+                  !disableDiagnoses || disableActivities || claimForm.invalid || disableSave
+                "
+              >
+                Save As Draft
+              </button>
+
+              <div class="">
+                <button
+                  *ngIf="claimForm.controls.status_id.value === (2 || 4)"
+                  class="btn m-2"
+                  style="color: white; background-color: #6710b9"
+                  (click)="navigateToAudit()"
+                >
+                  Go To Audit
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn m-2"
+                  style="color: white; background-color: #10b981"
+                  (click)="confirmSubmit(true)"
+                  [disabled]="!disableDiagnoses || !formValidation || disableSave"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <p-dialog
+      header="Calculations Summary"
+      class="table"
+      [modal]="true"
+      [draggable]="true"
+      [(visible)]="openDetails"
+      [style]="{ width: '30rem' }"
+    >
+      <app-shared-table [columns]="detailsColumns" [data]="detailsArray" [config]="tableConfig">
+      </app-shared-table>
+    </p-dialog>
+
+    <!-- <p-dialog
+      header="Switch Claim"
+      class="table"
+      [modal]="true"
+      [draggable]="true"
+      [(visible)]="openClaimdSearchDialog"
+      [style]="{ width: '40rem', padding: '0 20px' }"
+    >
+      <div *ngIf="claimsSearchErrorMessage" class="error-box">
+        {{ claimsSearchErrorMessage }}
+      </div>
+      <app-custom-input
+        [label]="'Encounter ID'"
+        [type]="'text'"
+        appMaxCharacters
+        maxChar="15"
+        [(ngModel)]="encounterId"
+      ></app-custom-input>
+      <button class="btn btn-primary w-100 mt-2" (click)="searchEncounter()">Go to Claim</button>
+    </p-dialog> -->
+  </div>
+</section>

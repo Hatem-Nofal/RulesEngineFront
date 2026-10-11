@@ -1,0 +1,212 @@
+<div class="family-tree-canvas" [class.rtl]="lang === 'ar'">
+
+<div class="tree-filters">
+  <label
+    class="filter-option"
+    *ngFor="let group of roleGroups"
+    [ngClass]="{ 'active': isGroupActive(group.roles) }"
+  >
+    <input
+      type="radio"
+      name="roleFilter"
+      [checked]="isGroupActive(group.roles)"
+      (change)="setRoleFilter(group.roles)"
+    />
+    <span class="filter-label">
+      {{ 'RuleApplication::HOF:' + group.label | abpLocalization }}
+    </span>
+  </label>
+
+  <label
+    class="filter-option clear-option"
+    [ngClass]="{ 'active': selectedRoles.length === 0 }"
+  >
+    <input
+      type="radio"
+      name="roleFilter"
+      [checked]="selectedRoles.length === 0"
+      (change)="setRoleFilter(null)"
+    />
+    <span class="filter-label">
+      {{ 'RuleApplication::Common:Clear' | abpLocalization }}
+    </span>
+  </label>
+</div>
+
+  <div class="filters-divider"></div>
+
+  <div class="tree-level parents-level" *ngIf="parents?.length">
+    <ng-container *ngFor="let m of parents">
+      <ng-container *ngTemplateOutlet="memberCard; context: { $implicit: m }"></ng-container>
+    </ng-container>
+  </div>
+  <div class="v-connector" *ngIf="parents?.length && headOfFamily"></div>
+
+  <div class="tree-level middle-level">
+    <div class="side-group spouse-side" *ngIf="spouses?.length">
+      <ng-container *ngFor="let m of spouses">
+        <ng-container *ngTemplateOutlet="memberCard; context: { $implicit: m }"></ng-container>
+      </ng-container>
+    </div>
+
+    <div class="center-group" *ngIf="headOfFamily">
+      <ng-container *ngTemplateOutlet="memberCard; context: { $implicit: headOfFamily }"></ng-container>
+    </div>
+
+    <div class="side-group siblings-side" *ngIf="siblings?.length">
+      <ng-container *ngFor="let m of siblings">
+        <ng-container *ngTemplateOutlet="memberCard; context: { $implicit: m }"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="v-connector" *ngIf="children?.length && headOfFamily"></div>
+  <div class="tree-level children-level" *ngIf="children?.length">
+    <ng-container *ngFor="let m of children">
+      <ng-container *ngTemplateOutlet="memberCard; context: { $implicit: m }"></ng-container>
+    </ng-container>
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-item">
+      <span class="summary-label">{{ 'RuleApplication::Families:TotalMembers' | abpLocalization }}</span>
+      <span class="summary-value primary">{{ totalMembers }}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">{{ 'RuleApplication::Families:Adults' | abpLocalization }}</span>
+      <span class="summary-value">{{ adultsCount }}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">{{ 'RuleApplication::Families:Children' | abpLocalization }}</span>
+      <span class="summary-value">{{ childrenCount }}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">{{ 'RuleApplication::Families:FamilyId' | abpLocalization }}</span>
+      <span class="summary-value primary sm">FAM-{{ familyCode }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="relationship-guide">
+  <h4 class="guide-title">
+     ℹ️
+    {{ 'RuleApplication::Families:RelationshipGuide' | abpLocalization }}
+  </h4>
+  <div class="guide-grid">
+    <div class="guide-item">
+      <span class="guide-bullet" style="color:#3b5ba5">•</span>
+      <p class="guide-text">
+        <strong>{{ 'RuleApplication::Families:HOF' | abpLocalization }}:</strong>
+        {{ 'RuleApplication::Families:GuideHof' | abpLocalization }}
+      </p>
+    </div>
+    <div class="guide-item">
+      <span class="guide-bullet" style="color:#28a745">•</span>
+      <p class="guide-text">
+        <strong>{{ 'RuleApplication::HOF:Spouse' | abpLocalization }}:</strong>
+        {{ 'RuleApplication::Families:GuideSpouse' | abpLocalization }}
+      </p>
+    </div>
+    <div class="guide-item">
+      <span class="guide-bullet" style="color:#17a2b8">•</span>
+      <p class="guide-text">
+        <strong>{{ 'RuleApplication::HOF:Children' | abpLocalization }}:</strong>
+        {{ 'RuleApplication::Families:GuideChildren' | abpLocalization }}
+      </p>
+    </div>
+    <div class="guide-item">
+      <span class="guide-bullet" style="color:#6c757d">•</span>
+      <p class="guide-text">
+        <strong>{{ 'RuleApplication::HOF:Others' | abpLocalization }}:</strong>
+        {{ 'RuleApplication::Families:GuideOthers' | abpLocalization }}
+      </p>
+    </div>
+  </div>
+</div>
+
+<ng-template #memberCard let-member>
+  <div
+    class="tree-node"
+    [ngClass]="[
+      getNodeClass(member?.familyRole),
+      isRoleSelected(member?.familyRole) ? 'is-highlight' : 'is-dimmed'
+    ]"
+  >
+    <div class="node-ribbon">
+      {{ 'RuleApplication::HOF:' + member?.familyRole | abpLocalization }}
+    </div>
+
+    <div class="node-status" *ngIf="member?.completionStatus">
+      <span
+        class="status-pill"
+        [ngClass]="member?.completionStatus === 'complete' ? 'pill-complete' : 'pill-incomplete'"
+      >
+        {{ 'RuleApplication::' + member?.completionStatus | abpLocalization }}
+      </span>
+    </div>
+
+    <div class="node-avatar">
+      <span class="avatar-emoji">{{ getMemberEmoji(member) }}</span>
+    </div>
+
+    <h3 class="node-name">{{ member?.firstName }} {{ member?.name }}</h3>
+
+    <div class="node-id-box">
+      <span class="id-label">{{ 'RuleApplication::Families:HofNationalId' | abpLocalization }}</span>
+      <span class="id-value">{{ member?.nationalId }}</span>
+    </div>
+
+    <div class="node-chips">
+      <span class="chip">
+        <i class="pi" [ngClass]="getGenderIcon(member?.gender)"></i>
+        {{ member?.gender ? ('RuleApplication::' + (member?.gender | lowercase) | abpLocalization) : '-' }}
+      </span>
+    </div>
+
+    <div class="node-chips">
+      <span class="chip" *ngIf="member?.mobileNumber"><i class="pi pi-phone"></i> {{ member?.mobileNumber }}</span>
+      <span class="chip" *ngIf="member?.governateName"><i class="pi pi-map-marker"></i> {{ member?.governateName }}</span>
+    </div>
+
+    <div class="node-chips" *ngIf="member?.code">
+      <span class="chip">{{ 'RuleApplication::Beneficiaries:Id' | abpLocalization }}: BEN-{{ member?.code }}</span>
+    </div>
+
+    <div class="node-actions">
+      <button
+        *ngIf="updatePermission && member?.isActive"
+        type="button"
+        class="btn btn-sm btn-primary"
+        (click)="onUpdate(member)"
+      >
+        {{ 'RuleApplication::Common:Update' | abpLocalization }}
+      </button>
+      <ng-container *ngIf="!isHeadRole(member?.familyRole) && member?.isActive">
+        <button
+          *ngIf="movePermission"
+          type="button"
+          class="btn btn-sm btn-primary"
+          (click)="onMove(member)"
+        >
+          {{ 'RuleApplication::Common:Move' | abpLocalization }}
+        </button>
+        <button
+          *ngIf="splitPermission"
+          type="button"
+          class="btn btn-sm btn-primary"
+          (click)="onSplit(member)"
+        >
+          {{ 'RuleApplication::Common:Split' | abpLocalization }}
+        </button>
+        <button
+          *ngIf="deactivatePermission"
+          type="button"
+          class="btn btn-sm btn-danger"
+          (click)="onDeactivate(member)"
+        >
+          {{ 'RuleApplication::Common:Deactivate' | abpLocalization }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

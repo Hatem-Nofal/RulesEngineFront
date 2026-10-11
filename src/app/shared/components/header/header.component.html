@@ -1,0 +1,76 @@
+<nav class="header-section">
+  <div
+    class="d-flex flex-wrap shadow align-items-center justify-content-between py-1 px-0"
+    style="background-color: whitesmoke"
+  >
+    <div class="col-md-6 d-flex align-items-center">
+      <button class="sidebar-toggle-btn" (click)="toggleSidebar()">
+        <img
+          [src]="
+            isSidebarOpen
+              ? '../../../../assets/images/icons/sidebar/sidebar-close.png'
+              : '../../../../assets/images/icons/sidebar/sidebar-open.png'
+          "
+          alt="Sidebar Icon"
+        />
+      </button>
+      <span class="m-0 app-name">{{ '::AppName' | abpLocalization }}</span>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-end">
+      <div
+        class="language px-2 p-ripple p-button p-component p-button-icon-only p-button-success p-button-rounded p-button-text"
+      >
+        @if (isServerConnected) {
+          <i style="color: #4fbf67; font-size: 1.4rem" class="bi bi-wifi p-button-icon"></i>
+        } @else {
+          <i style="color: red; font-size: 1.4rem" class="bi bi-wifi-off p-button-icon"></i>
+        }
+      </div>
+      <!-- languages -->
+      <div class="language px-2">
+        <button
+          type="button"
+          class="p-button p-button-success p-button-rounded text-base global-btn"
+          style="font-size:0.91875rem; background-color: rgba(191, 183, 182, 0.33) ; border:none"
+          [ngbPopover]="ngbPopoverLocalContent"
+          [popperOptions]="popperLocalOptions"
+          [title]="selectedMember"
+        >
+          <i class="bi bi-globe"></i>
+        </button>
+
+        <ng-template #ngbPopoverLocalContent>
+          <div>
+            <div (click)="localizationChange('ar')" class="popperItem py-2 px-2 cursor-pointer">
+              <h5 class="text-base text-black">العربية</h5>
+            </div>
+            <div (click)="localizationChange('en')" class="popperItem py-2 px-2 cursor-pointer">
+              <h5 class="text-base text-black">English</h5>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Dropdown menu -->
+      <div class="d-flex align-items-center">
+        <i class="bi bi-person me-2 profile-icon" style="font-size: 1.5rem"></i>
+        <div class="d-flex flex-column">
+          <span class="fs-5 name">
+            {{ profile?.given_name | titlecase }}&nbsp;{{ profile?.family_name | titlecase }}
+          </span>
+
+          <span class="fs-6 role"> {{ profile?.role }}</span>
+          <!-- <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{profile?.email}}</span> -->
+        </div>
+        <p-button
+          [label]="isSmallScreen ? '' : 'Logout'"
+          variant="text"
+          severity="danger"
+          (click)="logout()"
+          class="logout-button ms-3"
+          [icon]="this.selectedMember === 'ar' ? 'bi bi-box-arrow-left' : 'bi bi-box-arrow-right'"
+        />
+      </div>
+    </div>
+  </div>
+</nav>

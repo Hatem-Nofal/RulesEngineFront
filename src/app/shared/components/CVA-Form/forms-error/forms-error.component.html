@@ -1,0 +1,46 @@
+@if(control && control.errors){
+<div class="err">
+    @if(control.errors.required){
+    <div>
+        {{ 'RuleApplication::Validation:Required' | abpLocalization }}
+    </div>
+    }
+    @if(control.errors.maxlength){
+    <div>
+        {{ 'RuleApplication::Validation:MaxLength' | abpLocalization: control.errors.maxlength.requiredLength }}
+    </div>
+    }
+    @if(control.errors.minlength){
+    <div>
+        {{ 'RuleApplication::Validation:MinLength' | abpLocalization: control.errors.minlength.requiredLength }}
+    </div>
+    }
+    @if(control.errors.min){
+    <div>
+        {{ 'RuleApplication::Validation:Min' | abpLocalization: control.errors.min.min }}
+    </div>
+    }
+    @if(control.errors.max){
+    <div>
+        {{ 'RuleApplication::Validation:Max' | abpLocalization: control.errors.max.max }}
+    </div>
+    }
+    @if(control.errors.pattern){
+    <div>
+        {{ 'RuleApplication::Validation:InvalidData' | abpLocalization }}
+    </div>
+    }
+    @if(control.errors.customError){
+    <div>
+        {{control.errors.customError}}
+    </div>
+    }
+</div>
+}
+@if(message){
+<div class="err">
+    <div>
+        {{message}}
+    </div>
+</div>
+}

@@ -1,0 +1,393 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+
+:host {
+  font-family: 'Cairo', sans-serif !important;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+::ng-deep .p-virtualscroller {
+  height: 200px !important;
+}
+:host {
+  display: block;
+  // padding: 1rem;
+
+  .card {
+    background: white;
+    border-radius: 8px;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      padding: 1rem;
+      padding-top: 0px;
+      border-bottom: 1px solid #eee;
+
+      .card-title {
+        color: #333;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+  }
+}
+
+h3 {
+  color: #274da5;
+  font-weight: 600;
+}
+button {
+  color: white !important;
+}
+.btn {
+  padding: 0.5rem 1.3rem !important;
+}
+
+::ng-deep .p-button-text.p-button-secondary {
+  color: #64748b !important;
+}
+::ng-deep .hint-search-message .p-message.p-component.p-message-secondary {
+  border-right: 5px solid #3b5ba5;
+}
+.search-card {
+  width: 65%;
+  .card-body {
+    border: 3px solid whitesmoke;
+    border-radius: 10px;
+    padding: 50px;
+  }
+
+  h5 {
+    color: #6c757d;
+    font-size: 25px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+  .field {
+    ::ng-deep .custom-input label {
+      color: #2c3e50;
+      font-size: 20px;
+      font-weight: 400;
+    }
+    ::ng-deep .form-control {
+      padding: 14px;
+      font-size: 18px;
+      color: #686b6e;
+      margin-top: 10px;
+    }
+    ::ng-deep .form-control::placeholder {
+      font-size: 15px;
+    }
+  }
+  ::ng-deep button.p-ripple.p-button.p-component {
+    padding: 8px 27px !important;
+    font-size: 18px !important;
+  }
+  .reset-button {
+    background-color: #bb1b10;
+    color: white;
+    border: none;
+  }
+}
+
+.details-card {
+  width: 65%;
+  border-radius: 20px !important;
+  overflow: hidden;
+  background: #fff;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  .card-body {
+    padding: 1rem 3rem !important;
+  }
+  ::ng-deep .p-card-body {
+    border: 2px solid #000000;
+    border-radius: 20px;
+  }
+
+  ::ng-deep .p-card-title {
+    color: #274da5;
+    font-size: 25px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+  .card-header {
+    // background-color: #274da5;
+    color: white;
+    font-size: 20px;
+    // background: linear-gradient(135deg, #274da5, #3b82f6);
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .info {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 12px;
+    transition: background 0.3s ease;
+    i {
+      font-size: 30px;
+      // color: #274da5;
+    }
+    p {
+      font-size: 18px;
+    }
+    span,
+    strong {
+      font-size: 18px;
+    }
+    strong {
+      color: #274da5;
+    }
+    .status-flag {
+      padding: 5px 10px;
+      border-radius: 8px;
+      color: #fff;
+      text-align: center;
+    }
+    .active {
+      background-color: #d1fae5;
+      color: #15803d;
+    }
+    .inactive {
+      background-color: #fee2e2;
+      color: #b01c1c;
+    }
+  }
+}
+.error-card {
+  width: 65%;
+  .card-body {
+    width: 60%;
+    margin: 40px auto;
+    i {
+      font-size: 20px;
+      color: #2c3e50
+;
+    }
+    h3 {
+      color: #2c3e50
+;
+    }
+    .create-btn {
+      padding: 11px 29px !important;
+      font-size: 18px;
+    }
+  }
+}
+
+::ng-deep .p-speeddial {
+  align-items: center;
+  // justify-content: center;
+}
+::ng-deep .p-speeddial-list {
+  flex-wrap: wrap;
+}
+::ng-deep .inactivate-dialog {
+  width: 480px;
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: 'Cairo', sans-serif;
+
+  .p-dialog-header {
+    padding: 1.25rem 1.5rem 0.5rem;
+  }
+
+  .p-dialog-content {
+    padding: 0.5rem 1.5rem 1rem;
+  }
+
+  .p-dialog-footer {
+    padding: 1rem 1.5rem 1.25rem;
+  }
+}
+
+.warning-icon {
+  color: #d9822b;
+  font-size: 22px;
+}
+
+.dialog-title {
+  font-weight: 700;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+::ng-deep .final-warning.p-message.p-message-error {
+  border-right: 5px solid #b01c1c;
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.required-label::after {
+  content: ' *';
+  color: #b01c1c;
+}
+
+.optional-label {
+  color: #6c757d;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+::ng-deep .confirm-inactivation-btn.p-button {
+  background-color: #bb1b10;
+  border-color: #bb1b10;
+}
+
+::ng-deep .confirm-inactivation-btn.p-button:enabled:hover {
+  background-color: #96150c;
+  border-color: #96150c;
+}
+::ng-deep .split-dialog {
+  width: 480px;
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: 'Cairo', sans-serif;
+
+  .p-dialog-header {
+    padding: 1.25rem 1.5rem 0.5rem;
+  }
+
+  .p-dialog-content {
+    padding: 0.5rem 1.5rem 1rem;
+  }
+
+  .p-dialog-footer {
+    padding: 1rem 1.5rem 1.25rem;
+  }
+}
+
+::ng-deep .split-info-message.p-message.p-message-info {
+  border-right: 5px solid #274da5;
+}
+
+::ng-deep .confirm-split-btn.p-button {
+  background-color: #274da5;
+  border-color: #274da5;
+}
+
+::ng-deep .confirm-split-btn.p-button:enabled:hover {
+  background-color: #1e3d85;
+  border-color: #1e3d85;
+}
+.search-input-wrapper {
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    inset-inline-start: 12px;
+    color: #6c757d;
+    font-size: 0.9rem;
+    pointer-events: none;
+  }
+
+  input {
+    padding-inline-start: 2.25rem;
+  }
+}
+
+::ng-deep .move-dialog {
+  border-radius: 16px;
+  overflow: visible !important;
+  font-family: 'Cairo', sans-serif;
+
+  .p-dialog-header {
+    padding: 1.25rem 1.5rem 0.5rem;
+  }
+
+    .p-dialog-content {
+    overflow: visible !important;
+    padding: 0.5rem 1.5rem 1.5rem;
+  }
+}
+
+.target-family-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+
+  .target-family-name {
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .target-family-meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+}
+
+.badge-active {
+  background: #d1fae5;
+  color: #15803d;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-inactive {
+  background: #fee2e2;
+  color: #b01c1c;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.move-summary {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+
+  .summary-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-line {
+    font-weight: 600;
+    color: #1f2937;
+  }
+}
+
+::ng-deep .confirm-move-btn.p-button {
+  background-color: #274da5;
+  border-color: #274da5;
+}
+
+::ng-deep .confirm-move-btn.p-button:enabled:hover {
+  background-color: #1e3d85;
+  border-color: #1e3d85;
+}

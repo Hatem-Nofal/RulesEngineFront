@@ -1,0 +1,30 @@
+<div class="custom-input mb-1">
+  <div>
+    <label *ngIf="label" class="form-label fs-14">{{ label }}</label>
+    <p-autocomplete
+      #autocomplete
+      [disabled]="disabledOption"
+      [optionLabel]="'name'"
+      [(ngModel)]="value"
+      field="name"
+      placeholder=" search..."
+      [forceSelection]="false"
+      [dropdown]="true"
+      [suggestions]="items"
+      (onSelect)="onSelect($event)"
+      (completeMethod)="search($event)"
+    >
+      <ng-template let-item pTemplate="item">
+        <div title="{{ item.name }}">
+          {{ item.name }}
+        </div>
+      </ng-template>
+        <ng-template pTemplate="empty">
+        <div class="no-data-message">No results found</div>
+      </ng-template>
+    </p-autocomplete>
+    <span class="search-icon"  (click)="openDropdown()">
+      <i class="bi bi-search"></i>
+    </span>
+  </div>
+</div>

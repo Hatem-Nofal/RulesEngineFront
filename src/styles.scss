@@ -1,0 +1,149 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'primeicons/primeicons.css';
+/* You can add global styles to this file, and also import other style files */
+
+@import 'scss/variables';
+
+/* fonts-icon */
+@import 'scss/fonts/feather/iconfont';
+
+@import 'scss/general';
+@import 'scss/generic';
+@import 'scss/mixins/function';
+
+/* important element */
+// @import 'scss/menu/menu-lite';
+
+/* basic elements */
+// @import 'scss/theme-elements/theme-elements';
+
+/* third party modules style*/
+// @import 'scss/plugins';
+
+@import 'scss/custom';
+
+/* Custom-style */
+@import 'scss/custom-style';
+// @import 'scss/list-types';
+
+//no comments ////
+
+@import 'scss/inputs';
+// @import 'scss/dialogs';
+// @import 'scss/tables';
+
+:root .lpx-brand-logo {
+  --lpx-logo: url('/assets/images/logo/logo-light.svg');
+  --lpx-logo-icon: url('/assets/images/logo/icon.svg');
+}
+
+:root {
+  --lpx-theme-light-bg: url('/assets/images/login/login-bg-img-light.svg');
+  --lpx-theme-dim-bg: url('/assets/images/login/login-bg-img-dim.svg');
+  --lpx-theme-dark-bg: url('/assets/images/login/login-bg-img-dark.svg');
+
+  .abp-logo {
+    background-repeat: no-repeat;
+  }
+
+  .abp-support {
+    width: 178px;
+    height: 30px;
+    background-image: url('/assets/images/getting-started/abp-support.svg');
+  }
+
+  .abp-community {
+    width: 215px;
+    height: 30px;
+    background-image: url('/assets/images/getting-started/abp-community.svg');
+  }
+
+  .abp-blog {
+    width: 142px;
+    height: 30px;
+    background-image: url('/assets/images/getting-started/abp-blog.svg');
+  }
+
+  .logo-x {
+    width: 20px;
+    height: 20px;
+    background-image: url('/assets/images/getting-started/x.svg');
+  }
+}
+
+// Define theme variables
+$light-theme: (
+  background: #ffffff,
+  text: #000000,
+  primary: #274da5,
+  secondary: #1b3c89, // Add more colors as needed
+);
+
+$dark-theme: (
+  background: #ffffff,
+  text: #000000,
+  primary: #274da5,
+  secondary: #1b3c89, // Add more colors as needed
+);
+
+// Mixin to apply theme
+@mixin theme($theme) {
+  background-color: map-get($theme, background);
+  color: map-get($theme, text);
+
+  .btn-primary {
+    background-color: map-get($theme, primary);
+    // color: map-get($theme, text);
+    color: white;
+    padding: 11px 19px;
+  }
+
+  .btn-primary:hover {
+    background-color: map-get($theme, secondary);
+  }
+
+  // Add more styles as needed
+}
+.form-control,
+.form-select {
+  background-color: transparent !important;
+  padding: 0.37rem 0.6rem 0.3rem 0.3rem;
+}
+.form-control:disabled {
+  background-color: #f4f9fa !important;
+  color: #616161 !important;
+}
+
+// Apply themes
+body.light-theme {
+  @include theme($light-theme);
+}
+
+body.dark-theme {
+  @include theme($dark-theme);
+}
+
+.confirmation {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 99999 !important;
+}
+.btn-danger:disabled {
+  background-color: rgb(163.2, 11.05, 62.05);
+}
+::nd-deep abp-validation-error,
+::ng-deep .is-invalid .invalid-feedback,
+::ng-deep .is-invalid + * .invalid-feedback,
+.invalid-feedback {
+  display: none !important;
+}
+
+html[dir='rtl'] [type='tel'],
+html[dir='rtl'] [type='url'],
+html[dir='rtl'] [type='email'],
+html[dir='rtl'] [type='number'] {
+  direction: rtl !important;
+}

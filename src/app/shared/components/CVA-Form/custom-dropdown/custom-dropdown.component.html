@@ -1,0 +1,18 @@
+<div class="dropdown-container">
+  @if (label) {
+    <label class="form-label fs-14"
+      >{{ label }} <span *ngIf="isRequired" class="text-danger">*</span></label
+    >
+  }
+<select
+  [disabled]="isDisabled"
+  class="form-select"
+  [(ngModel)]="value"
+  (change)="onSelect($any($event.target).value)"
+>
+  <option value=null disabled selected>{{ selectPlaceholder }} {{ label }}</option>
+  <option *ngFor="let option of options" [value]="option.id" [disabled]="option.disabled">
+    {{ option.name }}
+  </option>
+</select>
+</div>

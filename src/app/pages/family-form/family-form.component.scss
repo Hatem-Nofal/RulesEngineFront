@@ -1,0 +1,16 @@
+.form-control,
+  .form-select {
+    border: 1px solid #ced4da !important;
+    border-radius: 6px;
+    background-color: #fff !important;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+  textarea.form-control {
+    resize: none;
+  }

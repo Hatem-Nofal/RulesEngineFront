@@ -1,0 +1,20 @@
+select.form-select option:checked,
+select.form-select option:focus,
+select.form-select option:active {
+  background: #264da3 !important;
+}
+.form-control,
+.form-select {
+  background-color: transparent !important;
+  &:disabled {
+    background-color: #f4f9fa !important;
+    color: #616161 !important;
+  }
+}
+label {
+  font-weight: 600;
+  color: black;
+}
+::ng-deep .p-multiselect-label {
+  padding: 0.37rem 1.6rem 0.3rem 0.3rem !important;
+}

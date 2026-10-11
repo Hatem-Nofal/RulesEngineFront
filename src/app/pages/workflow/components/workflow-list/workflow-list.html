@@ -1,0 +1,138 @@
+<div class="workflow-container pb-3">
+  <div class="card">
+    <div class="d-flex w-100 justify-content-between mb-2">
+      <h2 class="page-title">Workflows</h2>
+      <p-button
+        *abpPermission="workflowsPermissions.Workflows_Create"
+        routerLink="/medical-rules/workflows/create"
+        icon="bi bi-plus"
+        label="Create Workflow"
+        variant="outlined"
+        severity="primary"
+      />
+    </div>
+    <p-table
+      #dataTable
+      styleClass=" p-datatable-striped"
+      [value]="primengTableHelper.records"
+      [paginator]="false"
+      rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+      [lazy]="true"
+      [rowHover]="true"
+      ScrollWidth="100%"
+      [resizableColumns]="primengTableHelper.resizableColumns"
+      dataKey="name"
+      groupRowsBy="id"
+      (onLazyLoad)="getWorkFlow($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Patient Age Diagnosis</th>
+          <th>Patient Age Activities</th>
+          <th>Drug to Drug</th>
+          <th>Activities to Activities</th>
+          <th>Drug to Diagnosis</th>
+          <th>Drug to Specific Diagnosis</th>
+          <th>Activity to Specific Activity</th>
+          <th>Diagnosis to Specific Diagnosis</th>
+
+          <th>Rules Count</th>
+          <th
+            *ngIf="permission.getGrantedPolicy(workflowsPermissions.Workflows_View) || permission.getGrantedPolicy(workflowsPermissions.Workflows_Delete)"
+          >
+            Actions
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.name }}</td>
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isPatientAgeDiagnosis ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isPatientAgeActivities ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isDrugToDrug ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isMedicsToMedics ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isDrugToDiagnosis ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isDrugWithSpecificDiagnosis ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isActivityWithSpecificActivity ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+          <td class="icon-cell">
+            <i
+              [ngClass]="product.isDiagnosisWithSpecificDiagnosis ? 'bi bi-check-circle-fill true-icon' : 'bi bi-x-circle-fill false-icon'"
+            ></i>
+          </td>
+
+          <td class="text-center">{{ product.rulesCount }}</td>
+          <td
+            *ngIf="permission.getGrantedPolicy(workflowsPermissions.Workflows_View) || permission.getGrantedPolicy(workflowsPermissions.Workflows_Delete)"
+            class="button-group"
+          >
+            <p-button
+              *abpPermission="workflowsPermissions.Workflows_View"
+              class="action-button"
+             [routerLink]="['/medical-rules/workflows/edit', product.id]"
+              [queryParams]="{ view: true }"
+              icon="pi pi-eye"
+              [rounded]="true"
+              [text]="true"
+              [raised]="true"
+              [style]="{ color: 'var(--primary-color)'}"
+            />
+            <p-button
+              *abpPermission="workflowsPermissions.Workflows_Delete"
+              class="action-button warning"
+              (click)="deleteWorkflow(product)"
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              [raised]="true"
+              severity="danger"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div>
+      <p-paginator
+        class="mx-2"
+        [rows]="primengTableHelper.defaultRecordsCountPerPage"
+        #paginator
+        (onPageChange)="getRecordsIfNeeds($event)"
+        [totalRecords]="primengTableHelper.totalRecordsCount"
+        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+        [showCurrentPageReport]="true"
+        [currentPageReportTemplate]="'Total Records : ' + primengTableHelper.totalRecordsCount"
+      ></p-paginator>
+    </div>
+  </div>
+</div>

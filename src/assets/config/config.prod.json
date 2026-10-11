@@ -1,0 +1,5 @@
+{
+  "apiPort": "{{port}}",
+  "apiProtocol": "{{http}}",
+  "apiHost": "{{host}}"
+}

@@ -1,0 +1,94 @@
+<div class="row mt-2" [formGroup]="formGroup">
+  <!-- Family Income Type -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-radio
+      [label]="'RuleApplication::Families:FamilyIncomeType' | abpLocalization"
+      [options]="incomeTypeOptions"
+      formControlName="incomeType"
+    >
+    </app-custom-radio>
+    <app-forms-error [control]="formGroup.get('incomeType')"></app-forms-error>
+  </div>
+
+  <!-- HOF Average Monthly Income -->
+  <div class="col-lg-6 col-sm-12 mb-3 income-input">
+    <app-custom-input
+      [label]="'RuleApplication::Families:HofAverageMonthlyIncome' | abpLocalization"
+      type="number"
+      formControlName="averageMonthlyIncome"
+      [isdisabled]="!formGroup.get('incomeType').value"
+    >
+    </app-custom-input>
+    <span class="currency-label">{{ currency }}</span>
+    <app-forms-error [control]="formGroup.get('averageMonthlyIncome')"></app-forms-error>
+  </div>
+
+  <!-- Chronic Diseases -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-radio
+      [label]="'RuleApplication::Families:HasChronicDiseases' | abpLocalization"
+      [options]="questionOptions"
+      formControlName="hasChronicDiseases"
+    >
+    </app-custom-radio>
+    <app-forms-error [control]="formGroup.get('hasChronicDiseases')"></app-forms-error>
+  </div>
+
+  <!-- Disability Cases -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-radio
+      [label]="'RuleApplication::Families:HasDisabilityCases' | abpLocalization"
+      [options]="questionOptions"
+      formControlName="hasDisabilities"
+    >
+    </app-custom-radio>
+    <app-forms-error [control]="formGroup.get('hasDisabilities')"></app-forms-error>
+  </div>
+
+  <!-- Receives Pension -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-radio
+      [label]="'RuleApplication::Families:ReceivesPension' | abpLocalization"
+      [options]="questionOptions"
+      formControlName="receivesSocialSecurityPension"
+    >
+    </app-custom-radio>
+    <app-forms-error [control]="formGroup.get('receivesSocialSecurityPension')"></app-forms-error>
+  </div>
+
+  <!-- HOF if Father Deceased -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-dropdown
+      [options]="relationList"
+      [label]="'RuleApplication::Families:HofFatherDeceased' | abpLocalization"
+      formControlName="breadwinnerRelationIfFatherDeceased"
+    >
+    </app-custom-dropdown>
+    <app-forms-error
+      [control]="formGroup.get('breadwinnerRelationIfFatherDeceased')"
+    ></app-forms-error>
+  </div>
+
+  <!-- Eligible for Free Service -->
+  <div class="col-lg-6 col-sm-12 mb-3">
+    <app-custom-radio
+      [label]="'RuleApplication::Families:EligibleFreeService' | abpLocalization"
+      [options]="questionOptions"
+      formControlName="isEligibleForFreeService"
+    >
+    </app-custom-radio>
+    <app-forms-error [control]="formGroup.get('isEligibleForFreeService')"></app-forms-error>
+  </div>
+
+  <!-- Notes -->
+  <div class="col-lg-12 col-sm-12 mb-3">
+    <app-custom-textarea
+      [label]="'RuleApplication::Families:HousingNotes' | abpLocalization"
+      [maxLength]="10000000"
+      formControlName="notes"
+     
+    >
+    </app-custom-textarea>
+    <app-forms-error [control]="formGroup.get('notes')"></app-forms-error>
+  </div>
+</div>

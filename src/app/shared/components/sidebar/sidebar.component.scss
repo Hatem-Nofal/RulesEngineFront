@@ -1,0 +1,129 @@
+:host {
+  display: block;
+  height: 100%;
+
+  section {
+    height: 100%;
+    padding: 1rem;
+  }
+.cursor-pointer{
+  min-width: fit-content;
+  display: flex;
+  span{
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+  }
+}
+  // .sidebar-content {
+  //   width: 100%;
+  //   height: 100%;
+  //   overflow: hidden;
+  // }
+
+  // Hide text when collapsed
+  :host-context(.sidebar-collapsed) {
+    .menu-item-text {
+      display: none;
+    }
+
+    .menu-item-icon {
+      margin: 0 auto;
+    }
+  }
+
+  .image {
+    text-align: center;
+    img{
+      filter: brightness(1) saturate(0.8) contrast(1);
+    }
+  }
+}
+
+// handle style of Panel Menu
+::ng-deep .p-panelmenu {
+  width: 100% !important;
+  display: block !important;
+  // background-color: #344a65 !important;
+}
+
+::ng-deep .p-panelmenu-panel {
+  background-color: transparent !important;
+  border-style: none !important;
+}
+
+::ng-deep .p-panelmenu-header-content,
+::ng-deep .p-panelmenu-item-content {
+  color: white !important;
+  height: 50px !important;
+  display: flex;
+  align-items: center;
+
+  a {
+    color: white !important;
+    width: 100%;
+
+    &:hover {
+      color: black !important;
+      
+      i {
+        color: #bb1b10 !important;
+      }
+    }
+  }
+}
+
+// Active and hover styles for the entire menu (including submenus)
+::ng-deep .p-panelmenu-header:not(.p-disabled) .p-panelmenu-header-content:hover,
+::ng-deep .p-panelmenu-item:not(.p-disabled) > .p-panelmenu-item-content:hover,
+::ng-deep .p-panelmenu-item.p-focus > .p-panelmenu-item-content,
+::ng-deep .p-panelmenu-item.p-focus > .p-panelmenu-item-content:active {
+  background-color: white !important;
+  color: #344a65 !important;
+
+  i {
+    color: #bb1b10 !important;
+  }
+}
+
+// Submenu active styles
+::ng-deep  .p-panelmenu-submenu .p-panelmenu-item .active {
+  background-color: white !important;
+  color: black !important;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  border-radius: 6px;
+
+  i {
+    color: #bb1b10 !important;
+  }
+}
+
+// Ensure submenu hover styles apply correctly
+::ng-deep .p-panelmenu-content .p-panelmenu-item:not(.p-disabled) > .p-panelmenu-item-content:hover {
+  background-color: white !important;
+
+  a {
+    color: black !important;
+
+    i {
+      color: #bb1b10 !important;
+    }
+  }
+}
+
+// Adjust spacing between menu items
+::ng-deep .p-panelmenu-header,
+::ng-deep .p-panelmenu-item-content {
+  margin-bottom: 2px !important;
+}
+
+.dark-Button {
+  font-size: 15px;
+  color: white;
+  height: 50px;
+}
+::ng-deep .card {
+  background-color: transparent !important;
+}
