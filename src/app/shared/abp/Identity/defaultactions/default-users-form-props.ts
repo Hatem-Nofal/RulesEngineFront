@@ -2,10 +2,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@ang
 import { ABP, ConfigStateService } from '@abp/ng.core';
 import { getPasswordValidators } from '@abp/ng.theme.shared';
 import { ePropType, FormProp, FormPropList } from '@abp/ng.components/extensible';
-import { map } from 'rxjs';
-import { IdentityUserDto } from '@proxy/volo/abp/identity/models';
-import { LookupAppServicesService } from '@proxy/ehealth-claims/lookups/lookup-app-services.service';
-// import { relationToUHIAEnumOptions } from '@proxy/commn/enums';
+import { IdentityUserDto } from '@abp/ng.identity/proxy';
+ 
 
 export const DEFAULT_USERS_CREATE_FORM_PROPS = FormProp.createMany<IdentityUserDto>([
   {
@@ -52,90 +50,9 @@ export const DEFAULT_USERS_CREATE_FORM_PROPS = FormProp.createMany<IdentityUserD
     id: 'phone-number',
     validators: () => [ validatephoneNumber()],
 
-  },{
-    type: ePropType.Enum,
-    name: 'OrganizationId',
-    displayName: 'Organization',
-    id: 'OrganizationId',
-     validators: () => [Validators.required],
-
-
-    options: data => {
-      const service = data.getInjected(LookupAppServicesService);
-
-
-       return service.getOrganizationUnitDropDownList()
-        .pipe(
-          map(({items}) => items.map(
-            item => ({key: item.name, value: item.name })
-          )),
-        );
-    },
-    autocomplete: 'on',
-    isExtra: true,
-     formText: 'Default::Organization',
-  },
-
-  // {
-  //   type: ePropType.Enum,
-  //   name: 'RelationToUHIA',
-  //   displayName: 'UserRelationToUHIA',
-  //   id: 'RelationToUHIA',
-  //   options: data => {
-  //     return of(relationToUHIAEnumOptions.map(option => {
-  //       return {
-  //         key: option.key, // Assuming 'name' is the label for each option
-  //         value: option.value,   // Assuming 'id' is the value for each option
-  //       } as ABP.Option<any>;
-  //     }));
-  //   },
-  //   isExtra: true,
-  //   validators: () => [Validators.required],
-
-
-
-  // },
-  // {
-  //   type: ePropType.Date,
-  //   name: 'MembershipValidityFrom',
-  //   displayName: 'MembershipValidityFrom',
-  //   id: 'MembershipValidityFrom',
-  //   defaultValue: new Date(),
-  //   validators: () => [Validators.required],
-  //   isExtra: true,
-
-
-
-  // },
-  // {
-  //   type: ePropType?.Date,
-  //   name: 'MembershipValidityTo',
-  //   displayName: 'MembershipValidityTo',
-  //   id: 'MembershipValidityTo',
-  //   isExtra: true,
-  //   validators: () => [validateMembershipValidityTo()],
-  //   defaultValue:undefined,
-
-  //   //   asyncValidators: data => {
-
-  //   //     function validateMembershipValidityTo(control: AbstractControl): Observable<ValidationErrors | null> {
-  //   //
-  //   //     if (control.value === "") return of(null);
-  //   //     if (control.value <= control?.parent.controls['MembershipValidityFrom'].value) {
-  //   //       return of({ invalidMembershipValidityTo: true })
-
-  //   //     }
-  //   //     return of(null);
-  //   //   }
-  //   //     return [validateMembershipValidityTo];
-
-  //   // }
-
-
-
-
-  // },
-
+  } 
+   
+,
   {
     type: ePropType.Boolean,
     name: 'isActive',
@@ -164,7 +81,7 @@ export const DEFAULT_USERS_EDIT_FORM_PROPS = DEFAULT_USERS_CREATE_FORM_PROPS.map
   if (prop.name === 'isActive') {
     return {
       ...prop,
-      visible: data => {
+      visible: (data: { getInjected: (arg0: typeof ConfigStateService) => any; record: { id: any; }; }) => {
         const configState = data.getInjected(ConfigStateService);
         const currentUserId = configState.getDeep('currentUser.id');
         return currentUserId !== data.record.id;
@@ -178,7 +95,8 @@ export function validateMembershipValidityTo(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (control.pristine) return null;
 
-    if (control.value <= control?.parent.controls['MembershipValidityFrom'].value) {
+    const membershipValidityFrom = control.parent?.get('MembershipValidityFrom');
+    if (membershipValidityFrom && control.value <= membershipValidityFrom.value) {
       return { invalidMembershipValidityTo: true }
 
     }

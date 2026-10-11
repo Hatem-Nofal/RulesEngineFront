@@ -11,68 +11,7 @@ export const routes: Routes = [
     loadChildren: () => import('src/app/pages/home/home.module').then(m => m.HomeModule),
     data: { breadcrumb: 'Home' },
   },
-  {
-    path: 'coding-batches',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/Claims-coding/coding-batches/coding-batches.routing').then(
-        m => m.CODING_BATCHES_ROUTES,
-      ),
-  },
-  {
-    path: 'coding-claims',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/Claims-coding/coding-claims/coding-claims.routing').then(
-        m => m.CODING_CLAIMS_ROUTES,
-      ),
-  },
-  {
-    path: 'claims-auditing',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/claims-auditing/claims-auditing.routing').then(
-        m => m.CLAIMS_AUDITING_ROUTES,
-      ),
-  },
-  {
-    path: 'digital-archive',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/digital-archive/digital-archive.routing').then(
-        m => m.DIGITAL_ARCHIVE_ROUTES,
-      ),
-  },
-  {
-    path: 'medical-rules',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/MedicalRulesRoutingModule').then(m => m.MEDICAL_RULES_ROUTES),
-  },
-  {
-    path: 'beneficiaries',
-    canActivate: [authGuard, loginGuard],
-       loadChildren: () => import('src/app/pages/beneficiaries/beneficiaries.module').then(m => m.BeneficiariesModule),
-         data: { breadcrumb: 'RuleApplication::Menu:Beneficiaries' }
-  },
-  {
-    path: 'families',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/families-list/FamiliesRoutingModule').then(m => m.FAMILIES_ROUTES),
-  },
-  {
-    path: 'my-tasks',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () => import('../pages/tasks/tasks.routing').then(m => m.TASKS_ROUTES),
-  },
-
-  {
-    path: 'reports',
-    //canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/Reports/reports-routing.module').then(m => m.ReportsRoutings),
-  },
+  
   /* *** *** *** *abp Modules* *** *** *** */
   {
     path: 'account',
@@ -103,6 +42,13 @@ export const routes: Routes = [
     redirectTo: '',
     data: { breadcrumb: '404' },
   },
+  { path: 'rules', loadChildren: () => import('../pages/rules/rules.routes').then(m => m.RULES_ROUTES) },
+  { path: 'workflows', loadChildren: () => import('../pages/workflows/workflows.routes').then(m => m.WORKFLOWS_ROUTES) },
+  {
+    path: 'form-configs',
+    loadChildren: () => import('../pages/form-configs/form-configs.routes').then(m => m.FORM_CONFIGS_ROUTES),
+  },
+  
 ];
 
 @NgModule({

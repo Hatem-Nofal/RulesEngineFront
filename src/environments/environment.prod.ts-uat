@@ -5,9 +5,9 @@ const baseUrl = 'https://cmfrontend-uat.ehealth.com.eg';
 const oAuthConfig = {
   issuer: 'https://cmbackend-uat.ehealth.com.eg/',
   redirectUri: baseUrl,
-  clientId: 'EhealthClaims_App',
+  clientId: 'RulesEngines_App',
   // responseType: 'code',
-  scope: 'offline_access EhealthClaims',
+  scope: 'offline_access RulesEngines',
   requireHttps: true,
 };
 
@@ -15,13 +15,13 @@ export const environment = {
   production: true,
   application: {
     baseUrl,
-    name: 'EhealthClaims',
+    name: 'RulesEngines',
   },
   oAuthConfig,
   apis: {
     default: {
       url: 'https://cmbackend-uat.ehealth.com.eg',
-      rootNamespace: 'EhealthClaims',
+      rootNamespace: 'RulesEngines',
     },
     AbpAccountPublic: {
       url: oAuthConfig.issuer,

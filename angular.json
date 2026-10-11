@@ -9,7 +9,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "EhealthClaims": {
+    "RulesEngines": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -185,13 +185,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "EhealthClaims:build:production"
+              "buildTarget": "RulesEngines:build:production"
             },
             "development": {
-              "buildTarget": "EhealthClaims:build:development"
+              "buildTarget": "RulesEngines:build:development"
             },
             "dev": {
-              "browserTarget": "EhealthClaims:build:dev"
+              "browserTarget": "RulesEngines:build:dev"
             }
           },
           "defaultConfiguration": "development"
@@ -199,7 +199,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "EhealthClaims:build"
+            "buildTarget": "RulesEngines:build"
           }
         },
         "test": {

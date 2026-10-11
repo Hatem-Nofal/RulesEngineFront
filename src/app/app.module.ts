@@ -72,7 +72,7 @@ export function initializeApp(signalRService: SignalRService): () => Promise<voi
       withHttpErrorConfig({
         skipHandledErrorCodes: [404],
         errorScreen: {
-          component: null,
+          component: null as any,
           forWhichErrors: [],
           hideCloseIcon: true,
         },

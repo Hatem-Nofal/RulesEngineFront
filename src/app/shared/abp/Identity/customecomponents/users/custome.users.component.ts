@@ -37,9 +37,7 @@ import {
 } from '@angular/forms';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 import { eIdentityComponents } from '@abp/ng.identity';
-import { SelectedDropDownList } from '@proxy/ehealth-claims/application/contracts/common/dto';
-import { CustomUserService } from '@proxy/ehealth-claims/domains/custom-app-services';
-import { OrganizationDto } from '@proxy/ehealth-claims/domains/organization';
+ 
 import { LookupAppServicesService } from '@proxy/ehealth-claims/lookups';
 
 
@@ -59,15 +57,14 @@ export class CustomeUsersComponent implements OnInit {
   protected readonly list = inject(ListService<GetIdentityUsersInput>);
   protected readonly confirmationService = inject(ConfirmationService);
   protected readonly service = inject(IdentityUserService);
-  protected readonly customUserService = inject(CustomUserService);
+  protected readonly customUserService = inject(IdentityUserService);
 
   protected readonly lookupAppServicesService = inject(LookupAppServicesService);
 
   protected readonly toasterService = inject(ToasterService);
   private readonly fb = inject(UntypedFormBuilder);
   private readonly injector = inject(Injector);
-  organizationUnitDropDownList:ListResultDto<SelectedDropDownList>
-  data: PagedResultDto<IdentityUserDto> = { items: [], totalCount: 0 };
+   data: PagedResultDto<IdentityUserDto> = { items: [], totalCount: 0 };
 
   @ViewChild('modalContent', { static: false })
   modalContent!: TemplateRef<any>;
@@ -77,8 +74,7 @@ export class CustomeUsersComponent implements OnInit {
   selected?: IdentityUserDto;
 
   selectedUserRoles?: IdentityRoleDto[];
-  selectedOrganizationDto?: OrganizationDto[];
-  organizations?: OrganizationDto[];
+  
 
   roles?: IdentityRoleDto[];
 
@@ -92,7 +88,7 @@ export class CustomeUsersComponent implements OnInit {
 
   permissionManagementKey = ePermissionManagementComponents.PermissionManagement;
 
-  entityDisplayName: string;
+  entityDisplayName: string|undefined='';
 
   inputKey = eFormComponets.FormCheckboxComponent;
   errormessage = 'roleNamesRequired'
@@ -269,7 +265,7 @@ export class CustomeUsersComponent implements OnInit {
 }
 export function validateroleNames(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-     const hasTrue = control.value.some((obj) =>
+     const hasTrue = control.value.some((obj: ArrayLike<unknown> | { [s: string]: unknown; }) =>
       Object.values(obj).includes(true)
     );
 
@@ -279,7 +275,7 @@ export function validateroleNames(): ValidatorFn {
 }
 export function validateorganizationNames(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-     const hasTrue = control.value.some((obj) =>
+     const hasTrue = control.value.some((obj: ArrayLike<unknown> | { [s: string]: unknown; }) =>
       Object.values(obj).includes(true)
     );
 

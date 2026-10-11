@@ -1,10 +1,2 @@
-import * as Application from './application';
-import * as Common from './common';
-import * as Controllers from './controllers';
-import * as Domains from './domains';
-import * as ExcelGenerator from './excel-generator';
-import * as FilesManagers from './files-managers';
 import * as Lookups from './lookups';
-import * as Reports from './reports';
-import * as ViewModels from './view-models';
-export { Application, Common, Controllers, Domains, ExcelGenerator, FilesManagers, Lookups, Reports, ViewModels };
+export { Lookups };

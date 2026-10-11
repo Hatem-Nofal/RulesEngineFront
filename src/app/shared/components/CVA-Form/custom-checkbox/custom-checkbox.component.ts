@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SelectedDropDownList } from '@proxy/ehealth-claims/application/contracts/common/dto/models';
+import { SelectedDropDownList } from '@proxy/common/dtos/models';
 
 @Component({
   selector: 'app-custom-checkbox',

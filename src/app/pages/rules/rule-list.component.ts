@@ -1,0 +1,55 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { RuleListItem } from './rule.models';
+import { RuleService } from './rule.service';
+
+@Component({
+  selector: 'app-rule-list',
+  imports: [RouterLink],
+  template: `
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Rules</h5>
+        <a routerLink="/rules/new" class="btn btn-primary btn-sm">Create rule</a>
+      </div>
+      <div class="card-body">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr><th>Name</th><th>Workflow</th><th>Active</th><th></th></tr>
+          </thead>
+          <tbody>
+            @for (r of rules(); track r.id) {
+              <tr>
+                <td><a [routerLink]="['/rules', r.id]">{{ r.name }}</a></td>
+                <td>{{ r.workflowName }}</td>
+                <td>{{ r.isActive ? 'Yes' : 'No' }}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-danger" (click)="remove(r)">Delete</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4" class="text-muted">No rules yet.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `,
+})
+export class RuleListComponent implements OnInit {
+  private service = inject(RuleService);
+  rules = signal<RuleListItem[]>([]);
+
+  ngOnInit() {
+    this.load();
+  }
+
+  load() {
+    this.service.getList().subscribe(r => this.rules.set(r));
+  }
+
+  remove(r: RuleListItem) {
+    if (!confirm(`Delete rule "${r.name}"?`)) return;
+    this.service.delete(r.id).subscribe(() => this.load());
+  }
+}

@@ -6,22 +6,22 @@ export const environment = {
   production: true,
   application: {
     baseUrl,
-    name: 'EhealthClaims',
+    name: 'RulesEngines',
     logoUrl: '',
   },
   oAuthConfig: {
     issuer: 'https://localhost:44354/',
     redirectUri: baseUrl,
-    clientId: 'EhealthClaims_App',
+    clientId: 'RulesEngines_App',
     // responseType: 'code',
     responseType: 'id_token token',
-    scope: 'openid profile offline_access EhealthClaims',
+    scope: 'openid profile offline_access RulesEngines',
     requireHttps: false,
   },
   apis: {
     default: {
       url: 'https://localhost:44354',
-      rootNamespace: 'EhealthClaims',
+      rootNamespace: 'RulesEngines',
     },
   },
 } as Environment;
