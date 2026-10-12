@@ -11,7 +11,7 @@ export const routes: Routes = [
     loadChildren: () => import('src/app/pages/home/home.module').then(m => m.HomeModule),
     data: { breadcrumb: 'Home' },
   },
-  
+
   /* *** *** *** *abp Modules* *** *** *** */
   {
     path: 'account',
@@ -42,13 +42,13 @@ export const routes: Routes = [
     redirectTo: '',
     data: { breadcrumb: '404' },
   },
-  { path: 'rules', loadChildren: () => import('../pages/rules/rules.routes').then(m => m.RULES_ROUTES) },
-  { path: 'workflows', loadChildren: () => import('../pages/workflows/workflows.routes').then(m => m.WORKFLOWS_ROUTES) },
+  { path: 'rules', loadChildren: () => import('../pages/ruleBuildersComponents/rules/rules.routes').then(m => m.RULES_ROUTES) },
+  { path: 'workflows', loadChildren: () => import('../pages/ruleBuildersComponents/workflows/workflows.routes').then(m => m.WORKFLOWS_ROUTES) },
   {
     path: 'form-configs',
-    loadChildren: () => import('../pages/form-configs/form-configs.routes').then(m => m.FORM_CONFIGS_ROUTES),
+    loadChildren: () => import('../pages/ruleBuildersComponents/form-configs/form-configs.routes').then(m => m.FORM_CONFIGS_ROUTES),
   },
-  
+
 ];
 
 @NgModule({
