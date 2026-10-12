@@ -1,3 +1,4 @@
+import type { RuleExpressionResultDto } from './rule-expression-builders/models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
@@ -48,6 +49,17 @@ export class RuleService {
       headers: { Accept: 'application/json' },
       url: '/api/app/rule',
       params: { sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  previewExpressionByInput = (input: RuleDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RuleExpressionResultDto>({
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/rule/preview-expression',
+      body: input,
     },
       { apiName: this.apiName,...config });
   

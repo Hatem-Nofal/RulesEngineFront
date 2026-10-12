@@ -1,13 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { Workflow } from './workflow.models';
-import { WorkflowService } from './workflow.service';
-
-@Component({
-  selector: 'app-workflow-list',
-  imports: [RouterLink],
-  template: `
-    <div class="card">
+ <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Workflows</h5>
         <a routerLink="/workflows/new" class="btn btn-primary btn-sm">Create workflow</a>
@@ -41,22 +32,3 @@ import { WorkflowService } from './workflow.service';
         </table>
       </div>
     </div>
-  `,
-})
-export class WorkflowListComponent implements OnInit {
-  private service = inject(WorkflowService);
-  workflows = signal<Workflow[]>([]);
-
-  ngOnInit() {
-    this.load();
-  }
-
-  load() {
-    this.service.getList().subscribe(w => this.workflows.set(w));
-  }
-
-  remove(w: Workflow) {
-    if (!confirm(`Delete workflow "${w.name}"?`)) return;
-    this.service.delete(w.id).subscribe(() => this.load());
-  }
-}

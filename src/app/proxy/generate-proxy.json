@@ -2062,6 +2062,29 @@
               "name": "IRuleAppService",
               "methods": [
                 {
+                  "name": "PreviewExpression",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto, RulesEngine.Application.Contracts",
+                      "type": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto",
+                      "typeSimple": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "RulesEngine.WorkFlows.Rules.RuleExpressionBuilders.RuleExpressionResultDto",
+                    "typeSimple": "RulesEngine.WorkFlows.Rules.RuleExpressionBuilders.RuleExpressionResultDto",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [
                     {
@@ -2513,6 +2536,61 @@
               "allowAnonymous": null,
               "authorizeDatas": [],
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "PreviewExpressionByInput": {
+              "uniqueName": "PreviewExpressionByInput",
+              "name": "PreviewExpression",
+              "httpMethod": "POST",
+              "url": "api/app/rule/preview-expression",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto, RulesEngine.Application.Contracts",
+                  "type": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto",
+                  "typeSimple": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto",
+                  "typeSimple": "RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": "",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "returnValue": {
+                "type": "RulesEngine.WorkFlows.Rules.RuleExpressionBuilders.RuleExpressionResultDto",
+                "typeSimple": "RulesEngine.WorkFlows.Rules.RuleExpressionBuilders.RuleExpressionResultDto",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.WorkFlows.Rules.IRuleAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -9079,6 +9157,67 @@
           "maximum": null,
           "regex": null,
           "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.WorkFlows.Rules.RuleExpressionBuilders.RuleExpressionResultDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "StrategyKey",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Condition",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Expression",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
           "summary": null,
           "description": null,
           "displayName": null

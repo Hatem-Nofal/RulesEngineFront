@@ -1,13 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { RuleListItem } from './rule.models';
-import { RuleService } from './rule.service';
-
-@Component({
-  selector: 'app-rule-list',
-  imports: [RouterLink],
-  template: `
-    <div class="card">
+<div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Rules</h5>
         <a routerLink="/rules/new" class="btn btn-primary btn-sm">Create rule</a>
@@ -34,22 +25,3 @@ import { RuleService } from './rule.service';
         </table>
       </div>
     </div>
-  `,
-})
-export class RuleListComponent implements OnInit {
-  private service = inject(RuleService);
-  rules = signal<RuleListItem[]>([]);
-
-  ngOnInit() {
-    this.load();
-  }
-
-  load() {
-    this.service.getList().subscribe(r => this.rules.set(r));
-  }
-
-  remove(r: RuleListItem) {
-    if (!confirm(`Delete rule "${r.name}"?`)) return;
-    this.service.delete(r.id).subscribe(() => this.load());
-  }
-}

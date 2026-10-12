@@ -1,14 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { RuleFormConfigService } from '@proxy/rule-builder/api';
-import { FormConfigListDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
- 
-
-@Component({
-  selector: 'app-form-config-list',
-  imports: [RouterLink],
-  template: `
-    <div class="card">
+   <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Form configs</h5>
         <a routerLink="/form-configs/new" class="btn btn-primary btn-sm">Create form config</a>
@@ -43,23 +33,3 @@ import { FormConfigListDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
         </table>
       </div>
     </div>
-  `,
-})
-export class FormConfigListComponent implements OnInit {
-  private service = inject(RuleFormConfigService);
-  configs = signal<FormConfigListDto[]>([]);
-
-  ngOnInit() {
-    this.load();
-  }
-
-  load() {
-    this.service.getList(null,).subscribe(c => this.configs.set(c));
-  }
-
-  remove(c: FormConfigListDto) {
-    if (!c.id) return;
-    if (!confirm(`Delete form config "${c.name}"?`)) return;
-    this.service.delete(c.id).subscribe(() => this.load());
-  }
-}

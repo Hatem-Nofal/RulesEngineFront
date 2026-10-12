@@ -1,0 +1,35 @@
+  <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ workflowId ? 'Edit workflow' : 'Create workflow' }}</h5>
+        <a routerLink="/workflows" class="btn btn-sm btn-outline-secondary">Back</a>
+      </div>
+
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Name</label>
+            <input class="form-control" [(ngModel)]="name" maxlength="200" placeholder="Workflow name" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Form config</label>
+            <select class="form-select" [(ngModel)]="configId">
+              <option [ngValue]="null">None (rules cannot be created)</option>
+              @for (c of configs(); track c.id) {
+                <option [ngValue]="c.id">{{ c.name }}</option>
+              }
+            </select>
+            <div class="form-text">Controls which fields and operators the rule builder offers for this workflow.</div>
+          </div>
+        </div>
+
+        @if (ruleCount() > 0) {
+          <div class="alert alert-warning mt-3 mb-0">
+            {{ ruleCount() }} rule(s) use this workflow. If you change the form config, existing rules may use
+            fields it no longer offers.
+          </div>
+        }
+
+        <button type="button" class="btn btn-primary mt-3" [disabled]="saving()" (click)="save()">Save</button>
+      </div>
+    </div>

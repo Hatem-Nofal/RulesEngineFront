@@ -1,0 +1,141 @@
+  @let n = node();
+    @if (n.nodeType === 1) {
+      <div class="group">
+        <div class="bar">
+          <select
+            class="form-select form-select-sm w-auto"
+            [ngModel]="n.logicalOperator"
+            (ngModelChange)="patch({ logicalOperator: $event })"
+          >
+            <option [ngValue]="1">AND</option>
+            <option [ngValue]="2">OR</option>
+          </select>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCondition()">
+            + Condition
+          </button>
+          @if (allowGroups()) {
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addGroup()">
+              + Group
+            </button>
+          }
+          @if (!isRoot()) {
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove.emit()">
+              ✕
+            </button>
+          }
+        </div>
+
+        @for (c of n.children; track $index) {
+          <app-rule-node
+            [node]="c"
+            [fields]="fields()"
+            [items]="items()"
+            [allowGroups]="allowGroups()"
+            [isRoot]="false"
+            (nodeChange)="updateChild($index, $event)"
+            (remove)="removeChild($index)"
+          />
+        }
+        @if (n.children.length === 0) {
+          <small class="text-muted">No conditions yet.</small>
+        }
+      </div>
+    } @else {
+      <div class="cond">
+        <select
+          class="form-select form-select-sm w-auto"
+          [ngModel]="n.fieldKey"
+          (ngModelChange)="onField($event)"
+        >
+          @for (f of fields(); track f.key) {
+            <option [ngValue]="f.key">{{ f.label }}</option>
+          }
+        </select>
+
+        @if (field(); as f) {
+          <select
+            class="form-select form-select-sm w-auto"
+            [ngModel]="n.operator"
+            (ngModelChange)="onOperator($event)"
+          >
+            @for (o of operators(); track o.v) {
+              <option [ngValue]="o.v">{{ o.l }}</option>
+            }
+          </select>
+
+          @switch (f.dataType) {
+            @case ('Number') {
+              <input
+                type="number"
+                class="form-control form-control-sm w-auto"
+                [ngModel]="n.value"
+                (ngModelChange)="patch({ value: $event })"
+              />
+            }
+            @case ('Enum') {
+
+                <select
+                  class="form-select form-select-sm w-auto"
+                  [ngModel]="n.value"
+                  (ngModelChange)="patch({ value: $event })"
+                >
+                  <option [ngValue]="null">Select…</option>
+                  @for (o of f.options ?? []; track o) {
+                    <option [ngValue]="o">{{ o }}</option>
+                  }
+                </select>
+
+            }
+            @case ('ItemList') {
+              <select
+                class="form-select form-select-sm w-auto"
+                [ngModel]="n.value"
+                (ngModelChange)="patch({ value: $event })"
+              >
+                <option [ngValue]="null">Select item…</option>
+                @for (i of items(); track i.id) {
+                  <option [ngValue]="i.id">{{ i.name }}</option>
+                }
+              </select>
+            }
+            @case ('MultipleSelect') {
+              <details class="code-list-dropdown">
+                <summary class="code-list-trigger" aria-label="Select one or more codes">
+                  @let selectedCount = codeSelectionCount(n.value);
+                  <span>{{ selectedCount ? selectedCount + ' selected' : 'Select codes' }}</span>
+                </summary>
+                <div class="code-list-options" role="group" aria-label="Available codes">
+                  @for (i of items(); track i.id) {
+                    <label class="code-list-option">
+                      <input
+                        type="checkbox"
+                        [checked]="isCodeSelected(n.value, i.id)"
+                        (change)="toggleCode(i.id)"
+                      />
+                      <span>{{ i.name }}</span>
+                    </label>
+                  }
+                  @if (items().length === 0) {
+                    <span class="code-list-empty">No codes available.</span>
+                  }
+                </div>
+              </details>
+            }
+            @default {
+              <input
+                type="text"
+                class="form-control form-control-sm w-auto"
+                [ngModel]="n.value"
+                (ngModelChange)="patch({ value: $event })"
+              />
+            }
+          }
+        } @else {
+          <span class="text-warning">Field no longer available in this workflow's form.</span>
+        }
+
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove.emit()">
+          ✕
+        </button>
+      </div>
+    }
