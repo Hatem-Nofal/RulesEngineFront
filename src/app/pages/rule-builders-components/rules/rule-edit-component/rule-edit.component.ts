@@ -1,22 +1,36 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { RuleNodeComponent } from './rule-node.component';
+import { RuleNodeComponent } from '../rule-node-component/rule-node-component';
 import { RuleService } from '@proxy/work-flows/rules';
-import { LookupDto } from '@proxy/lookups/dtos';
+import { WorkFlowService } from '@proxy/work-flows';
 import { RuleFormConfigDto, RuleNodeDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
 import { RuleExpressionResultDto } from '@proxy/work-flows/rules/rule-expression-builders';
 import { emptyRoot } from 'src/app/shared/models/constant';
 import { RuleFormConfigService } from '@proxy/rule-builder/api/rule-form-config.service';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { LookupDto } from '@proxy/lookups/dtos/models';
 
 @Component({
   selector: 'app-rule-edit',
-  imports: [FormsModule, RouterLink, RuleNodeComponent],
+  imports: [
+    ButtonModule,
+    CheckboxModule,
+    FormsModule,
+    InputTextModule,
+    RouterLink,
+    RuleNodeComponent,
+    SelectModule,
+  ],
   templateUrl: './rule-edit.component.html',
   styleUrl: './rule-edit.component.scss',
 })
 export class RuleEditComponent implements OnInit {
   private service = inject(RuleService);
+  private workflowService = inject(WorkFlowService);
   private ruleFormConfigService = inject(RuleFormConfigService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -33,23 +47,32 @@ export class RuleEditComponent implements OnInit {
   loading = signal(false);
   saving = signal(false);
   expression = signal<RuleExpressionResultDto | null>(null);
+  lookups = signal<Record<string, LookupDto[]>>({});
 
   ngOnInit() {
-    this.service.getWorkflows().subscribe(w => this.workflows.set(w));
+    this.workflowService.getList({ skipCount: 0, maxResultCount: 100 }).subscribe({
+      next: result => {
+        const options: LookupDto[] = [];
+        for (const workflow of result.items ?? []) {
+          if (workflow.id) options.push({ id: workflow.id, name: workflow.name });
+        }
+        this.workflows.set(options);
+      },
+    });
 
     const id = this.route.snapshot.paramMap.get('id');
-    if (!id || id === 'new') return; // create mode: wait for workflow selection
+    if (!id || id === 'new') return;
 
-    // Edit mode: load the rule, then its config WITHOUT resetting the tree
     this.ruleId = id;
     this.loading.set(true);
     this.service.get(id).subscribe({
       next: rule => {
-        this.name = rule.name;
-        this.isActive = rule.isActive;
-        this.workflowId.set(rule.workflowId);
-        this.root.set(rule.root);
-        this.loadConfig(rule.workflowId);
+        this.name = rule.name ?? '';
+        this.isActive = rule.isActive ?? true;
+        this.workflowId.set(rule.workflowId ?? null);
+        this.root.set(rule.root ?? emptyRoot());
+        if (rule.workflowId) this.loadConfig(rule.workflowId);
+        else this.loading.set(false);
       },
       error: () => this.loading.set(false),
     });
@@ -70,13 +93,18 @@ export class RuleEditComponent implements OnInit {
         this.config.set(cfg);
         this.loading.set(false);
       },
-      error: () => this.loading.set(false),
+      error: () => {
+        this.config.set(null);
+        this.loading.set(false);
+      },
     });
   }
 
   private isValid(node: RuleNodeDto): boolean {
-    if (node.nodeType === 1)
-      return node.children.length > 0 && node.children.every(c => this.isValid(c));
+    if (node.nodeType === 1) {
+      const children = node.children ?? [];
+      return children.length > 0 && children.every(child => this.isValid(child));
+    }
     const v = node.value;
     const empty = v === null || v === undefined || v === '' || (Array.isArray(v) && v.length === 0);
     return !!node.fieldKey && !!node.operator && !empty;
@@ -100,7 +128,7 @@ export class RuleEditComponent implements OnInit {
 
   save() {
     if (!this.name.trim() || !this.workflowId()) {
-      alert('Name, workflow and target item are required.');
+      alert('Name and workflow are required.');
       return;
     }
     if (!this.isValid(this.root())) {
@@ -109,17 +137,20 @@ export class RuleEditComponent implements OnInit {
     }
 
     this.saving.set(true);
-    this.service
-      .create({
-        id: this.ruleId,
-        name: this.name.trim(),
-        workflowId: this.workflowId()!,
-        isActive: this.isActive,
-        root: this.root(),
-      })
-      .subscribe({
-        next: () => this.router.navigate(['/rules']),
-        error: () => this.saving.set(false), // the interceptor already showed the server message
-      });
+    const input = {
+      id: this.ruleId,
+      name: this.name.trim(),
+      workflowId: this.workflowId()!,
+      isActive: this.isActive,
+      root: this.root(),
+    };
+    const request = this.ruleId
+      ? this.service.update(this.ruleId, input)
+      : this.service.create(input);
+
+    request.subscribe({
+      next: () => this.router.navigate(['/rules']),
+      error: () => this.saving.set(false),
+    });
   }
 }

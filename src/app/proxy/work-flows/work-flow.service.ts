@@ -47,7 +47,7 @@ export class WorkFlowService {
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/work-flow',
-      params: { name: input.name, ruleFormConfigName: input.ruleFormConfigName, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { name: input.name, ruleFormConfigName: input.ruleFormConfigName, rejectionLevel: input.rejectionLevel, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
       { apiName: this.apiName,...config });
   

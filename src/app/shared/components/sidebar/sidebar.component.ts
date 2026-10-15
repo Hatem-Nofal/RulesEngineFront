@@ -51,29 +51,33 @@ export class SidebarComponent implements OnInit {
     private localization: LocalizationService,
   ) {}
   ngOnInit(): void {
+    const canViewRules = this.permissionService.getGrantedPolicy(this.rulesPermissions.Rules_View);
+    const canViewWorkflows = this.permissionService.getGrantedPolicy(
+      this.workFlowsPermissions.Workflows_View,
+    );
+
     this.items = [
       {
         label: 'Rule Management',
         icon: 'bi bi-file-earmark-code me-1',
-
         items: [
           {
-            label: 'rules',
+            label: 'Rules',
             icon: 'bi bi-box me-1',
-            routerLink: 'rules',
-          },
+            routerLink: '/rules',
+           },
           {
-            label: 'workflows',
+            label: 'Workflows',
             icon: 'bi bi-box me-1',
-            routerLink: 'workflows',
-          },
+            routerLink: '/workflows',
+           },
           {
-            label: 'form-configs',
+            label: 'Form configs',
             icon: 'bi bi-box me-1',
-            routerLink: 'form-configs',
-          },
+            routerLink: '/form-configs',
+           },
         ],
-      },
+       },
 
       {
         label: 'Setting',

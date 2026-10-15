@@ -1,7 +1,24 @@
 import { RuleFormFieldDto, RuleNodeDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
+import { RuleNodeType } from '@proxy/common/enums/rule-node-type.enum';
 
-export type NodeType = 1 | 2; // 1 = Group, 2 = Condition
-export type DataType = 'Number' | 'String' | 'Enum' | 'ItemList' | 'MultipleSelect';
+export type NodeType = RuleNodeType;
+export type DataType = 'Number' | 'Decimal' | 'String' | 'Enum' | 'List'   | 'DateTime';
+
+export const isDataType = (value?: string | null): value is DataType =>
+  value === 'Number' ||
+  value === 'String' ||
+  value === 'Enum' ||
+  value === 'List' ||
+
+  value === 'DateTime'||value === 'Decimal';
+
+export const FieldDataTypes = [
+  { Id: 1, Name: 'List' },
+  { Id: 2, Name: 'Number' },
+  { Id: 3, Name: 'Text' },
+  { Id: 4, Name: 'Decimal' },
+  { Id: 5, Name: 'DateTime' },
+] as const;
 
 export const OPERATORS: Record<DataType, { v: number; l: string }[]> = {
   Number: [
@@ -20,23 +37,51 @@ export const OPERATORS: Record<DataType, { v: number; l: string }[]> = {
     { v: 1, l: 'Equals' },
     { v: 2, l: 'Not equals' },
   ],
-  ItemList: [
+  List: [
     { v: 1, l: 'Equals' },
     { v: 2, l: 'Not equals' },
-  ],
-  MultipleSelect: [
     { v: 7, l: 'Contains' },
     { v: 8, l: 'Not contains' },
   ],
+
+  DateTime: [
+   { v: 1, l: '=' },
+    { v: 2, l: '≠' },
+    { v: 3, l: '>' },
+    { v: 4, l: '≥' },
+    { v: 5, l: '<' },
+    { v: 6, l: '≤' },
+  ],
+  Decimal: [
+  { v: 1, l: '=' },
+    { v: 2, l: '≠' },
+    { v: 3, l: '>' },
+    { v: 4, l: '≥' },
+    { v: 5, l: '<' },
+    { v: 6, l: '≤' },
+  ]
 };
 
-export const emptyRoot = (): RuleNodeDto => ({ nodeType: 1, logicalOperator: 1, children: [] });
+export const emptyRoot = (): RuleNodeDto => ({
+  nodeType: RuleNodeType.Group,
+  logicalOperator: 1,
+  children: [],
+});
 
 export const operatorIds = (f: RuleFormFieldDto): number[] =>
-  f.allowedOperators?.length ? f.allowedOperators : f.dataType ? OPERATORS[f.dataType].map(o => o.v) : [];
+  f.allowedOperators?.length
+    ? f.allowedOperators
+    : isDataType(f.dataType)
+      ? OPERATORS[f.dataType].map(o => o.v)
+      : [];
 
 /** In / Not in take several values; every other operator takes one. */
 export const isListOperator = (op?: number | null): boolean => op === 7 || op === 8;
 
-export const defaultValue = (f: RuleFormFieldDto, op?: number | null): any =>
-  f.dataType === 'MultipleSelect' || (f.dataType === 'Enum' && isListOperator(op)) ? [] : null;
+export const defaultValue = (f: RuleFormFieldDto, op?: number | null): unknown =>
+  ((f.dataType === 'List' && f.isMultiple)  ) ||
+  (f.dataType === 'Enum' && isListOperator(op))
+    ? []
+    : null;
+
+export const isCollectionType = (t: DataType): boolean => t === 'List'  ;

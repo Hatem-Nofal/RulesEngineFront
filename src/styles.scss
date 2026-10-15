@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@use './app/pages/rule-builders-components/rule-builder' as rule-builder;
+@include rule-builder.page;
+
 @import 'primeicons/primeicons.css';
 /* You can add global styles to this file, and also import other style files */
 

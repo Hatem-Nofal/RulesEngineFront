@@ -1,35 +1,83 @@
-  <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">{{ workflowId ? 'Edit workflow' : 'Create workflow' }}</h5>
-        <a routerLink="/workflows" class="btn btn-sm btn-outline-secondary">Back</a>
-      </div>
+<main class="rule-builder-page">
+  <section class="rule-builder-card">
+    <header class="rule-builder-card__header">
+      <h1 class="rule-builder-card__title">
+        {{ workflowId ? 'Edit workflow' : 'Create workflow' }}
+      </h1>
+      <a pButton routerLink="/workflows" severity="secondary" [outlined]="true" label="Back"></a>
+    </header>
 
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Name</label>
-            <input class="form-control" [(ngModel)]="name" maxlength="200" placeholder="Workflow name" />
-          </div>
+    <div class="rule-builder-card__body">
+      @if (loading()) {
+        <p class="text-muted" role="status">Loading workflow settings…</p>
+      }
 
-          <div class="col-md-6">
-            <label class="form-label">Form config</label>
-            <select class="form-select" [(ngModel)]="configId">
-              <option [ngValue]="null">None (rules cannot be created)</option>
-              @for (c of configs(); track c.id) {
-                <option [ngValue]="c.id">{{ c.name }}</option>
-              }
-            </select>
-            <div class="form-text">Controls which fields and operators the rule builder offers for this workflow.</div>
-          </div>
+      <div class="rule-builder-form">
+        <div class="rule-builder-field">
+          <label for="workflow-name">Name</label>
+          <input
+            pInputText
+            id="workflow-name"
+            name="workflowName"
+            [(ngModel)]="name"
+            maxlength="200"
+            placeholder="Workflow name"
+            autocomplete="off"
+          />
         </div>
 
-        @if (ruleCount() > 0) {
-          <div class="alert alert-warning mt-3 mb-0">
-            {{ ruleCount() }} rule(s) use this workflow. If you change the form config, existing rules may use
-            fields it no longer offers.
-          </div>
-        }
+        <div class="rule-builder-field">
+          <label for="workflow-config">Form configuration</label>
+          <p-select
+            inputId="workflow-config"
+            name="workflowConfig"
+            [options]="configs()"
+            optionLabel="name"
+            optionValue="id"
+            [ngModel]="configId"
+            (ngModelChange)="configId = $event"
+            [showClear]="true"
+            placeholder="No configuration"
+            [loading]="loading()"
+          />
+          <small class="text-muted">
+            Controls which fields and operators are available in this workflow’s rule builder.
+          </small>
+        </div>
 
-        <button type="button" class="btn btn-primary mt-3" [disabled]="saving()" (click)="save()">Save</button>
+        <div class="rule-builder-field">
+          <label for="workflow-rejection-level">Rejection level</label>
+          <p-select
+            inputId="workflow-rejection-level"
+            name="workflowRejectionLevel"
+            [options]="rejectionLevels"
+            optionLabel="key"
+            optionValue="value"
+            [(ngModel)]="rejectionLevel"
+            placeholder="Select rejection level"
+          />
+        </div>
+      </div>
+
+      @if (ruleCount() > 0) {
+        <div class="alert alert-warning mt-4 mb-0" role="status">
+          {{ ruleCount() }} rule(s) use this workflow. Changing its form configuration may make
+          existing rule fields unavailable.
+        </div>
+      }
+
+      <div class="rule-builder-actions">
+        <button
+          pButton
+          type="button"
+          label="Save workflow"
+          icon="pi pi-check"
+          [disabled]="saving() || loading()"
+          [loading]="saving()"
+          (click)="save()"
+        ></button>
+        <a pButton routerLink="/workflows" severity="secondary" [text]="true" label="Cancel"></a>
       </div>
     </div>
+  </section>
+</main>

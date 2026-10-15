@@ -1,8 +1,9 @@
+import type { EntityDto } from '@abp/ng.core';
 import type { RuleNodeType } from '../../../common/enums/rule-node-type.enum';
 import type { LogicalOperator } from '../../../common/enums/logical-operator.enum';
 import type { RuleOperator } from '../../../common/enums/rule-operator.enum';
 
-export interface FormConfigEditDto {
+export interface CreateFormConfigEditDto {
   id?: string | null;
   name?: string;
   description?: string | null;
@@ -14,10 +15,10 @@ export interface FormConfigEditDto {
 export interface FormConfigFieldInputDto {
   fieldId?: string;
   allowedOperators?: number[] | null;
+  isMultiple?: boolean;
 }
 
-export interface FormConfigListDto {
-  id?: string;
+export interface FormConfigListDto extends EntityDto<string> {
   name?: string;
   description?: string | null;
   isActive?: boolean;
@@ -25,6 +26,14 @@ export interface FormConfigListDto {
   strategyKey?: string | null;
   fieldCount?: number;
   workflowCount?: number;
+}
+
+export interface RuleFieldCatalogDto {
+  id?: string;
+  key?: string;
+  label?: string;
+  dataType?: string;
+  options?: string[] | null;
 }
 
 export interface RuleFormConfigDto {
@@ -42,14 +51,18 @@ export interface RuleFormFieldDto {
   dataType?: string;
   options?: string[] | null;
   allowedOperators?: number[] | null;
+  isMultiple?: boolean;
+  lookupSource?: string | null;
 }
 
 export interface RuleNodeDto {
-  id?: string | null;
+  id?: string;
   nodeType?: RuleNodeType;
   logicalOperator?: LogicalOperator | null;
+  logicalJoinOperator?: LogicalOperator | null;
   fieldKey?: string | null;
   operator?: RuleOperator | null;
   value?: any | null;
+  isMultiple?: boolean;
   children?: RuleNodeDto[];
 }

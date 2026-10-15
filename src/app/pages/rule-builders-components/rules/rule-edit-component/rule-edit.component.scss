@@ -1,0 +1,49 @@
+@use '../../_rule-builder' as *;
+
+@include page;
+
+.rule-editor-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+}
+
+.rule-editor-active {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.75rem;
+}
+
+.rule-editor-builder {
+  margin-top: 2rem;
+  padding-top: 0.5rem;
+}
+
+.rule-expression {
+  overflow: hidden;
+  border: 1px solid var(--surface-border, #e4e7ec);
+  border-radius: 0.625rem;
+}
+
+.rule-expression__title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--surface-border, #e4e7ec);
+}
+
+.rule-expression pre {
+  overflow: auto;
+  margin: 0;
+  padding: 1rem;
+  background: var(--surface-ground, #f8fafc);
+  white-space: pre-wrap;
+}
+
+@media (max-width: 767px) {
+  .rule-editor-fields {
+    grid-template-columns: 1fr;
+  }
+}

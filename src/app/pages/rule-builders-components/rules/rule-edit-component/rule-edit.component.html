@@ -1,56 +1,101 @@
-<div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">{{ ruleId ? 'Edit rule' : 'Create rule' }}</h5>
-        <a routerLink="/rules" class="btn btn-sm btn-outline-secondary">Back</a>
+<main class="rule-builder-page">
+<section class="rule-builder-card">
+  <header class="rule-builder-card__header">
+    <h1 class="rule-builder-card__title">{{ ruleId ? 'Edit rule' : 'Create rule' }}</h1>
+    <a pButton routerLink="/rules" severity="secondary" [outlined]="true" label="Back"></a>
+  </header>
+
+  <div class="rule-builder-card__body">
+    <div class="rule-builder-form rule-editor-fields">
+      <div class="rule-builder-field">
+        <label for="rule-name">Name</label>
+        <input
+          pInputText
+          id="rule-name"
+          name="ruleName"
+          [(ngModel)]="name"
+          maxlength="200"
+          placeholder="Rule name"
+          autocomplete="off"
+        />
       </div>
 
-      <div class="card-body">
-        <div class="row g-3 mb-3">
-          <div class="col-md-4">
-            <label class="form-label">Name</label>
-            <input class="form-control" [(ngModel)]="name" placeholder="Rule name" />
-          </div>
+      <div class="rule-builder-field">
+        <label for="rule-workflow">Workflow</label>
+        <p-select
+          inputId="rule-workflow"
+          name="ruleWorkflow"
+          [options]="workflows()"
+          optionLabel="name"
+          optionValue="id"
+          [ngModel]="workflowId()"
+          (ngModelChange)="onWorkflowChange($event)"
+          [disabled]="!!ruleId"
+          placeholder="Select a workflow"
+        />
+      </div>
 
-          <div class="col-md-4">
-            <label class="form-label">Workflow</label>
-            <select class="form-select" [ngModel]="workflowId()" (ngModelChange)="onWorkflowChange($event)"
-                    [disabled]="!!ruleId">
-              <option [ngValue]="null">Select workflow…</option>
-              @for (w of workflows(); track w.id) {
-                <option [ngValue]="w.id">{{ w.name }}</option>
-              }
-            </select>
-          </div>
-
-
-
-          <div class="col-12">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="active" [(ngModel)]="isActive" />
-              <label class="form-check-label" for="active">Active</label>
-            </div>
-          </div>
-        </div>
-
-        @if (loading()) {
-          <p>Loading form…</p>
-        }
-
-        @if (config(); as cfg) {
-          <h6 class="text-muted">Form: {{ cfg.name }}</h6>
-          <app-rule-node [(node)]="root" [fields]="cfg.fields" [items]="items()"
-                         [allowGroups]="cfg.allowNestedGroups" [isRoot]="true" />
-          <button type="button" class="btn btn-primary mt-3" [disabled]="saving()" (click)="save()">Save</button>
-          <button type="button" class="btn btn-outline-secondary mt-3 ms-2" (click)="preview()">Preview expression</button>
-
-          @if (expression(); as ex) {
-            <div class="mt-3">
-              <div class="text-muted small">Expression (strategy: {{ ex.strategyKey }})</div>
-              <pre class="border rounded p-2 bg-light mb-0">{{ ex.expression }}</pre>
-            </div>
-          }
-        } @else if (workflowId() && !loading()) {
-          <div class="alert alert-warning">No form config is assigned to this workflow.</div>
-        }
+      <div class="rule-editor-active">
+        <p-checkbox inputId="rule-active" name="ruleActive" [(ngModel)]="isActive" [binary]="true" />
+        <label for="rule-active">Active</label>
       </div>
     </div>
+
+    @if (loading()) {
+      <p class="text-muted mt-4" role="status">Loading rule configuration…</p>
+    }
+
+    @if (config(); as cfg) {
+      <section class="rule-editor-builder" aria-label="Rule conditions">
+        <div class="rule-editor-builder__heading">
+          <div>
+            <h2 class="rule-builder-section">Conditions</h2>
+            <p class="text-muted mb-0">Form: {{ cfg.name }}</p>
+          </div>
+        </div>
+       <app-rule-node [(node)]="root" [fields]="cfg.fields" [lookups]="lookups()"
+                         [allowGroups]="cfg.allowNestedGroups" [isRoot]="true" />
+      </section>
+
+      <div class="rule-builder-actions">
+        <button
+          pButton
+          type="button"
+          label="Save rule"
+          icon="pi pi-check"
+          [disabled]="saving() || loading()"
+          [loading]="saving()"
+          (click)="save()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Preview expression"
+          icon="pi pi-eye"
+          severity="secondary"
+          [outlined]="true"
+          (click)="preview()"
+        ></button>
+      </div>
+
+      @if (expression(); as result) {
+        <section class="rule-expression mt-4" aria-label="Rule expression preview">
+          <div class="rule-expression__title">
+            <strong>Expression preview</strong>
+            <span class="text-muted">Strategy: {{ result.strategyKey }}</span>
+          </div>
+          <pre>{{ result.expression }}</pre>
+        </section>
+      }
+    } @else if (workflowId() && !loading()) {
+      <div class="alert alert-warning mt-4" role="status">
+        No active form configuration is assigned to this workflow.
+      </div>
+    } @else if (!loading()) {
+      <div class="rule-builder-empty mt-3">
+        Select a workflow to load its form configuration and build rule conditions.
+      </div>
+    }
+  </div>
+</section>
+</main>

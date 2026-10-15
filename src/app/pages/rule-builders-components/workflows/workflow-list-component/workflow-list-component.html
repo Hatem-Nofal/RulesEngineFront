@@ -1,34 +1,67 @@
- <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Workflows</h5>
-        <a routerLink="/workflows/new" class="btn btn-primary btn-sm">Create workflow</a>
-      </div>
-      <div class="card-body">
-        <table class="table table-hover mb-0">
-          <thead>
-            <tr><th>Name</th><th>Form config</th><th>Rules</th><th></th></tr>
-          </thead>
-          <tbody>
-            @for (w of workflows(); track w.id) {
-              <tr>
-                <td><a [routerLink]="['/workflows', w.id]">{{ w.name }}</a></td>
-                <td>
-                  @if (w.ruleFormConfigName) {
-                    {{ w.ruleFormConfigName }}
-                  } @else {
-                    <span class="text-muted">None</span>
-                  }
-                </td>
-                <td>{{ w.ruleCount }}</td>
-                <td class="text-end">
-                  <a [routerLink]="['/workflows', w.id]" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-                  <button class="btn btn-sm btn-outline-danger" (click)="remove(w)">Delete</button>
-                </td>
-              </tr>
-            } @empty {
-              <tr><td colspan="4" class="text-muted">No workflows yet.</td></tr>
-            }
-          </tbody>
-        </table>
-      </div>
+<main class="rule-builder-page">
+  <section class="rule-builder-card">
+    <header class="rule-builder-card__header">
+      <h1 class="rule-builder-card__title">Workflows</h1>
+      <a pButton routerLink="/workflows/new" icon="pi pi-plus" label="Create workflow"></a>
+    </header>
+
+    <div class="rule-builder-card__body">
+      <p-table
+        [value]="workflows()"
+        [lazy]="true"
+        [paginator]="true"
+        [rows]="rows"
+        [first]="first()"
+        [totalRecords]="totalRecords()"
+        [loading]="loading()"
+        [rowHover]="true"
+        [stripedRows]="true"
+        (onLazyLoad)="load($event)"
+        styleClass="rule-builder-table"
+        aria-label="Workflows"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
+            <th>Form config</th>
+            <th pSortableColumn="ruleCount">Rules <p-sortIcon field="ruleCount" /></th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-workflow>
+          <tr>
+            <td>
+              <a [routerLink]="['/workflows', workflow.id]" class="fw-semibold">
+                {{ workflow.name }}
+              </a>
+            </td>
+            <td>{{ workflow.ruleFormConfigName || 'None' }}</td>
+            <td>{{ workflow.ruleCount ?? 0 }}</td>
+            <td class="text-end">
+              <a
+                pButton
+                [routerLink]="['/workflows', workflow.id]"
+                severity="secondary"
+                [text]="true"
+                icon="pi pi-pencil"
+                aria-label="Edit workflow"
+              ></a>
+              <button
+                pButton
+                type="button"
+                severity="danger"
+                [text]="true"
+                icon="pi pi-trash"
+                aria-label="Delete workflow"
+                (click)="remove(workflow)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr><td colspan="4" class="rule-builder-empty">No workflows found.</td></tr>
+        </ng-template>
+      </p-table>
     </div>
+  </section>
+</main>

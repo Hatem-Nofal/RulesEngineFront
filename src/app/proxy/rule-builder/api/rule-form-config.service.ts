@@ -2,7 +2,7 @@ import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
 import type { LookupDto } from '../../lookups/dtos/models';
-import type { FormConfigEditDto, FormConfigListDto, RuleFormConfigDto } from '../../work-flows/dtos/rule-builders-dtos/models';
+import type { CreateFormConfigEditDto, FormConfigListDto, RuleFieldCatalogDto, RuleFormConfigDto } from '../../work-flows/dtos/rule-builders-dtos/models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class RuleFormConfigService {
   
 
   
-  create = (input: FormConfigEditDto, config?: Partial<Rest.Config>) =>
+  create = (input: CreateFormConfigEditDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleFormConfigDto>({
       method: 'POST',
       headers: { Accept: 'application/json' },
@@ -74,7 +74,17 @@ export class RuleFormConfigService {
   
 
   
-  update = (id: string, input: FormConfigEditDto, config?: Partial<Rest.Config>) =>
+  ruleFields = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RuleFieldCatalogDto[]>({
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/rule-form-config/rule-fields',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  update = (id: string, input: CreateFormConfigEditDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleFormConfigDto>({
       method: 'PUT',
       headers: { Accept: 'application/json' },

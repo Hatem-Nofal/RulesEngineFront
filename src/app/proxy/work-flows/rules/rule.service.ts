@@ -2,7 +2,7 @@ import type { RuleExpressionResultDto } from './rule-expression-builders/models'
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
-import type { RuleDto, RuleListItemDto } from '../dtos/rules-dtos/models';
+import type { CreateRuleDto, RuleDto, RuleListItemDto } from '../dtos/rules-dtos/models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class RuleService {
   
 
   
-  create = (input: RuleDto, config?: Partial<Rest.Config>) =>
+  create = (input: CreateRuleDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleDto>({
       method: 'POST',
       headers: { Accept: 'application/json' },
@@ -65,7 +65,7 @@ export class RuleService {
   
 
   
-  update = (id: string, input: RuleDto, config?: Partial<Rest.Config>) =>
+  update = (id: string, input: CreateRuleDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleDto>({
       method: 'PUT',
       headers: { Accept: 'application/json' },
