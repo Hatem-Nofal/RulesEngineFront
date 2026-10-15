@@ -10,7 +10,7 @@ function configureRoutes(routes: RoutesService) {
     routes.add([
       {
         path: '/',
-        name: '::Menu:HomePage',
+        name: 'HomePage',
         iconClass: 'fas fa-home',
         order: 1,
         layout: eLayoutType.application,

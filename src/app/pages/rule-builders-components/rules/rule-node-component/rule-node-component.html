@@ -1,52 +1,66 @@
 <ng-container>
-  @let n = node(); @if (n.nodeType === 1) {
-  <div class="group">
-    <div class="bar">
-      <span class="fw-semibold">{{ isRoot() ? 'Conditions' : 'Group' }}</span>
-      <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCondition()">
-        + Condition
-      </button>
-      @if (allowGroups()) {
-      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addGroup()">
-        + Group
-      </button>
-      } @if (!isRoot()) {
-      <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove.emit()">✕</button>
+  @let n = node();
+  @if (n.nodeType === 1) {
+    <div class="group" [class.group--root]="isRoot()">
+      <div class="bar">
+        <span class="group-title">{{ isRoot() ? 'Conditions' : 'Group' }}</span>
+        <div class="group-actions">
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCondition()">
+            + Condition
+          </button>
+          @if (allowGroups()) {
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addGroup()">
+              + Group
+            </button>
+          }
+          @if (!isRoot()) {
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger"
+              aria-label="Remove group"
+              (click)="remove.emit()"
+            >
+              ✕
+            </button>
+          }
+        </div>
+      </div>
+
+      @for (c of n.children; track $index; let i = $index) {
+        @if (i > 0) {
+          <div class="join">
+            <p-select
+              [options]="logicalOperators"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="rule-node-select rule-node-select--join"
+              [ngModel]="c.logicalJoinOperator ?? 1"
+              (ngModelChange)="setJoin(i, $event)"
+              aria-label="Condition join operator"
+            />
+          </div>
+        }
+        <div class="node-card" [class.node-card--group]="c.nodeType === 1">
+          <app-rule-node
+            [node]="c"
+            [fields]="fields()"
+            [lookups]="lookups()"
+            [allowGroups]="allowGroups()"
+            [isRoot]="false"
+            (nodeChange)="updateChild(c, $event)"
+            (remove)="removeChild($index)"
+          />
+        </div>
+      }
+
+      @if (n.children.length === 0) {
+        <small class="group-empty">No conditions yet. Add a condition to get started.</small>
+      } @else if (n.children.length > 1) {
+        <small class="group-hint">
+          AND is evaluated before OR. Use a group for any other grouping.
+        </small>
       }
     </div>
-
-    @for (c of n.children; track $index; let i = $index) { @if (i > 0) {
-    <div class="join">
-      <p-select
-        [options]="logicalOperators"
-        optionLabel="label"
-        optionValue="value"
-        styleClass="rule-node-select rule-node-select--join"
-        [ngModel]="c.logicalJoinOperator ?? 1"
-        (ngModelChange)="setJoin(i, $event)"
-        aria-label="Condition join operator"
-      />
-    </div>
-    }
-    <div class="node-card" [class.node-card--group]="c.nodeType === 1">
-      <app-rule-node
-        [node]="c"
-        [fields]="fields()"
-        [lookups]="lookups()"
-        [allowGroups]="allowGroups()"
-        [isRoot]="false"
-        (nodeChange)="updateChild(c, $event)"
-        (remove)="removeChild($index)"
-      />
-    </div>
-    } @if (n.children.length === 0) {
-    <small class="text-muted">No conditions yet.</small>
-    } @else if (n.children.length > 1) {
-    <small class="text-muted"
-      >AND is evaluated before OR. Use a group for any other grouping.</small
-    >
-    }
-  </div>
   } @else {
   <div class="cond">
     <p-select

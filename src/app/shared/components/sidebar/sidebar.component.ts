@@ -58,7 +58,7 @@ export class SidebarComponent implements OnInit {
 
     this.items = [
       {
-        label: 'Rule Management',
+        label: 'RuleManagement',
         icon: 'bi bi-file-earmark-code me-1',
         items: [
           {
@@ -72,7 +72,7 @@ export class SidebarComponent implements OnInit {
             routerLink: '/workflows',
            },
           {
-            label: 'Form configs',
+            label: 'Formconfigs',
             icon: 'bi bi-box me-1',
             routerLink: '/form-configs',
            },

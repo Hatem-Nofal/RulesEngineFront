@@ -31,7 +31,7 @@ private createBreadcrumbs(
   // Handle root case
   if (this.router.url === '/' || this.router.url === '') {
     return [{
-      label: this.localization.instant('RuleApplication::Menu:HomePage'),
+      label: this.localization.instant('::Menu:HomePage'),
       url: '/',
       navigate: true
     }];
