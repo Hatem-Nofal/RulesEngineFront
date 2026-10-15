@@ -38,6 +38,7 @@ export class RuleEditComponent implements OnInit {
   ruleId: string | null = null;
   name = '';
   isActive = true;
+  isMultiple = false;
 
   workflows = signal<LookupDto[]>([]);
   items = signal<LookupDto[]>([]);
@@ -69,6 +70,7 @@ export class RuleEditComponent implements OnInit {
       next: rule => {
         this.name = rule.name ?? '';
         this.isActive = rule.isActive ?? true;
+        this.isMultiple = rule.isMultiple ?? false;
         this.workflowId.set(rule.workflowId ?? null);
         this.root.set(rule.root ?? emptyRoot());
         if (rule.workflowId) this.loadConfig(rule.workflowId);
@@ -121,6 +123,7 @@ export class RuleEditComponent implements OnInit {
         name: this.name.trim() || 'preview',
         workflowId: this.workflowId()!,
         isActive: this.isActive,
+        isMultiple: this.isMultiple,
         root: this.root(),
       })
       .subscribe(e => this.expression.set(e));
@@ -142,6 +145,7 @@ export class RuleEditComponent implements OnInit {
       name: this.name.trim(),
       workflowId: this.workflowId()!,
       isActive: this.isActive,
+      isMultiple: this.isMultiple,
       root: this.root(),
     };
     const request = this.ruleId

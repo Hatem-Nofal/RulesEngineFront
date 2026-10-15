@@ -66,6 +66,7 @@ export const emptyRoot = (): RuleNodeDto => ({
   nodeType: RuleNodeType.Group,
   logicalOperator: 1,
   children: [],
+  isMultiple:false
 });
 
 export const operatorIds = (f: RuleFormFieldDto): number[] =>
