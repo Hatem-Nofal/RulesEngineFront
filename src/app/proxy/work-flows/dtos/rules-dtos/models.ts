@@ -4,7 +4,6 @@ export interface CreateRuleDto {
   name?: string;
   workflowId?: string;
   isActive?: boolean;
-  isMultiple?: boolean;
   root?: RuleNodeDto;
 }
 

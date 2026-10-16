@@ -13,6 +13,16 @@ export class RuleService {
   
 
   
+  bulkUpload = (workflowId: string, fileContent: readonly number[], config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: `/api/app/rule/bulk-upload/${workflowId}`,
+      body: fileContent,
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
   create = (input: CreateRuleDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleDto>({
       method: 'POST',
@@ -49,6 +59,17 @@ export class RuleService {
       headers: { Accept: 'application/json' },
       url: '/api/app/rule',
       params: { sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  getRulesSample = (workflowId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, Blob>({
+      method: 'GET',
+      responseType: 'blob',
+      headers: { Accept: 'application/octet-stream' },
+      url: `/api/app/rule/rules-sample/${workflowId}`,
     },
       { apiName: this.apiName,...config });
   

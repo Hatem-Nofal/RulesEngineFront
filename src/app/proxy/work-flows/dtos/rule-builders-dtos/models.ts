@@ -52,7 +52,6 @@ export interface RuleFormFieldDto {
   options?: string[] | null;
   allowedOperators?: number[] | null;
   isMultiple?: boolean;
-  lookupSource?: string | null;
 }
 
 export interface RuleNodeDto {

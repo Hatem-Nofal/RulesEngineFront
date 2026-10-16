@@ -107,7 +107,7 @@ export class RuleNodeComponent {
       if (this.isMultipleSelect(f)) value = Array.isArray(v) ? v : v == null ? [] : [v];
       else value = Array.isArray(v) ? (v[0] ?? null) : v;
     }
-    this.patch({ operator: op, value });
+    this.patch({ operator: op,value: value  ,isMultiple:f?.isMultiple});
   }
 
   toggleValue(option: string) {
@@ -132,6 +132,7 @@ export class RuleNodeComponent {
       operator: op,
       value: defaultValue(f, op),
       children: [],
+      isMultiple:f.isMultiple
     };
     this.patch({
       children: [
@@ -165,7 +166,9 @@ export class RuleNodeComponent {
     this.patch({
       children: children.map((current, index) =>
         index === i ? { ...current, logicalJoinOperator: op } : current,
+
       ),
+      isMultiple:child.isMultiple
     });
   }
 
@@ -180,6 +183,7 @@ export class RuleNodeComponent {
         : { ...updatedChild, nodeType: RuleNodeType.Condition };
     this.patch({
       children: children.map((current, index) => (index === childIndex ? child : current)),
+      isMultiple:child.isMultiple
     });
   }
 
