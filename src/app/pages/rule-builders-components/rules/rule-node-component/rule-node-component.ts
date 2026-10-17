@@ -123,8 +123,6 @@ export class RuleNodeComponent {
 
     const op = operatorIds(f)[0];
     const children = this.node().children ?? [];
-    const firstGroupIndex = children.findIndex(child => child.logicalOperator != null);
-    const insertAt = firstGroupIndex === -1 ? children.length : firstGroupIndex;
     const condition: RuleNodeDto = {
       nodeType: RuleNodeType.Condition,
       logicalJoinOperator: 1,
@@ -135,11 +133,7 @@ export class RuleNodeComponent {
       isMultiple:f.isMultiple
     };
     this.patch({
-      children: [
-        ...children.slice(0, insertAt),
-        condition,
-        ...children.slice(insertAt),
-      ],
+      children: [condition, ...children],
     });
   }
 

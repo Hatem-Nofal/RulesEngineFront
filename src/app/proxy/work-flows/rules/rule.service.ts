@@ -13,7 +13,7 @@ export class RuleService {
   
 
   
-  bulkUpload = (workflowId: string, fileContent: readonly number[], config?: Partial<Rest.Config>) =>
+  bulkUpload = (workflowId: string, fileContent: FormData, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'POST',
       url: `/api/app/rule/bulk-upload/${workflowId}`,

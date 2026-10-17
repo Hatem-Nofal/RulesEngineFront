@@ -44,6 +44,7 @@ export class FormConfigEditComponent implements OnInit {
     return this.catalog().filter(f => !used.has(f.id));
   });
   picked = signal<Set<string>>(new Set());
+  defaultCount = computed(() => this.selected().filter(field => field.isDefault).length);
   allPicked = computed(
     () =>
       this.available().length > 0 &&
@@ -56,7 +57,8 @@ export class FormConfigEditComponent implements OnInit {
       !this.loading() &&
       this.metadataLoaded() &&
       this.selected().length > 0 &&
-      this.selected().every(field => !!field.id),
+      this.selected().every(field => !!field.id) &&
+      this.defaultCount() === 2,
   );
 
   ngOnInit() {
@@ -120,6 +122,16 @@ export class FormConfigEditComponent implements OnInit {
     );
   }
 
+  setDefault(index: number, isDefault: boolean) {
+    if (isDefault && this.defaultCount() >= 2) return;
+
+    this.selected.update(fields =>
+      fields.map((field, fieldIndex) =>
+        fieldIndex === index ? { ...field, isDefault } : field,
+      ),
+    );
+  }
+
   move(index: number, offset: number) {
     this.selected.update(fields => {
       const nextIndex = index + offset;
@@ -150,6 +162,11 @@ export class FormConfigEditComponent implements OnInit {
       return;
     }
 
+    if (this.defaultCount() !== 2) {
+      alert('Exactly two fields must be marked as default.');
+      return;
+    }
+
     const input: CreateFormConfigEditDto = {
       name: this.name.trim(),
       description: this.description.trim() || null,
@@ -159,6 +176,7 @@ export class FormConfigEditComponent implements OnInit {
         fieldId: field.id!,
         allowedOperators: field.allowedOperators?.length ? field.allowedOperators : null,
         isMultiple: field.dataType === 'List' ? (field.isMultiple ?? false) : false,
+        isDefault: field.isDefault,
         dataType: field.dataType
       })),
     };
@@ -213,7 +231,13 @@ export class FormConfigEditComponent implements OnInit {
   addPicked() {
     const toAdd = this.available()
       .filter(f => f.id !== undefined && this.picked().has(f.id))
-      .map(f => ({ id: f.id, allowedOperators: [] as number[], isMultiple: f.dataType === 'List' ? true: false, dataType: f.dataType }));
+      .map(f => ({
+        id: f.id,
+        allowedOperators: [] as number[],
+        isMultiple: f.dataType === 'List',
+        isDefault: false,
+        dataType: f.dataType,
+      }));
     if (!toAdd.length) return;
     this.selected.update(list => [...list, ...toAdd]);
     this.picked.set(new Set());

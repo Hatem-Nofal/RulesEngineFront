@@ -49,19 +49,37 @@ describe('RuleNodeComponent', () => {
     ]);
   });
 
-  it('adds new conditions before existing subgroups', () => {
+  it('adds new conditions at the top of the existing conditions and groups', () => {
+    const existingCondition = {
+      nodeType: RuleNodeType.Condition,
+      logicalJoinOperator: 1,
+      fieldKey: 'age',
+      operator: 1,
+      value: 10,
+      children: [],
+    };
     const group = {
       nodeType: RuleNodeType.Group,
       logicalOperator: 1,
       logicalJoinOperator: 1,
       children: [],
     };
-    fixture.componentRef.setInput('node', { ...emptyRoot(), children: [group] });
+    fixture.componentRef.setInput('node', {
+      ...emptyRoot(),
+      children: [existingCondition, group],
+    });
 
     component.addCondition();
 
-    expect(component.node().children?.[0].nodeType).toBe(RuleNodeType.Condition);
-    expect(component.node().children?.[1]).toEqual(group);
+    expect(component.node().children?.[0]).toEqual({
+      nodeType: RuleNodeType.Condition,
+      logicalJoinOperator: 1,
+      fieldKey: 'age',
+      operator: 1,
+      value: null,
+      children: [],
+    });
+    expect(component.node().children?.slice(1)).toEqual([existingCondition, group]);
   });
 
   it('adds and removes nested groups without confusing them with field data types', () => {

@@ -78,7 +78,9 @@
       </div>
 
       <div class="col-md-8">
-        <div class="text-muted small mb-1">Selected (order = order in the builder)</div>
+        <div class="text-muted small mb-1">
+          Selected (order = order in the builder) · Default fields: {{ defaultCount() }}/2
+        </div>
         @for ( s of selected(); track s.id; let i = $index; let first = $first; let last = $last ) {
         @let f = fieldOf(s.id);
 
@@ -119,17 +121,12 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  [attr.disabled]="(s?.dataType === 'List' && (
-  (s?.isMultiple && ![7, 8].includes(o?.v)) ||
-  (!s?.isMultiple && [7, 8].includes(o?.v))
-)) ? true : null"
+                  [attr.disabled]="(s?.dataType === 'List' && ((s?.isMultiple && ![7, 8].includes(o?.v)) ||(!s?.isMultiple && [7, 8].includes(o?.v)))) ? true : null"
                   [id]="'op-' + s.id + '-' + o.v"
                   [checked]="s.allowedOperators.includes(o.v)"
                   (change)="toggleOperator(i, o.v)"
                 />
-                <label class="form-check-label" [for]="'op-' + s.id + '-' + o.v"
-                  >{{ o.l }}</label
-                >
+                <label class="form-check-label" [for]="'op-' + s.id + '-' + o.v">{{ o.l }}</label>
               </div>
 
               } @if (s.dataType == 'List') {
@@ -149,6 +146,19 @@
                 </div>
               </div>
               }
+              <div class="form-check form-check-inline m-0">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="'field-' + (s.id || i) + '-default'"
+                  [ngModel]="s.isDefault"
+                  [disabled]="!(s.isDefault ?? false) && defaultCount() >= 2"
+                  (ngModelChange)="setDefault(i, $event)"
+                />
+                <label class="form-check-label" [for]="'field-' + (s.id || i) + '-default'"
+                  >Default field</label
+                >
+              </div>
               <span class="small text-muted">(none checked = all)</span>
             </div>
             }
@@ -160,9 +170,12 @@
       </div>
     </div>
 
-    <button type="button" class="btn btn-primary mt-3" [disabled]="saving()" (click)="save()">
+    <button type="button" class="btn btn-primary mt-3" [disabled]="!canSave()" (click)="save()">
       Save
     </button>
+    @if (defaultCount() !== 2) {
+    <small class="d-block text-danger mt-1">Select exactly two default fields to save.</small>
+    }
   </div>
 </div>
 
