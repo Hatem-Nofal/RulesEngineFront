@@ -1415,6 +1415,33 @@
               "remarks": null,
               "description": null,
               "displayName": null
+            },
+            "GetWorkflowsDropDownList": {
+              "uniqueName": "GetWorkflowsDropDownList",
+              "name": "GetWorkflowsDropDownList",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/workflows-drop-down-list",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListByGuid>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListByGuid]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
             }
           }
         },
