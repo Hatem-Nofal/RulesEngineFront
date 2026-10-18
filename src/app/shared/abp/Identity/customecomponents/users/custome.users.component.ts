@@ -37,8 +37,8 @@ import {
 } from '@angular/forms';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 import { eIdentityComponents } from '@abp/ng.identity';
- 
-import { LookupAppServicesService } from '@proxy/ehealth-claims/lookups';
+import { LookupService } from '@proxy/ehealth-claims/lookups';
+
 
 
 @Component({
@@ -59,7 +59,7 @@ export class CustomeUsersComponent implements OnInit {
   protected readonly service = inject(IdentityUserService);
   protected readonly customUserService = inject(IdentityUserService);
 
-  protected readonly lookupAppServicesService = inject(LookupAppServicesService);
+  protected readonly lookupAppServicesService = inject(LookupService);
 
   protected readonly toasterService = inject(ToasterService);
   private readonly fb = inject(UntypedFormBuilder);
@@ -74,7 +74,7 @@ export class CustomeUsersComponent implements OnInit {
   selected?: IdentityUserDto;
 
   selectedUserRoles?: IdentityRoleDto[];
-  
+
 
   roles?: IdentityRoleDto[];
 

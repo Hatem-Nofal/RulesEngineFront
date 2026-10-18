@@ -76,6 +76,7 @@ import { OnlySingleSpaceDirective } from './directives/only-single-space/only-si
     DialogModule,
     CustomRadioComponent,
     NgbPopoverModule,
+    CardModule
   ],
   exports: [
     CoreModule,

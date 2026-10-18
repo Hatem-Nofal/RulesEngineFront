@@ -1,3 +1,4 @@
+import { RulesBulkComponent } from './rules-bulk/rules-bulk.component';
 import { Routes } from '@angular/router';
 
 export const RULES_ROUTES: Routes = [
@@ -16,4 +17,10 @@ export const RULES_ROUTES: Routes = [
     loadComponent: () =>
       import('./rule-edit-component/rule-edit.component').then(m => m.RuleEditComponent),
   },
+   {
+    path: 'bulk',
+    loadComponent: () =>
+      import('./rules-bulk/rules-bulk.component').then(m => m.RulesBulkComponent),
+  }
+
 ];

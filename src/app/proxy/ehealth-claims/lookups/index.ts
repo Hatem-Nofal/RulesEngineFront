@@ -1,1 +1,1 @@
-export * from './lookup-app-services.service';
+export * from './lookup.service';

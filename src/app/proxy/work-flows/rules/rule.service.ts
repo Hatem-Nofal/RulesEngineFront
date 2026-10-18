@@ -14,8 +14,10 @@ export class RuleService {
 
   
   bulkUpload = (workflowId: string, fileContent: FormData, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
+    this.restService.request<any, Blob>({
       method: 'POST',
+      responseType: 'blob',
+      headers: { Accept: 'application/octet-stream' },
       url: `/api/app/rule/bulk-upload/${workflowId}`,
       body: fileContent,
     },
