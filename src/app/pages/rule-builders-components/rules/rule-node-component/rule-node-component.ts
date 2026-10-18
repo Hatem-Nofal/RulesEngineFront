@@ -126,6 +126,7 @@ export class RuleNodeComponent {
     const condition: RuleNodeDto = {
       nodeType: RuleNodeType.Condition,
       logicalJoinOperator: 1,
+      logicalOperator:1,
       fieldKey: f.key,
       operator: op,
       value: defaultValue(f, op),
