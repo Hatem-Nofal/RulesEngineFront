@@ -13,6 +13,7 @@ export const MEDICAL_RULES_ROUTES: Routes = [
     loadChildren: () =>
       import('./rule-builders-components/rules/rules.routes').then(m => m.RULES_ROUTES),
   },
+
   {
     path: 'workflows',
     canActivate: [authGuard, loginGuard],

@@ -76,6 +76,12 @@ export class SidebarComponent implements OnInit {
             icon: 'bi bi-box me-1',
             routerLink: '/form-configs',
            },
+           {
+            label: 'Bulk Rules',
+            icon: 'pi pi-upload me-1',
+            routerLink: '/rules/bulk',
+
+          },
         ],
        },
 
