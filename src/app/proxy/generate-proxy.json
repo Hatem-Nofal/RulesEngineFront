@@ -1251,81 +1251,7 @@
           "remarks": null,
           "description": null,
           "displayName": null,
-          "interfaces": [
-            {
-              "type": "EhealthClaims.Lookups.ILookupServices",
-              "name": "ILookupServices",
-              "methods": [
-                {
-                  "name": "GetActivityTypeDropDownList",
-                  "parametersOnMethod": [],
-                  "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
-                    "summary": null,
-                    "contentTypes": null,
-                    "isRemoteStream": false
-                  }
-                },
-                {
-                  "name": "GetActivitySubTypeDropDownList",
-                  "parametersOnMethod": [
-                    {
-                      "name": "activityTypeId",
-                      "typeAsString": "System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
-                      "type": "System.Int32?",
-                      "typeSimple": "number?",
-                      "isOptional": false,
-                      "defaultValue": null,
-                      "summary": null,
-                      "description": null,
-                      "displayName": null
-                    }
-                  ],
-                  "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
-                    "summary": null,
-                    "contentTypes": null,
-                    "isRemoteStream": false
-                  }
-                },
-                {
-                  "name": "GetDiagnosisDropDownList",
-                  "parametersOnMethod": [],
-                  "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
-                    "summary": null,
-                    "contentTypes": null,
-                    "isRemoteStream": false
-                  }
-                },
-                {
-                  "name": "GetSpecialitiesIdDropDownList",
-                  "parametersOnMethod": [],
-                  "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
-                    "summary": null,
-                    "contentTypes": null,
-                    "isRemoteStream": false
-                  }
-                },
-                {
-                  "name": "GetWorkflowsDropDownList",
-                  "parametersOnMethod": [],
-                  "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListByGuid>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListByGuid]",
-                    "summary": null,
-                    "contentTypes": null,
-                    "isRemoteStream": false
-                  }
-                }
-              ]
-            }
-          ],
+          "interfaces": [],
           "actions": {
             "GetActivitySubTypeDropDownListByActivityTypeId": {
               "uniqueName": "GetActivitySubTypeDropDownListByActivityTypeId",
@@ -1376,7 +1302,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1403,7 +1329,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1430,7 +1356,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1457,7 +1383,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1484,7 +1410,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
