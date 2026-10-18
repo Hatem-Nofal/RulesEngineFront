@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RulesBulkComponent } from './rules-bulk.component';
+import { RulesBulkComponent } from './rules-bulk-component';
 
 describe('RulesBulkComponent', () => {
   let component: RulesBulkComponent;
@@ -14,7 +14,7 @@ describe('RulesBulkComponent', () => {
 
     fixture = TestBed.createComponent(RulesBulkComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

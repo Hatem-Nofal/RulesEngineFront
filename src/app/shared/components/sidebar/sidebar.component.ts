@@ -79,7 +79,7 @@ export class SidebarComponent implements OnInit {
            {
             label: 'Bulk Rules',
             icon: 'pi pi-upload me-1',
-            routerLink: '/rules/bulk',
+            routerLink: '/rules/rules-bulk',
 
           },
         ],

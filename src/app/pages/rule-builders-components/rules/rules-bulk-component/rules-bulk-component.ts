@@ -1,27 +1,29 @@
-import { LookupService } from './../../../../proxy/ehealth-claims/lookups/lookup.service';
 import { Component, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LookupDto } from '@proxy/lookups/dtos';
-import { WorkFlowService } from '@proxy/work-flows';
-import { RuleService } from '@proxy/work-flows/rules';
-
-import { SelectModule } from 'primeng/select';
-
-import { CustomConfirmationService } from 'src/app/shared/services/customConfirmation.service';
-import { CommonModule } from '@angular/common';
+   import { CustomConfirmationService } from 'src/app/shared/services/customConfirmation.service';
+ import { CommonModule } from '@angular/common';
+ import { FormsModule } from '@angular/forms';
 
 import { CardModule } from 'primeng/card';
- import { SelectedDropDownListByGuid } from '@proxy/common/dtos';
+
+import { SelectModule } from 'primeng/select';
+import { SelectedDropDownListByGuid } from '@proxy/common/dtos';
+import { LookupService } from '@proxy/ehealth-claims/lookups';
+import { LookupDto } from '@proxy/lookups/dtos';
+import { RuleService } from '@proxy/work-flows/rules';
+
+
+
+
+
 @Component({
-  selector: 'app-rules-bulk',
-  templateUrl: './rules-bulk.component.html',
-  styleUrl: './rules-bulk.component.scss',
+  selector: 'app-rules-bulk-component',
   imports: [CardModule, SelectModule, FormsModule, CommonModule],
-  standalone:true
+  templateUrl: './rules-bulk-component.html',
+  styleUrl: './rules-bulk-component.scss',
 })
 export class RulesBulkComponent implements OnInit {
-  pageNumber = 1;
+pageNumber = 1;
   workflows = signal<LookupDto[]>([]);
   fileContent = signal<FormData>(new FormData());
 
@@ -115,4 +117,5 @@ export class RulesBulkComponent implements OnInit {
       },
     });
   }
+
 }
