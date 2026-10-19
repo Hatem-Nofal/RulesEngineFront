@@ -3,8 +3,10 @@ import type { PagedAndSortedResultRequestDto } from '@abp/ng.core';
 
 export interface SaveWorkflowDto {
   name?: string;
-  ruleFormConfigId?: string;
+  ruleFormConfigId?: string | null;
   rejectionLevel?: RejectionLevel;
+  hasCustomeRule?: boolean;
+  ruleExpression?: string;
 }
 
 export interface WorkflowDto {
@@ -14,6 +16,8 @@ export interface WorkflowDto {
   ruleFormConfigName?: string | null;
   ruleCount?: number;
   rejectionLevel?: RejectionLevel;
+  hasCustomeRule?: boolean;
+  ruleExpression?: string | null;
 }
 
 export interface WorkflowPagedAndFilterDto extends PagedAndSortedResultRequestDto {

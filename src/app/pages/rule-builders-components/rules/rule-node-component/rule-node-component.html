@@ -1,131 +1,144 @@
 <ng-container>
-  @let n = node();
-  @if (n.nodeType === 1) {
-    <div class="group" [class.group--root]="isRoot()">
-      <div class="bar">
-        <span class="group-title">{{ isRoot() ? 'Conditions' : 'Group' }}</span>
-        <div class="group-actions">
-          <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCondition()">
-            + Condition
-          </button>
-          @if (allowGroups()) {
-            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addGroup()">
-              + Group
-            </button>
-          }
-          @if (!isRoot()) {
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-danger"
-              aria-label="Remove group"
-              (click)="remove.emit()"
-            >
-              ✕
-            </button>
-          }
-        </div>
-      </div>
-
-      @for (c of n.children; track $index; let i = $index) {
-        @if (i > 0) {
-          <div class="join">
-            <p-select
-              [options]="logicalOperators"
-              optionLabel="label"
-              optionValue="value"
-              styleClass="rule-node-select rule-node-select--join"
-              [ngModel]="c.logicalJoinOperator ?? 1"
-              (ngModelChange)="setJoin(i, $event)"
-              aria-label="Condition join operator"
-            />
-          </div>
+  @let n = node(); @if (n.nodeType === 1) {
+  <div class="group" [class.group--root]="isRoot()">
+    <div class="bar">
+      <span class="group-title">{{ isRoot() ? 'Conditions' : 'Group' }}</span>
+      <div class="group-actions">
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCondition()">
+          + Condition
+        </button>
+        @if (allowGroups()) {
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addGroup()">
+          + Group
+        </button>
+        } @if (!isRoot()) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-danger"
+          aria-label="Remove group"
+          (click)="remove.emit()"
+        >
+          ✕
+        </button>
         }
-        <div class="node-card" [class.node-card--group]="c.nodeType === 1">
-          <app-rule-node
-            [node]="c"
-            [fields]="fields()"
-            [lookups]="lookups()"
-            [allowGroups]="allowGroups()"
-            [isRoot]="false"
-            (nodeChange)="updateChild(c, $event)"
-            (remove)="removeChild($index)"
-          />
-        </div>
-      }
-
-      @if (n.children.length === 0) {
-        <small class="group-empty">No conditions yet. Add a condition to get started.</small>
-      } @else if (n.children.length > 1) {
-        <small class="group-hint">
-          AND is evaluated before OR. Use a group for any other grouping.
-        </small>
-      }
+      </div>
     </div>
+
+    @for (c of n.children; track $index; let i = $index) { @if (i > 0) {
+    <div class="join">
+      <p-select
+        [options]="logicalOperators"
+        optionLabel="label"
+        optionValue="label"
+        styleClass="rule-node-select rule-node-select--join"
+        [ngModel]="c.logicalJoinOperator ?? 1"
+        (ngModelChange)="setJoin(i, $event)"
+        aria-label="Condition join operator"
+      />
+    </div>
+    }
+    <div class="node-card" [class.node-card--group]="c.nodeType === 1">
+      <app-rule-node
+        [node]="c"
+        [fields]="fields()"
+        [lookups]="lookups()"
+        [allowGroups]="allowGroups()"
+        [isRoot]="false"
+        (nodeChange)="updateChild(c, $event)"
+        (remove)="removeChild($index)"
+      />
+    </div>
+    } @if (n.children.length === 0) {
+    <small class="group-empty">No conditions yet. Add a condition to get started.</small>
+    } @else if (n.children.length > 1) {
+    <small class="group-hint">
+      AND is evaluated before OR. Use a group for any other grouping.
+    </small>
+    }
+  </div>
   } @else {
   <div class="cond">
+
     <p-select
       [options]="fields()"
       optionLabel="label"
-      optionValue="key"
+      optionValue="label"
       placeholder="Select field"
       styleClass="rule-node-select"
       [ngModel]="n.fieldKey"
       (ngModelChange)="onField($event)"
       aria-label="Rule field"
     />
-
+   @if (usesActivityType()) {
+    <p-select
+      [options]="activityTypes()"
+      optionLabel="name"
+      optionValue="id"
+      optionDisabled="disabled"
+      placeholder="Activity type"
+      styleClass="rule-node-select"
+      [ngModel]="activityType()"
+      (ngModelChange)="onActivityType($event)"
+      aria-label="Activity type"
+    />
+    }
     @if (field(); as f) {
     <p-select
       [options]="operators()"
       optionLabel="l"
-      optionValue="v"
+      optionValue="l"
       placeholder="Operator"
       styleClass="rule-node-select"
       [ngModel]="n.operator"
       (ngModelChange)="onOperator($event)"
+      [disabled]="singleOperator() !== null"
       aria-label="Rule operator"
     />
 
-    @if (f.lookupSource && isMultipleSelect(f)) {
+    @if (f.lookupSource && multipleSelectField()) {
     <p-multiselect
-      [options]="lookups()[f.lookupSource] ?? []"
+      [options]="lookupOptions()"
       optionLabel="name"
-      optionValue="id"
+      optionValue="name"
       display="chip"
       placeholder="Select options"
       styleClass="rule-node-select rule-node-select--multiple"
-      [ngModel]="asArray(n.value)"
+      [ngModel]="valueList()"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select multiple lookup options"
     />
     } @else if (f.lookupSource) {
     <p-select
-      [options]="lookups()[f.lookupSource] ?? []"
+      [options]="lookupOptions()"
       optionLabel="name"
-      optionValue="id"
+      optionValue="name"
       placeholder="Select…"
       styleClass="rule-node-select"
       [ngModel]="n.value"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select lookup option"
     />
-    } @else if (f.dataType === 'List' && isCollection(f)) { @if (isMultipleSelect(f)) {
+    } @else if (f.dataType === 'List' && collectionField()) { @if (multipleSelectField()) {
     <p-multiselect
-      [options]="loadOptionsForField(f.key)"
+      [options]="listOptions()"
+      [disabled]="valueSelectDisabled()"
       optionLabel="name"
-      optionValue="id"
+      optionValue="name"
+      optionDisabled="disabled"
       display="chip"
       placeholder="Select options"
       styleClass="rule-node-select rule-node-select--multiple"
-      [ngModel]="asArray(n.value)"
+      [ngModel]="valueList()"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select multiple list options"
     />
     } @else {
     <p-select
-      [options]="loadOptionsForField(f.key)"
+      [options]="listOptions()"
+      [disabled]="valueSelectDisabled()"
       optionLabel="name"
-      optionValue="id"
+      optionValue="name"
+      optionDisabled="disabled"
       placeholder="Select…"
       styleClass="rule-node-select"
       [ngModel]="n.value"
@@ -158,40 +171,44 @@
     />
     } @case ('Enum') { @if (isList(n.operator)) {
     <p-multiselect
-      [options]="f.options ?? []"
+      [options]="enumOptions()"
       display="chip"
       placeholder="Select options"
       styleClass="rule-node-select rule-node-select--multiple"
-      [ngModel]="asArray(n.value)"
+      [ngModel]="valueList()"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select enum options"
     />
     } @else {
     <p-select
-      [options]="f.options ?? []"
+      [options]="enumOptions()"
       placeholder="Select…"
       styleClass="rule-node-select"
       [ngModel]="n.value"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select enum option"
     />
-    } } @case ('ItemList') { @if (isMultipleSelect(f)) {
+    } } @case ('ItemList') { @if (multipleSelectField()) {
     <p-multiselect
-      [options]="loadOptionsForField(f.key)"
+      [options]="listOptions()"
+      [disabled]="valueSelectDisabled()"
       optionLabel="name"
-      optionValue="id"
+      optionValue="name"
+      optionDisabled="disabled"
       display="chip"
       placeholder="Select items"
       styleClass="rule-node-select rule-node-select--multiple"
-      [ngModel]="asArray(n.value)"
+      [ngModel]="valueList()"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select multiple items"
     />
     } @else {
     <p-select
-      [options]="loadOptionsForField(f.key)"
+      [options]="listOptions()"
+      [disabled]="valueSelectDisabled()"
       optionLabel="name"
-      optionValue="id"
+      optionValue="name"
+      optionDisabled="disabled"
       placeholder="Select item…"
       styleClass="rule-node-select"
       [ngModel]="n.value"

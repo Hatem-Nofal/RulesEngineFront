@@ -9,10 +9,11 @@ import { RejectionLevel, rejectionLevelOptions } from '@proxy/common/enums/rejec
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { BaseCoreModule } from '@abp/ng.core';
 
 @Component({
   selector: 'app-workflow-edit-component',
-  imports: [ButtonModule, FormsModule, InputTextModule, RouterLink, SelectModule],
+  imports: [ButtonModule, FormsModule, InputTextModule, RouterLink, SelectModule, BaseCoreModule],
   templateUrl: './workflow-edit-component.html',
   styleUrl: './workflow-edit-component.scss',
 })
@@ -23,11 +24,13 @@ export class WorkflowEditComponent implements OnInit {
   private router = inject(Router);
 
   workflowId: string | null = null;
+  ruleExpression?: string | null = null;
   name = '';
   configId: string | null = null;
   rejectionLevel = RejectionLevel.Activity;
 
   configs = signal<LookupDto[]>([]);
+  hasCustomeRule = signal<boolean>(false);
   rejectionLevels = rejectionLevelOptions;
   ruleCount = signal(0);
   saving = signal(false);
@@ -53,6 +56,8 @@ export class WorkflowEditComponent implements OnInit {
         this.configId = workflow.ruleFormConfigId ?? null;
         this.rejectionLevel = workflow.rejectionLevel ?? RejectionLevel.Activity;
         this.ruleCount.set(workflow.ruleCount ?? 0);
+        this.hasCustomeRule.set(workflow.hasCustomeRule ?? false);
+        this.ruleExpression = workflow.ruleExpression;
         this.loading.set(false);
       },
       error: () => this.loading.set(false),
@@ -69,6 +74,8 @@ export class WorkflowEditComponent implements OnInit {
     const dto: SaveWorkflowDto = {
       name: this.name.trim(),
       rejectionLevel: this.rejectionLevel,
+      hasCustomeRule: this.hasCustomeRule(),
+      ruleExpression: this.ruleExpression ?? '',
     };
     if (this.configId) dto.ruleFormConfigId = this.configId;
     const request = this.workflowId

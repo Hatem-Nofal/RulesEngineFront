@@ -6,4 +6,5 @@ import * as Lookups from './lookups';
 import * as RuleBuilder from './rule-builder';
 import * as System from './system';
 import * as WorkFlows from './work-flows';
+export * from './models';
 export { Common, EhealthClaims, Integrations, IntegrationsNew, Lookups, RuleBuilder, System, WorkFlows };

@@ -41,6 +41,46 @@ export class LookupService {
   
 
   
+  getDuplicateTherapyGroupsDropDownList = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/duplicate-therapy-groups-drop-down-list',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  getGenericDrugsDropDownList = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/generic-drugs-drop-down-list',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  getMorbidityGroupsDropDownList = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/morbidity-groups-drop-down-list',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  getProcedureGroupsDropDownList = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/procedure-groups-drop-down-list',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
   getSpecialitiesIdDropDownList = (config?: Partial<Rest.Config>) =>
     this.restService.request<any, SelectedDropDownList[]>({
       method: 'GET',

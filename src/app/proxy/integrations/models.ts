@@ -1,18 +1,4 @@
 
-export interface ClaimActivityRequestDto {
-  activityId?: number;
-  systemCode?: string | null;
-  gross?: number | null;
-  net?: number | null;
-  mediumDesc?: string | null;
-  patient_share?: number | null;
-  minUnitPrice?: number | null;
-  maxUnitPrice?: number | null;
-  quantity?: number | null;
-  tags?: string[] | null;
-  activityCode?: string;
-}
-
 export interface ClaimDto {
   id?: string;
   patientId?: string;
@@ -29,26 +15,6 @@ export interface ClaimValidation {
   claimValidationRequests?: ClaimValidationByCodeRequestExtended[];
 }
 
-export interface ClaimValidationByCodeRequestExtended {
-  activityId?: number;
-  patientnid?: string | null;
-  patientAge?: number | null;
-  diagnosisCodes?: string[] | null;
-  activityCodes?: string[] | null;
-  claimedNet?: number | null;
-  enteredNet?: number | null;
-  claimedGross?: number | null;
-  enteredGross?: number | null;
-  claimStartDate?: string | null;
-  claimEndDate?: string | null;
-  batchType?: string | null;
-  batchServiceMonth?: number | null;
-  batchServiceYear?: number | null;
-  claimTags?: string[] | null;
-  claimNumber?: string | null;
-  activities?: ClaimActivityRequestDto[] | null;
-}
-
 export interface ClaimValidationResponse {
   success?: string;
   failed?: ClaimValidationResultDto[] | null;
@@ -63,6 +29,7 @@ export interface ClaimValidationResultDto {
   matchedActivityCodes?: string[] | null;
   claim?: ClaimDto | null;
   normalizedWorkFlowName?: string | null;
+  maxDailyQuantity?: number | null;
 }
 
 export interface ConsumableDto {

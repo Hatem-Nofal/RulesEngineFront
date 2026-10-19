@@ -12,10 +12,8 @@
         [options]="workflows()"
         [(ngModel)]="selectedWorkflowId"
         optionLabel="name"
-        [optionValue]="'id'"
-        display="chip"
+        optionValue="id"
         [filter]="true"
-        (onFilter)="onWorkflowFilter($event)"
         placeholder="Select Workflows"
       />
     </div>
@@ -27,7 +25,7 @@
           class="w-100 excel-button"
           icon="pi pi-download"
           styleClass="w-100"
-          [disabled]="isLoading || !selectedWorkflowId"
+          [disabled]="isLoading() || !selectedWorkflowId"
           (click)="downloadBulkTemplate()"
         />
         <p-fileupload

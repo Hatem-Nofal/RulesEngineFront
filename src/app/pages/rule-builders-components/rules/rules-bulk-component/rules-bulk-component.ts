@@ -1,84 +1,43 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CustomConfirmationService } from 'src/app/shared/services/customConfirmation.service';
-import { CardModule } from 'primeng/card';
-import { SelectedDropDownListByGuid } from '@proxy/common/dtos';
 import { LookupService } from '@proxy/ehealth-claims/lookups';
 import { LookupDto } from '@proxy/lookups/dtos';
 import { RuleService } from '@proxy/work-flows/rules';
-import { BaseCoreModule } from '@abp/ng.core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
+import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { PaginatorModule } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
-import { TableModule } from 'primeng/table';
-import { ToasterService } from '@abp/ng.theme.shared';
+import { finalize } from 'rxjs';
+import { CustomConfirmationService } from 'src/app/shared/services/customConfirmation.service';
 
 @Component({
   selector: 'app-rules-bulk-component',
-  imports: [
-    CardModule,
-    SelectModule,
-    FormsModule,
-    CommonModule,
-    FormsModule,
-    TableModule,
-
-    ButtonModule,
-    PaginatorModule,
-    InputTextModule,
-    CheckboxModule,
-    SelectModule,
-    CardModule,
-    MessageModule,
-    FileUploadModule,
-    MessageModule,
-    MultiSelectModule,
-    ReactiveFormsModule,
-    InputNumberModule,
-    BaseCoreModule,
-  ],
+  imports: [ButtonModule, CardModule, FileUploadModule, FormsModule, MessageModule, SelectModule],
   templateUrl: './rules-bulk-component.html',
   styleUrl: './rules-bulk-component.scss',
 })
 export class RulesBulkComponent implements OnInit {
-  pageNumber = 1;
+  private readonly ruleService = inject(RuleService);
+  private readonly lookupService = inject(LookupService);
+  private readonly customConfirmationService = inject(CustomConfirmationService);
+  private readonly router = inject(Router);
+
   workflows = signal<LookupDto[]>([]);
-  fileContent = signal<FormData>(new FormData());
+  isLoading = signal(false);
 
-  selectedWorkflowId: string = '';
-
-  isLoading = false;
-  isValidated = false;
-  invalidFileTypeMessageSummary: string = '';
-  invalidFileSizeMessageDetail: string = '';
-  invalidFileTypeMessageDetail: string = '';
-  invalidFileSizeMessageSummary: string = '';
-  invalidFileLimitMessageDetail: string = '';
-  constructor(
-    private ruleService: RuleService,
-    private _lookupService: LookupService,
-    private ruleApplicationService: RuleService,
-    private customConfirmationService: CustomConfirmationService,
-    private router: Router,
-    private toaster: ToasterService,
-  ) {}
+  selectedWorkflowId = '';
 
   ngOnInit() {
-    this.loadDropdownData();
+    this.loadWorkflows();
   }
 
-  loadDropdownData(filter?: string) {
-    this._lookupService.getWorkflowsDropDownList().subscribe({
+  /** Loaded once; the dropdown filters client-side (`[filter]="true"`), so no request per keystroke. */
+  private loadWorkflows() {
+    this.lookupService.getWorkflowsDropDownList().subscribe({
       next: result => {
-        const options: SelectedDropDownListByGuid[] = [];
+        const options: LookupDto[] = [];
         for (const workflow of result ?? []) {
           if (workflow.id) options.push({ id: workflow.id, name: workflow.name });
         }
@@ -86,77 +45,72 @@ export class RulesBulkComponent implements OnInit {
       },
     });
   }
+
   getSelectedWorkflowName(): string {
     const wf = this.workflows().find(w => w.id === this.selectedWorkflowId);
-    return wf ? (wf.name ?? '') : 'Workflow';
+    return wf?.name ?? 'Workflow';
   }
-  onWorkflowFilter(event: { filter: string }) {
-    this.loadDropdownData(event.filter);
-  }
+
   downloadBulkTemplate() {
-    this.ruleService.getRulesSample(this.selectedWorkflowId).subscribe((blob: any) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      const workflowName = this.getSelectedWorkflowName().replace(/\s+/g, '_');
-      a.download = `${workflowName}_Rules_Template.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
+    if (!this.selectedWorkflowId) return;
+
+    this.isLoading.set(true);
+    this.ruleService
+      .getRulesSample(this.selectedWorkflowId)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe((blob: any) => {
+        const workflowName = this.getSelectedWorkflowName().replace(/\s+/g, '_');
+        this.saveBlob(blob, `${workflowName}_Rules_Template.xlsx`);
+      });
   }
+
   onUpload(event: any) {
-    const file: File = event.files[0];
-    if (!file) return;
+    const file: File | undefined = event.files?.[0];
+    if (!file || !this.selectedWorkflowId) return;
 
-    this.fileContent().append('fileContent', file, file.name);
-            let workfowlname=this.workflows().find(x=>x.id==this.selectedWorkflowId)?.name
+    // A fresh FormData per upload. The old code kept one FormData in a signal and
+    // appended to it every time, so a second upload re-sent the first file as well.
+    const formData = new FormData();
+    formData.append('file', file, file.name);
 
-    this.ruleApplicationService.bulkUpload(this.selectedWorkflowId, this.fileContent()).subscribe({
-      next: (blob: Blob) => {
-        if (blob.size > 0) {
-          this.toaster.error('Bulk Upload Failed');
+    this.isLoading.set(true);
+    this.ruleService
+      .bulkUpload(this.selectedWorkflowId, formData)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (blob: Blob) => {
+          this.saveBlob(blob, 'DownloadedFile.xlsx');
+          this.router.navigate(['/rules']);
+        },
+        error: err => {
+          if (err.status === 0) {
+            this.customConfirmationService.warnConfrim('Bulk Upload is still processed', 'Warn', {
+              accept: () => {},
+              reject: () => {},
+              dismiss: () => {},
+            });
+            return;
+          }
 
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = workfowlname+'_Errors.xlsx'; // Change filename
-          link.click();
-
-          window.URL.revokeObjectURL(url);
-        } else {
-          this.toaster.success('Bulk Upload success');
-        }
-
-       // this.router.navigate(['/rules']);
-      },
-      error: err => {
-        if (err.status === 0) {
-          this.customConfirmationService.warnConfrim('Bulk Upload is still processed', 'Warn', {
-            accept: () => {},
-            reject: () => {},
-            dismiss: () => {},
-          });
-        } else {
           let errorMessage = 'Upload Failed';
           try {
-            // ─── err.message is JSON string — parse it ─────────────
-            const parsed = JSON.parse(err.message);
-            errorMessage = parsed?.message || 'Upload Failed';
+            // err.message may be a JSON string – parse it
+            errorMessage = JSON.parse(err.message)?.message || 'Upload Failed';
           } catch {
             errorMessage = err?.message || 'Upload Failed';
           }
-          if (err.message && err.message.size && err.message.size > 0) {
-            const url = window.URL.createObjectURL(err.message);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download =workfowlname+'_Errors.xlsx'; // Change filename
-            link.click();
-
-            window.URL.revokeObjectURL(url);
-          }
           this.customConfirmationService.error(errorMessage, 'Upload Failed', 5000);
-        }
-      },
-    });
+        },
+      });
+  }
+
+  private saveBlob(blob: Blob, fileName: string) {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    // Revoke on the next tick so the browser has started the download.
+    setTimeout(() => window.URL.revokeObjectURL(url), 0);
   }
 }

@@ -1,101 +1,111 @@
 <main class="rule-builder-page">
-<section class="rule-builder-card">
-  <header class="rule-builder-card__header">
-    <h1 class="rule-builder-card__title">{{ ruleId ? 'Edit rule' : 'Create rule' }}</h1>
-    <a pButton routerLink="/rules" severity="secondary" [outlined]="true" label="Back"></a>
-  </header>
+  <section class="rule-builder-card">
+    <header class="rule-builder-card__header">
+      <h1 class="rule-builder-card__title">{{ ruleId ? 'Edit rule' : 'Create rule' }}</h1>
+      <a pButton routerLink="/rules" severity="secondary" [outlined]="true" label="Back"></a>
+    </header>
 
-  <div class="rule-builder-card__body">
-    <div class="rule-builder-form rule-editor-fields">
-      <div class="rule-builder-field">
-        <label for="rule-name">Name</label>
-        <input
-          pInputText
-          id="rule-name"
-          name="ruleName"
-          [(ngModel)]="name"
-          maxlength="200"
-          placeholder="Rule name"
-          autocomplete="off"
-        />
-      </div>
-
-      <div class="rule-builder-field">
-        <label for="rule-workflow">Workflow</label>
-        <p-select
-          inputId="rule-workflow"
-          name="ruleWorkflow"
-          [options]="workflows()"
-          optionLabel="name"
-          optionValue="id"
-          [ngModel]="workflowId()"
-          (ngModelChange)="onWorkflowChange($event)"
-          [disabled]="!!ruleId"
-          placeholder="Select a workflow"
-        />
-      </div>
-
-      <div class="rule-editor-active">
-        <p-checkbox inputId="rule-active" name="ruleActive" [(ngModel)]="isActive" [binary]="true" />
-        <label for="rule-active">Active</label>
-      </div>
-    </div>
-
-    @if (loading()) {
-      <p class="text-muted mt-4" role="status">Loading rule configuration…</p>
-    }
-
-    @if (config(); as cfg) {
-      <section class="rule-editor-builder" aria-label="Rule conditions">
-        <div class="rule-editor-builder__heading">
-          <div>
-            <h2 class="rule-builder-section">Conditions</h2>
-            <p class="text-muted mb-0">Form: {{ cfg.name }}</p>
-          </div>
+    <div class="rule-builder-card__body">
+      <div class="rule-builder-form rule-editor-fields">
+        <div class="rule-builder-field">
+          <label for="rule-name">Name</label>
+          <input
+            pInputText
+            id="rule-name"
+            name="ruleName"
+            [(ngModel)]="name"
+            maxlength="200"
+            placeholder="Rule name"
+            autocomplete="off"
+          />
         </div>
-       <app-rule-node [(node)]="root" [fields]="cfg.fields" [lookups]="lookups()"
-                         [allowGroups]="cfg.allowNestedGroups" [isRoot]="true" />
-      </section>
 
-      <div class="rule-builder-actions">
-        <button
-          pButton
-          type="button"
-          label="Save rule"
-          icon="pi pi-check"
-          [disabled]="saving() || loading()"
-          [loading]="saving()"
-          (click)="save()"
-        ></button>
-        <button
-          pButton
-          type="button"
-          label="Preview expression"
-          icon="pi pi-eye"
-          severity="secondary"
-          [outlined]="true"
-          (click)="preview()"
-        ></button>
+        <div class="rule-builder-field">
+          <label for="rule-workflow">Workflow</label>
+          <p-select
+            inputId="rule-workflow"
+            name="ruleWorkflow"
+            [options]="workflows()"
+            optionLabel="name"
+            optionValue="id"
+            [ngModel]="workflowId()"
+            (ngModelChange)="onWorkflowChange($event)"
+            [disabled]="!!ruleId"
+            placeholder="Select a workflow"
+          />
+        </div>
+
+        <div class="rule-editor-active">
+          <p-checkbox
+            inputId="rule-active"
+            name="ruleActive"
+            [(ngModel)]="isActive"
+            [binary]="true"
+          />
+          <label for="rule-active">Active</label>
+        </div>
       </div>
 
-      @if (expression(); as result) {
+      @if (loading()) {
+        <p class="text-muted mt-4" role="status">Loading rule configuration…</p>
+      }
+      @if (ruleExpression() && hasCustomeRule()) {
         <section class="rule-expression mt-4" aria-label="Rule expression preview">
-          <div class="rule-expression__title">
-            <strong>Expression preview</strong>
-            <span class="text-muted">Strategy: {{ result.strategyKey }}</span>
-          </div>
-          <pre>{{ result.expression }}</pre>
+          <pre>{{ ruleExpression() }}</pre>
         </section>
       }
-    } @else if (workflowId() && !loading()) {
-      <div class="alert alert-warning mt-4" role="status">
-        No active form configuration is assigned to this workflow.
-      </div>
-    } @else if (!loading()) {
-      <div class="rule-builder-empty mt-3">
-        Select a workflow to load its form configuration and build rule conditions.
-      </div>
-    }
-  </div>
-</section>
+      @if (config(); as cfg) {
+        <section class="rule-editor-builder" aria-label="Rule conditions">
+          <div class="rule-editor-builder__heading">
+            <div>
+              <h2 class="rule-builder-section">Conditions</h2>
+              <p class="text-muted mb-0">Form: {{ cfg.name }}</p>
+            </div>
+          </div>
+          <app-rule-node
+            [(node)]="root"
+            [fields]="cfg.fields"
+            [lookups]="lookups()"
+            [allowGroups]="cfg.allowNestedGroups"
+            [isRoot]="true"
+          />
+        </section>
+
+        <div class="rule-builder-actions">
+          <button
+            pButton
+            type="button"
+            label="Save rule"
+            icon="pi pi-check"
+            [disabled]="saving() || loading()"
+            [loading]="saving()"
+            (click)="save()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Preview expression"
+            icon="pi pi-eye"
+            severity="secondary"
+            [outlined]="true"
+            (click)="preview()"
+          ></button>
+        </div>
+
+        @if (expression(); as result) {
+          <section class="rule-expression mt-4" aria-label="Rule expression preview">
+            <pre>{{ result.expression }}</pre>
+          </section>
+        }
+      } @else if (workflowId() && !loading() && !hasCustomeRule()) {
+        <div class="alert alert-warning mt-4" role="status">
+          No active form configuration is assigned to this workflow.
+        </div>
+      } @else if (!loading() && !hasCustomeRule()) {
+        <div class="rule-builder-empty mt-3">
+          Select a workflow to load its form configuration and build rule conditions.
+        </div>
+      }
+    </div>
+  </section>
 </main>

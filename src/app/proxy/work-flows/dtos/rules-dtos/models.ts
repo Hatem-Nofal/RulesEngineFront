@@ -13,6 +13,8 @@ export interface RuleDto {
   workflowId?: string;
   isActive?: boolean;
   isMultiple?: boolean;
+  expression?: string | null;
+  workflowHasCustomeRule?: boolean;
   root?: RuleNodeDto;
 }
 

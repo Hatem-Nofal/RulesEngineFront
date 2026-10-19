@@ -9,7 +9,7 @@
 
     <div class="rule-builder-card__body">
       @if (loading()) {
-        <p class="text-muted" role="status">Loading workflow settings…</p>
+      <p class="text-muted" role="status">Loading workflow settings…</p>
       }
 
       <div class="rule-builder-form">
@@ -25,6 +25,8 @@
             autocomplete="off"
           />
         </div>
+
+        @if (!hasCustomeRule()) {
 
         <div class="rule-builder-field">
           <label for="workflow-config">Form configuration</label>
@@ -44,7 +46,7 @@
             Controls which fields and operators are available in this workflow’s rule builder.
           </small>
         </div>
-
+        }
         <div class="rule-builder-field">
           <label for="workflow-rejection-level">Rejection level</label>
           <p-select
@@ -57,13 +59,40 @@
             placeholder="Select rejection level"
           />
         </div>
+
+        <div class="mt-2 d-flex flex-wrap gap-3 align-items-center">
+          <div class="form-check form-check-inline m-0">
+            <input
+              type="checkbox"
+              [ngModel]="hasCustomeRule() ?? false"
+              (ngModelChange)="hasCustomeRule.set($event)"
+              class="form-check-input"
+            />
+            <label class="form-check-label">Has Custome Rule</label>
+          </div>
+        </div>
+        @if (hasCustomeRule()) {
+
+        <div class="rule-builder-field">
+          <label for="workflow-name">Rule Expression</label>
+          <input
+            pInputText
+            id="ruleExpression"
+            name="ruleExpression"
+            [(ngModel)]="ruleExpression"
+            maxlength="200"
+            placeholder="Rule Expression"
+            autocomplete="off"
+          />
+        </div>
+        }
       </div>
 
       @if (ruleCount() > 0) {
-        <div class="alert alert-warning mt-4 mb-0" role="status">
-          {{ ruleCount() }} rule(s) use this workflow. Changing its form configuration may make
-          existing rule fields unavailable.
-        </div>
+      <div class="alert alert-warning mt-4 mb-0" role="status">
+        {{ ruleCount() }} rule(s) use this workflow. Changing its form configuration may make
+        existing rule fields unavailable.
+      </div>
       }
 
       <div class="rule-builder-actions">

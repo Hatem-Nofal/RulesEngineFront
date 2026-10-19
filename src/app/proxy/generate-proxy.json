@@ -1251,7 +1251,125 @@
           "remarks": null,
           "description": null,
           "displayName": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "type": "EhealthClaims.Lookups.ILookupAppService",
+              "name": "ILookupAppService",
+              "methods": [
+                {
+                  "name": "GetActivitySubTypeDropDownList",
+                  "parametersOnMethod": [
+                    {
+                      "name": "activityTypeId",
+                      "typeAsString": "System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                      "type": "System.Int32?",
+                      "typeSimple": "number?",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetActivityTypeDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetDiagnosisDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetSpecialitiesIdDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetWorkflowsDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListByGuid>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListByGuid]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetGenericDrugsDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetProcedureGroupsDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetDuplicateTherapyGroupsDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetMorbidityGroupsDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                }
+              ]
+            }
+          ],
           "actions": {
             "GetActivitySubTypeDropDownListByActivityTypeId": {
               "uniqueName": "GetActivitySubTypeDropDownListByActivityTypeId",
@@ -1302,7 +1420,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1329,7 +1447,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1356,7 +1474,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1383,7 +1501,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1410,23 +1528,23 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.LookupAppService",
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
               "displayName": null
             },
-            "GetWorkflowsDropDownList": {
-              "uniqueName": "GetWorkflowsDropDownList",
-              "name": "GetWorkflowsDropDownList",
+            "GetGenericDrugsDropDownList": {
+              "uniqueName": "GetGenericDrugsDropDownList",
+              "name": "GetGenericDrugsDropDownList",
               "httpMethod": "GET",
-              "url": "api/app/lookup/workflows-drop-down-list",
+              "url": "api/app/lookup/generic-drugs-drop-down-list",
               "supportedVersions": [],
               "parametersOnMethod": [],
               "parameters": [],
               "returnValue": {
-                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListByGuid>",
-                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListByGuid]",
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
                 "summary": null,
                 "contentTypes": [
                   "text/plain",
@@ -1437,7 +1555,88 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupServices",
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetProcedureGroupsDropDownList": {
+              "uniqueName": "GetProcedureGroupsDropDownList",
+              "name": "GetProcedureGroupsDropDownList",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/procedure-groups-drop-down-list",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetDuplicateTherapyGroupsDropDownList": {
+              "uniqueName": "GetDuplicateTherapyGroupsDropDownList",
+              "name": "GetDuplicateTherapyGroupsDropDownList",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/duplicate-therapy-groups-drop-down-list",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetMorbidityGroupsDropDownList": {
+              "uniqueName": "GetMorbidityGroupsDropDownList",
+              "name": "GetMorbidityGroupsDropDownList",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/morbidity-groups-drop-down-list",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -2063,76 +2262,6 @@
             }
           }
         },
-        "RulesEngine.Integrations.IntegrationsAppService": {
-          "controllerName": "Integrations",
-          "controllerGroupName": "Integrations",
-          "isRemoteService": true,
-          "isIntegrationService": false,
-          "apiVersion": null,
-          "type": "RulesEngine.Integrations.IntegrationsAppService",
-          "summary": null,
-          "remarks": null,
-          "description": null,
-          "displayName": null,
-          "interfaces": [],
-          "actions": {
-            "ValidateClaimsIntegrationExtendedByInput": {
-              "uniqueName": "ValidateClaimsIntegrationExtendedByInput",
-              "name": "ValidateClaimsIntegrationExtended",
-              "httpMethod": "POST",
-              "url": "api/app/integrations/validate-claims-integration-extended",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "input",
-                  "typeAsString": "RulesEngine.Integrations.ClaimValidation, RulesEngine.Application.Contracts",
-                  "type": "RulesEngine.Integrations.ClaimValidation",
-                  "typeSimple": "RulesEngine.Integrations.ClaimValidation",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "summary": null,
-                  "description": null,
-                  "displayName": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "input",
-                  "name": "input",
-                  "jsonName": null,
-                  "type": "RulesEngine.Integrations.ClaimValidation",
-                  "typeSimple": "RulesEngine.Integrations.ClaimValidation",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "Body",
-                  "descriptorName": "",
-                  "summary": null,
-                  "description": null,
-                  "displayName": null
-                }
-              ],
-              "returnValue": {
-                "type": "RulesEngine.Integrations.ClaimValidationResponse",
-                "typeSimple": "RulesEngine.Integrations.ClaimValidationResponse",
-                "summary": null,
-                "contentTypes": [
-                  "text/plain",
-                  "application/json",
-                  "text/json"
-                ],
-                "isRemoteStream": false
-              },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
-              "implementFrom": "RulesEngine.Integrations.IntegrationsAppService",
-              "summary": null,
-              "remarks": null,
-              "description": null,
-              "displayName": null
-            }
-          }
-        },
         "RulesEngine.IntegrationsNew.IntegrationsAppService": {
           "controllerName": "Integrations",
           "controllerGroupName": "Integrations",
@@ -2144,7 +2273,37 @@
           "remarks": null,
           "description": null,
           "displayName": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "type": "RulesEngine.IntegrationsNew.IIntegrationsAppService",
+              "name": "IIntegrationsAppService",
+              "methods": [
+                {
+                  "name": "ValidateClaimsIntegrationExtended",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "RulesEngine.Integrations.ClaimValidation, RulesEngine.Application.Contracts",
+                      "type": "RulesEngine.Integrations.ClaimValidation",
+                      "typeSimple": "RulesEngine.Integrations.ClaimValidation",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "RulesEngine.Integrations.ClaimValidationResponse",
+                    "typeSimple": "RulesEngine.Integrations.ClaimValidationResponse",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                }
+              ]
+            }
+          ],
           "actions": {
             "ValidateClaimsIntegrationExtendedByInput": {
               "uniqueName": "ValidateClaimsIntegrationExtendedByInput",
@@ -2195,7 +2354,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "RulesEngine.IntegrationsNew.IntegrationsAppService",
+              "implementFrom": "RulesEngine.IntegrationsNew.IIntegrationsAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -8354,231 +8513,7 @@
     }
   },
   "types": {
-    "RulesEngine.Common.Dtos.SelectedDropDownList": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "Id",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Disabled",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Code",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": true,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        }
-      ],
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Common.Dtos.SelectedDropDownListByGuid": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "Id",
-          "jsonName": null,
-          "type": "System.Guid",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Disabled",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        }
-      ],
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Common.Enums.LogicalOperator": {
-      "baseType": "System.Enum",
-      "isEnum": true,
-      "enumNames": [
-        "And",
-        "Or"
-      ],
-      "enumValues": [
-        1,
-        2
-      ],
-      "genericArguments": null,
-      "properties": null,
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Common.Enums.RejectionLevel": {
-      "baseType": "System.Enum",
-      "isEnum": true,
-      "enumNames": [
-        "Activity",
-        "Claim",
-        "AllActivity"
-      ],
-      "enumValues": [
-        1,
-        2,
-        3
-      ],
-      "genericArguments": null,
-      "properties": null,
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Common.Enums.RuleNodeType": {
-      "baseType": "System.Enum",
-      "isEnum": true,
-      "enumNames": [
-        "Group",
-        "Condition"
-      ],
-      "enumValues": [
-        1,
-        2
-      ],
-      "genericArguments": null,
-      "properties": null,
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Common.Enums.RuleOperator": {
-      "baseType": "System.Enum",
-      "isEnum": true,
-      "enumNames": [
-        "Equal",
-        "NotEqual",
-        "GreaterThan",
-        "GreaterThanOrEqual",
-        "LessThan",
-        "LessThanOrEqual",
-        "Contains",
-        "NotContains"
-      ],
-      "enumValues": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8
-      ],
-      "genericArguments": null,
-      "properties": null,
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Integrations.ClaimActivityRequestDto": {
+    "ClaimActivityRequestDto": {
       "baseType": null,
       "isEnum": false,
       "enumNames": null,
@@ -8760,150 +8695,12 @@
           "summary": null,
           "description": null,
           "displayName": null
-        }
-      ],
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Integrations.ClaimDto": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "Id",
-          "jsonName": null,
-          "type": "System.Guid",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
         },
         {
-          "name": "PatientId",
+          "name": "GenericCode",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Diagnoses",
-          "jsonName": null,
-          "type": "[RulesEngine.Integrations.DiagnosisDto]",
-          "typeSimple": "[RulesEngine.Integrations.DiagnosisDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "CurrentMedications",
-          "jsonName": null,
-          "type": "[RulesEngine.Integrations.MedicationDto]",
-          "typeSimple": "[RulesEngine.Integrations.MedicationDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Procedures",
-          "jsonName": null,
-          "type": "[RulesEngine.Integrations.ProcedureDto]",
-          "typeSimple": "[RulesEngine.Integrations.ProcedureDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Consumables",
-          "jsonName": null,
-          "type": "[RulesEngine.Integrations.ConsumableDto]",
-          "typeSimple": "[RulesEngine.Integrations.ConsumableDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "DrugQuantities",
-          "jsonName": null,
-          "type": "[RulesEngine.Integrations.DrugQuantityDto]",
-          "typeSimple": "[RulesEngine.Integrations.DrugQuantityDto]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        }
-      ],
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Integrations.ClaimValidation": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "workflows",
-          "jsonName": null,
-          "type": "[System.Guid]",
-          "typeSimple": "[string]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -8916,7 +8713,7 @@
           "displayName": null
         },
         {
-          "name": "workflownames",
+          "name": "DtgCodes",
           "jsonName": null,
           "type": "[System.String]",
           "typeSimple": "[string]",
@@ -8930,22 +8727,6 @@
           "summary": null,
           "description": null,
           "displayName": null
-        },
-        {
-          "name": "ClaimValidationRequests",
-          "jsonName": null,
-          "type": "[RulesEngine.Integrations.ClaimValidationByCodeRequestExtended]",
-          "typeSimple": "[RulesEngine.Integrations.ClaimValidationByCodeRequestExtended]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
         }
       ],
       "summary": null,
@@ -8953,13 +8734,29 @@
       "description": null,
       "displayName": null
     },
-    "RulesEngine.Integrations.ClaimValidationByCodeRequestExtended": {
+    "ClaimValidationByCodeRequestExtended": {
       "baseType": null,
       "isEnum": false,
       "enumNames": null,
       "enumValues": null,
       "genericArguments": null,
       "properties": [
+        {
+          "name": "Claimspeccode",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
         {
           "name": "ActivityId",
           "jsonName": null,
@@ -8978,6 +8775,38 @@
         },
         {
           "name": "Patientnid",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Age",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Gender",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
@@ -9219,8 +9048,8 @@
         {
           "name": "Activities",
           "jsonName": null,
-          "type": "[RulesEngine.Integrations.ClaimActivityRequestDto]",
-          "typeSimple": "[RulesEngine.Integrations.ClaimActivityRequestDto]",
+          "type": "[ClaimActivityRequestDto]",
+          "typeSimple": "[ClaimActivityRequestDto]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -9228,6 +9057,432 @@
           "maximum": null,
           "regex": null,
           "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "DiagnosisGroupCodes",
+          "jsonName": null,
+          "type": "[System.String]",
+          "typeSimple": "[string]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Common.Dtos.SelectedDropDownList": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Id",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Disabled",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Code",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Common.Dtos.SelectedDropDownListByGuid": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Id",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Disabled",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Common.Enums.LogicalOperator": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "And",
+        "Or"
+      ],
+      "enumValues": [
+        1,
+        2
+      ],
+      "genericArguments": null,
+      "properties": null,
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Common.Enums.RejectionLevel": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Activity",
+        "Claim",
+        "AllActivity"
+      ],
+      "enumValues": [
+        1,
+        2,
+        3
+      ],
+      "genericArguments": null,
+      "properties": null,
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Common.Enums.RuleNodeType": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Group",
+        "Condition"
+      ],
+      "enumValues": [
+        1,
+        2
+      ],
+      "genericArguments": null,
+      "properties": null,
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Common.Enums.RuleOperator": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Equal",
+        "NotEqual",
+        "GreaterThan",
+        "GreaterThanOrEqual",
+        "LessThan",
+        "LessThanOrEqual",
+        "Contains",
+        "NotContains"
+      ],
+      "enumValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "genericArguments": null,
+      "properties": null,
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Integrations.ClaimDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Id",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "PatientId",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Diagnoses",
+          "jsonName": null,
+          "type": "[RulesEngine.Integrations.DiagnosisDto]",
+          "typeSimple": "[RulesEngine.Integrations.DiagnosisDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "CurrentMedications",
+          "jsonName": null,
+          "type": "[RulesEngine.Integrations.MedicationDto]",
+          "typeSimple": "[RulesEngine.Integrations.MedicationDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Procedures",
+          "jsonName": null,
+          "type": "[RulesEngine.Integrations.ProcedureDto]",
+          "typeSimple": "[RulesEngine.Integrations.ProcedureDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Consumables",
+          "jsonName": null,
+          "type": "[RulesEngine.Integrations.ConsumableDto]",
+          "typeSimple": "[RulesEngine.Integrations.ConsumableDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "DrugQuantities",
+          "jsonName": null,
+          "type": "[RulesEngine.Integrations.DrugQuantityDto]",
+          "typeSimple": "[RulesEngine.Integrations.DrugQuantityDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Integrations.ClaimValidation": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "workflows",
+          "jsonName": null,
+          "type": "[System.Guid]",
+          "typeSimple": "[string]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "workflownames",
+          "jsonName": null,
+          "type": "[System.String]",
+          "typeSimple": "[string]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ClaimValidationRequests",
+          "jsonName": null,
+          "type": "[ClaimValidationByCodeRequestExtended]",
+          "typeSimple": "[ClaimValidationByCodeRequestExtended]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
           "summary": null,
           "description": null,
           "displayName": null
@@ -9407,6 +9662,22 @@
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "MaxDailyQuantity",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -10750,6 +11021,38 @@
           "displayName": null
         },
         {
+          "name": "Expression",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "WorkflowHasCustomeRule",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
           "name": "Root",
           "jsonName": null,
           "type": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
@@ -10890,8 +11193,24 @@
         {
           "name": "RuleFormConfigId",
           "jsonName": null,
-          "type": "System.Guid",
-          "typeSimple": "string",
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "RejectionLevel",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.RejectionLevel",
+          "typeSimple": "enum",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -10904,10 +11223,26 @@
           "displayName": null
         },
         {
-          "name": "RejectionLevel",
+          "name": "HasCustomeRule",
           "jsonName": null,
-          "type": "RulesEngine.Common.Enums.RejectionLevel",
-          "typeSimple": "enum",
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "RuleExpression",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -11024,6 +11359,38 @@
           "maximum": null,
           "regex": null,
           "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "HasCustomeRule",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "RuleExpression",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
           "summary": null,
           "description": null,
           "displayName": null

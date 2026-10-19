@@ -13,6 +13,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { LookupDto } from '@proxy/lookups/dtos/models';
+import { LookupService } from '@proxy/ehealth-claims/lookups';
+import { SelectedDropDownListByGuid } from '@proxy/common/dtos';
 
 @Component({
   selector: 'app-rule-edit',
@@ -30,7 +32,7 @@ import { LookupDto } from '@proxy/lookups/dtos/models';
 })
 export class RuleEditComponent implements OnInit {
   private service = inject(RuleService);
-  private workflowService = inject(WorkFlowService);
+  private lookupService = inject(LookupService);
   private ruleFormConfigService = inject(RuleFormConfigService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -40,7 +42,7 @@ export class RuleEditComponent implements OnInit {
   isActive = true;
   isMultiple = false;
 
-  workflows = signal<LookupDto[]>([]);
+  workflows = signal<SelectedDropDownListByGuid[]>([]);
   items = signal<LookupDto[]>([]);
   workflowId = signal<string | null>(null);
   config = signal<RuleFormConfigDto | null>(null);
@@ -49,12 +51,14 @@ export class RuleEditComponent implements OnInit {
   saving = signal(false);
   expression = signal<RuleExpressionResultDto | null>(null);
   lookups = signal<Record<string, LookupDto[]>>({});
+  hasCustomeRule = signal<boolean>(false);
+  ruleExpression = signal<string>('');
 
   ngOnInit() {
-    this.workflowService.getList({ skipCount: 0, maxResultCount: 100 }).subscribe({
+    this.lookupService.getWorkflowsDropDownList().subscribe({
       next: result => {
-        const options: LookupDto[] = [];
-        for (const workflow of result.items ?? []) {
+        const options: SelectedDropDownListByGuid[] = [];
+        for (const workflow of result ?? []) {
           if (workflow.id) options.push({ id: workflow.id, name: workflow.name });
         }
         this.workflows.set(options);
@@ -68,12 +72,18 @@ export class RuleEditComponent implements OnInit {
     this.loading.set(true);
     this.service.get(id).subscribe({
       next: rule => {
+        let ruleExpressionResultDto: RuleExpressionResultDto = {
+          expression: rule.expression ?? '',
+        };
         this.name = rule.name ?? '';
         this.isActive = rule.isActive ?? true;
         this.isMultiple = rule.isMultiple ?? false;
         this.workflowId.set(rule.workflowId ?? null);
+        this.hasCustomeRule.set(rule.workflowHasCustomeRule ?? false);
+        this.ruleExpression.set(rule.expression ?? '')
+        this.expression.set(ruleExpressionResultDto);
         this.root.set(rule.root ?? emptyRoot());
-        if (rule.workflowId) this.loadConfig(rule.workflowId);
+        if (rule.workflowId&&!this.hasCustomeRule()) this.loadConfig(rule.workflowId);
         else this.loading.set(false);
       },
       error: () => this.loading.set(false),
@@ -85,7 +95,7 @@ export class RuleEditComponent implements OnInit {
     this.config.set(null);
     this.expression.set(null);
     this.root.set(emptyRoot()); // conditions from another config may not fit
-    if (id) this.loadConfig(id);
+    if (id&&!this.hasCustomeRule()) this.loadConfig(id);
   }
 
   private loadConfig(workflowId: string) {
@@ -117,16 +127,18 @@ export class RuleEditComponent implements OnInit {
       alert('Complete the conditions first.');
       return;
     }
-    this.service
-      .previewExpressionByInput({
-        id: this.ruleId,
-        name: this.name.trim() || 'preview',
-        workflowId: this.workflowId()!,
-        isActive: this.isActive,
-        isMultiple: this.isMultiple,
-        root: this.root(),
-      })
-      .subscribe(e => this.expression.set(e));
+    if (!this.hasCustomeRule()) {
+      this.service
+        .previewExpressionByInput({
+          id: this.ruleId,
+          name: this.name.trim() || 'preview',
+          workflowId: this.workflowId()!,
+          isActive: this.isActive,
+          isMultiple: this.isMultiple,
+          root: this.root(),
+        })
+        .subscribe(e => this.expression.set(e));
+    }
   }
 
   save() {
