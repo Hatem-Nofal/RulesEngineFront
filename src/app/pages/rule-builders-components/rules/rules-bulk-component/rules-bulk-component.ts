@@ -1,29 +1,55 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-   import { CustomConfirmationService } from 'src/app/shared/services/customConfirmation.service';
- import { CommonModule } from '@angular/common';
- import { FormsModule } from '@angular/forms';
-
+import { CustomConfirmationService } from 'src/app/shared/services/customConfirmation.service';
 import { CardModule } from 'primeng/card';
-
-import { SelectModule } from 'primeng/select';
 import { SelectedDropDownListByGuid } from '@proxy/common/dtos';
 import { LookupService } from '@proxy/ehealth-claims/lookups';
 import { LookupDto } from '@proxy/lookups/dtos';
 import { RuleService } from '@proxy/work-flows/rules';
-
-
-
-
+import { BaseCoreModule } from '@abp/ng.core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { PaginatorModule } from 'primeng/paginator';
+import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { ToasterService } from '@abp/ng.theme.shared';
 
 @Component({
   selector: 'app-rules-bulk-component',
-  imports: [CardModule, SelectModule, FormsModule, CommonModule],
+  imports: [
+    CardModule,
+    SelectModule,
+    FormsModule,
+    CommonModule,
+    FormsModule,
+    TableModule,
+
+    ButtonModule,
+    PaginatorModule,
+    InputTextModule,
+    CheckboxModule,
+    SelectModule,
+    CardModule,
+    MessageModule,
+    FileUploadModule,
+    MessageModule,
+    MultiSelectModule,
+    ReactiveFormsModule,
+    InputNumberModule,
+    BaseCoreModule,
+  ],
   templateUrl: './rules-bulk-component.html',
   styleUrl: './rules-bulk-component.scss',
 })
 export class RulesBulkComponent implements OnInit {
-pageNumber = 1;
+  pageNumber = 1;
   workflows = signal<LookupDto[]>([]);
   fileContent = signal<FormData>(new FormData());
 
@@ -42,6 +68,7 @@ pageNumber = 1;
     private ruleApplicationService: RuleService,
     private customConfirmationService: CustomConfirmationService,
     private router: Router,
+    private toaster: ToasterService,
   ) {}
 
   ngOnInit() {
@@ -81,19 +108,26 @@ pageNumber = 1;
     const file: File = event.files[0];
     if (!file) return;
 
-    this.fileContent().append('file', file, file.name);
+    this.fileContent().append('fileContent', file, file.name);
+            let workfowlname=this.workflows().find(x=>x.id==this.selectedWorkflowId)?.name
 
     this.ruleApplicationService.bulkUpload(this.selectedWorkflowId, this.fileContent()).subscribe({
       next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
+        if (blob.size > 0) {
+          this.toaster.error('Bulk Upload Failed');
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'DownloadedFile.xlsx'; // Change filename
-        link.click();
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = workfowlname+'_Errors.xlsx'; // Change filename
+          link.click();
 
-        window.URL.revokeObjectURL(url);
-        this.router.navigate(['/rules']);
+          window.URL.revokeObjectURL(url);
+        } else {
+          this.toaster.success('Bulk Upload success');
+        }
+
+       // this.router.navigate(['/rules']);
       },
       error: err => {
         if (err.status === 0) {
@@ -111,11 +145,18 @@ pageNumber = 1;
           } catch {
             errorMessage = err?.message || 'Upload Failed';
           }
+          if (err.message && err.message.size && err.message.size > 0) {
+            const url = window.URL.createObjectURL(err.message);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download =workfowlname+'_Errors.xlsx'; // Change filename
+            link.click();
 
+            window.URL.revokeObjectURL(url);
+          }
           this.customConfirmationService.error(errorMessage, 'Upload Failed', 5000);
         }
       },
     });
   }
-
 }

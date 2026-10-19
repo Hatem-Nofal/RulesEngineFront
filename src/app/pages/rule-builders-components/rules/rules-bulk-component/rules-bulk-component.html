@@ -9,9 +9,9 @@
 
 <div class="card flex justify-content-center my-2">
       <p-select
-        [options]="workflows"
+        [options]="workflows()"
         [(ngModel)]="selectedWorkflowId"
-        optionLabel="workflowName"
+        optionLabel="name"
         [optionValue]="'id'"
         display="chip"
         [filter]="true"
