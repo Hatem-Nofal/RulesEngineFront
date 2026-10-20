@@ -1260,7 +1260,7 @@
                   "name": "GetActivitySubTypeDropDownList",
                   "parametersOnMethod": [
                     {
-                      "name": "activityTypeId",
+                      "name": "activityType",
                       "typeAsString": "System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
                       "type": "System.Int32?",
                       "typeSimple": "number?",
@@ -10830,6 +10830,22 @@
           "maximum": null,
           "regex": null,
           "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ActivityTypeId",
+          "jsonName": null,
+          "type": "System.Int32?",
+          "typeSimple": "number?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
           "summary": null,
           "description": null,
           "displayName": null

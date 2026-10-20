@@ -36,13 +36,6 @@ import { ActivityLookupService } from '../RulesServices/ActivityLookupService';
 /** `lookupSource` is read by the template but is not (yet) part of the generated RuleFormFieldDto proxy. */
 type RuleFieldWithLookup = RuleFormFieldDto & { lookupSource?: string | null };
 
-/**
- * `activityType` is a client-side helper kept on the node (not in the generated proxy yet).
- * Living on the node – instead of in component state – means it follows the node when
- * siblings are added/removed, because this component instance is reused by `track $index`.
- */
-type RuleNodeWithActivityType = RuleNodeDto & { activityType?: number | null };
-
 /** Anything a list control can show: lookup items (string ids) and activity lookups (numeric ids, optional `disabled`). */
 type ListOption = { id?: string | number; name?: string; disabled?: boolean };
 
@@ -95,10 +88,15 @@ export class RuleNodeComponent {
     return OPERATORS[f.dataType as keyof typeof OPERATORS].filter(o => ids.includes(o.v));
   });
 
-  /** The only allowed operator, or null when there are several (or none) to choose from. */
-  readonly singleOperator = computed<number | null>(() => {
+  /**
+   * Which property of an operator option is stored on the node. Must match the operator select's
+   * `[optionValue]` (bound to this field in the template): 'l' stores the label, 'v' the numeric id.
+   */
+
+  /** The only allowed operator (as it is stored on the node), or null when there are several (or none). */
+  readonly singleOperator = computed<number | string | null>(() => {
     const ops = this.operators();
-    return ops.length === 1 ? ops[0].v : null;
+    return ops.length === 1 ? ops[0]['v'] : null;
   });
 
   constructor() {
@@ -107,18 +105,11 @@ export class RuleNodeComponent {
       if (this.usesActivityType()) untracked(() => this.activityLookup.ensureTypes());
     });
 
-    // Activities of the selected type.
+    // Activities are requested only for a type that is selected, or that the saved node already carries
+    // (activityTypeId). Nothing is loaded for a node without a type.
     effect(() => {
       const typeId = this.activityType();
       if (typeId != null) untracked(() => this.activityLookup.ensureActivities(typeId));
-    });
-
-    // A rule loaded from the server only stores the activity ids, not their type. Load every type's
-    // activities (cached, so once per session) until the ids are found, which reveals the type.
-    effect(() => {
-      if (!this.needsActivityTypeInference()) return;
-      const types = this.activityLookup.types(); // tracked: re-runs when the types arrive
-      untracked(() => types.forEach(t => this.activityLookup.ensureActivities(t.id)));
     });
 
     // With exactly one operator there is nothing to choose: make sure it is the selected one.
@@ -127,7 +118,7 @@ export class RuleNodeComponent {
       const only = this.singleOperator();
       const n = this.node();
       if (only !== null && n.nodeType !== RuleNodeType.Group && n.operator !== only) {
-        untracked(() => this.onOperator(only));
+        untracked(() => this.onOperator(only as number));
       }
     });
   }
@@ -162,35 +153,12 @@ export class RuleNodeComponent {
 
   readonly usesActivityType = computed(() => ACTIVITY_FIELD_KEYS.has(this.field()?.key ?? ''));
 
-  private readonly explicitActivityType = computed<number | null>(() =>
-    this.usesActivityType() ? ((this.node() as RuleNodeWithActivityType).activityType ?? null) : null,
-  );
-
-  /** For a loaded rule (activity ids saved, type not): the type whose loaded activities contain those ids. */
-  private readonly inferredActivityType = computed<number | null>(() => {
-    if (!this.usesActivityType() || this.explicitActivityType() != null) return null;
-
-    const selected = this.valueList();
-    if (selected.length === 0) return null;
-
-    const byType = this.activityLookup.activitiesByType();
-    return (
-      this.activityLookup
-        .types()
-        .find(t => byType[t.id]?.some(a => selected.includes(a.id)))?.id ?? null
-    );
-  });
-
-  private readonly needsActivityTypeInference = computed(
-    () =>
-      this.usesActivityType() &&
-      this.explicitActivityType() == null &&
-      this.valueList().length > 0 &&
-      this.inferredActivityType() == null,
-  );
-
-  readonly activityType = computed<number | null>(
-    () => this.explicitActivityType() ?? this.inferredActivityType(),
+  /**
+   * The Activity Type of this condition: the `activityTypeId` returned with the saved rule, or the one
+   * the user just picked. It lives on the node, so it follows the node when siblings are added/removed.
+   */
+  readonly activityType = computed<number | null>(() =>
+    this.usesActivityType() ? (this.node().activityTypeId ?? null) : null,
   );
 
   /** The activity list can only be used once an Activity Type is chosen. */
@@ -202,7 +170,7 @@ export class RuleNodeComponent {
 
   readonly enumOptions = computed<any[]>(() => this.field()?.options ?? NO_ENUM_OPTIONS);
 
-  patch(p: Partial<RuleNodeWithActivityType>) {
+  patch(p: Partial<RuleNodeDto>) {
     this.node.update(n => ({ ...n, ...p }));
   }
 
@@ -246,7 +214,7 @@ export class RuleNodeComponent {
       operator: op,
       value: defaultValue(f, op),
       isMultiple: f.isMultiple,
-      activityType: undefined, // belongs to the previous field
+      activityTypeId: undefined, // belongs to the previous field
     });
   }
 
@@ -255,7 +223,7 @@ export class RuleNodeComponent {
     const f = this.field();
     if (!f) return;
     const op = this.node().operator ?? operatorIds(f)[0];
-    this.patch({ activityType: typeId, value: defaultValue(f, op) });
+    this.patch({ activityTypeId: typeId, value: defaultValue(f, op) });
   }
 
   /** Switching between single (Equals) and list (In) operators converts the value shape. */

@@ -29,7 +29,7 @@
       <p-select
         [options]="logicalOperators"
         optionLabel="label"
-        optionValue="label"
+        optionValue="value"
         styleClass="rule-node-select rule-node-select--join"
         [ngModel]="c.logicalJoinOperator ?? 1"
         (ngModelChange)="setJoin(i, $event)"
@@ -59,16 +59,16 @@
   } @else {
   <div class="cond">
 
-    <p-select
-      [options]="fields()"
-      optionLabel="label"
-      optionValue="label"
-      placeholder="Select field"
-      styleClass="rule-node-select"
-      [ngModel]="n.fieldKey"
-      (ngModelChange)="onField($event)"
-      aria-label="Rule field"
-    />
+   <p-select
+  [options]="fields()"
+  optionLabel="label"
+  optionValue="key"
+  placeholder="Select field"
+  styleClass="rule-node-select"
+  [ngModel]="n.fieldKey"
+  (ngModelChange)="onField($event)"
+  aria-label="Rule field"
+/>
    @if (usesActivityType()) {
     <p-select
       [options]="activityTypes()"
@@ -86,7 +86,7 @@
     <p-select
       [options]="operators()"
       optionLabel="l"
-      optionValue="l"
+      optionValue="v"
       placeholder="Operator"
       styleClass="rule-node-select"
       [ngModel]="n.operator"

@@ -65,5 +65,6 @@ export interface RuleNodeDto {
   operator?: RuleOperator | null;
   value?: any | null;
   isMultiple?: boolean;
+  activityTypeId?: number | null;
   children?: RuleNodeDto[];
 }
