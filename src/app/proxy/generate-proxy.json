@@ -1377,6 +1377,63 @@
                     "contentTypes": null,
                     "isRemoteStream": false
                   }
+                },
+                {
+                  "name": "GetActivitySubTypeDropDownListPaged",
+                  "parametersOnMethod": [
+                    {
+                      "name": "activityTypeId",
+                      "typeAsString": "System.Int32, System.Private.CoreLib",
+                      "type": "System.Int32",
+                      "typeSimple": "number",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    },
+                    {
+                      "name": "searchTerm",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GetDiagnosisDropDownListPaged",
+                  "parametersOnMethod": [
+                    {
+                      "name": "searchTerm",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
                 }
               ]
             }
@@ -1412,6 +1469,142 @@
                   "defaultValue": null,
                   "constraintTypes": [],
                   "bindingSourceId": "Path",
+                  "descriptorName": "",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetActivitySubTypeDropDownListPagedByActivityTypeIdAndSearchTerm": {
+              "uniqueName": "GetActivitySubTypeDropDownListPagedByActivityTypeIdAndSearchTerm",
+              "name": "GetActivitySubTypeDropDownListPaged",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/activity-sub-type-drop-down-list-paged/{activityTypeId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "activityTypeId",
+                  "typeAsString": "System.Int32, System.Private.CoreLib",
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "name": "searchTerm",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "activityTypeId",
+                  "name": "activityTypeId",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": "",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "nameOnMethod": "searchTerm",
+                  "name": "searchTerm",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetDiagnosisDropDownListPagedBySearchTerm": {
+              "uniqueName": "GetDiagnosisDropDownListPagedBySearchTerm",
+              "name": "GetDiagnosisDropDownListPaged",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/diagnosis-drop-down-list-paged",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "searchTerm",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "searchTerm",
+                  "name": "searchTerm",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
                   "descriptorName": "",
                   "summary": null,
                   "description": null,

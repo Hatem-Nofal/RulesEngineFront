@@ -11,7 +11,7 @@
           <div class="rule-builder-field">
             <label for="rule-name">Name</label>
 
-            <span>{{name}}</span>
+            <span>{{ name }}</span>
           </div>
         }
 
@@ -29,7 +29,18 @@
             placeholder="Select a workflow"
           />
         </div>
-
+        <div class="rule-builder-field">
+          <label for="rule-workflow">Violation Type</label>
+          <p-select
+            [options]="violationTypes()"
+            optionLabel="name"
+            optionValue="id"
+            [ngModel]="selectedViolationType()"
+            (ngModelChange)="selectedViolationType.set($event)"
+            placeholder="Select Violation Type"
+            [showClear]="true"
+          />
+        </div>
         <div class="rule-editor-active">
           <p-checkbox
             inputId="rule-active"

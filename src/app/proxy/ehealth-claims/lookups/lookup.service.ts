@@ -21,6 +21,17 @@ export class LookupService {
   
 
   
+  getActivitySubTypeDropDownListPagedByActivityTypeIdAndSearchTerm = (activityTypeId: number, searchTerm: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: `/api/app/lookup/activity-sub-type-drop-down-list-paged/${activityTypeId}`,
+      params: { searchTerm },
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
   getActivityTypeDropDownList = (config?: Partial<Rest.Config>) =>
     this.restService.request<any, SelectedDropDownList[]>({
       method: 'GET',
@@ -46,6 +57,17 @@ export class LookupService {
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/lookup/diagnosis-drop-down-list',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
+  getDiagnosisDropDownListPagedBySearchTerm = (searchTerm: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/diagnosis-drop-down-list-paged',
+      params: { searchTerm },
     },
       { apiName: this.apiName,...config });
   

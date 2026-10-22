@@ -68,6 +68,7 @@
 }
 
 .cond > p-select,
+.cond > p-autoComplete,
 .cond > p-multiselect {
   flex: 1 1 12rem;
   min-width: 0;
@@ -75,6 +76,9 @@
 }
 
 .cond > p-multiselect {
+  flex-basis: 16rem;
+}
+.cond > p-autoComplete {
   flex-basis: 16rem;
 }
 
@@ -158,6 +162,7 @@
   }
 
   .cond > p-select,
+  .cond > p-autoComplete,
   .cond > p-multiselect,
   .cond > input {
     flex-basis: 100%;
@@ -165,6 +170,10 @@
   }
 
   .cond ::ng-deep .rule-node-select--multiple {
+    min-width: 0;
+  }
+
+  .cond ::ng-deep .rule-node-select--autoComplete {
     min-width: 0;
   }
 

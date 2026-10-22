@@ -58,18 +58,17 @@
   </div>
   } @else {
   <div class="cond">
-
-   <p-select
-  [options]="fields()"
-  optionLabel="label"
-  optionValue="key"
-  placeholder="Select field"
-  styleClass="rule-node-select"
-  [ngModel]="n.fieldKey"
-  (ngModelChange)="onField($event)"
-  aria-label="Rule field"
-/>
-   @if (usesActivityType()) {
+    <p-select
+      [options]="fields()"
+      optionLabel="label"
+      optionValue="key"
+      placeholder="Select field"
+      styleClass="rule-node-select"
+      [ngModel]="n.fieldKey"
+      (ngModelChange)="onField($event)"
+      aria-label="Rule field"
+    />
+    @if (usesActivityType()) {
     <p-select
       [options]="activityTypes()"
       optionLabel="name"
@@ -81,8 +80,7 @@
       (ngModelChange)="onActivityType($event)"
       aria-label="Activity type"
     />
-    }
-    @if (field(); as f) {
+    } @if (field(); as f) {
     <p-select
       [options]="operators()"
       optionLabel="l"
@@ -102,7 +100,7 @@
       optionValue="name"
       display="chip"
       placeholder="Select options"
-      styleClass="rule-node-select rule-node-select--multiple"
+      styleClass="rule-node-select rule-node-select--autoComplete"
       [ngModel]="valueList()"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select multiple lookup options"
@@ -119,7 +117,35 @@
       aria-label="Select lookup option"
     />
     } @else if (f.dataType === 'List' && collectionField()) { @if (multipleSelectField()) {
-    <p-multiselect
+    <p-autoComplete
+      [suggestions]="listOptions()"
+      (completeMethod)="search($event)"
+      [multiple]="true"
+      [options]="listOptions()"
+      optionLabel="name"
+      placeholder="Select items"
+      [disabled]="valueSelectDisabled()"
+      optionDisabled="disabled"
+      placeholder="Select options"
+      styleClass="rule-node-select rule-node-select--autoComplete"
+      [ngModel]="valueList()"
+      (ngModelChange)="patch({ value: $event })"
+      aria-label="Select multiple list options"
+    >
+      <ng-template #item let-item>
+        <div class="d-flex align-items-center gap-2">
+          <p-checkbox
+            [ngModel]="valueList()"
+            [binary]="true"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </p-checkbox>
+
+          <span>{{ item.name }}</span>
+        </div>
+      </ng-template>
+    </p-autoComplete>
+    <!-- <p-multiselect
       [options]="listOptions()"
       [disabled]="valueSelectDisabled()"
       optionLabel="name"
@@ -131,9 +157,9 @@
       [ngModel]="valueList()"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select multiple list options"
-    />
+    /> -->
     } @else {
-    <p-select
+    <!-- <p-select
       [options]="listOptions()"
       [disabled]="valueSelectDisabled()"
       optionLabel="name"
@@ -144,6 +170,21 @@
       [ngModel]="n.value"
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select list option"
+    /> -->
+    <p-autoComplete
+      [ngModel]="n.value"
+      [suggestions]="listOptions()"
+      (completeMethod)="search($event)"
+      [options]="listOptions()"
+      [disabled]="valueSelectDisabled()"
+      optionDisabled="disabled"
+      optionLabel="name"
+      optionValue="name"
+      placeholder="Select…"
+      styleClass="rule-node-select"
+      (ngModelChange)="patch({ value: $event })"
+      aria-label="Select list option"
+      [disabled]="valueSelectDisabled()"
     />
     } } @else { @switch (f.dataType) { @case ('Number') {
     <input

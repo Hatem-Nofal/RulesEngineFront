@@ -1,9 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RuleNodeComponent } from '../rule-node-component/rule-node-component';
 import { RuleService } from '@proxy/work-flows/rules';
-import { WorkFlowService } from '@proxy/work-flows';
 import { RuleFormConfigDto, RuleNodeDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
 import { RuleExpressionResultDto } from '@proxy/work-flows/rules/rule-expression-builders';
 import { emptyRoot } from 'src/app/shared/models/constant';
@@ -15,6 +14,7 @@ import { SelectModule } from 'primeng/select';
 import { LookupDto } from '@proxy/lookups/dtos/models';
 import { LookupService } from '@proxy/ehealth-claims/lookups';
 import { SelectedDropDownListByGuid } from '@proxy/common/dtos';
+import { ViolationType } from '@proxy/common/enums';
 
 @Component({
   selector: 'app-rule-edit',
@@ -43,8 +43,8 @@ export class RuleEditComponent implements OnInit {
   isMultiple = false;
 
   workflows = signal<SelectedDropDownListByGuid[]>([]);
-  items = signal<LookupDto[]>([]);
   workflowId = signal<string | null>(null);
+  violationType = signal<ViolationType>(ViolationType.Error);
   config = signal<RuleFormConfigDto | null>(null);
   root = signal<RuleNodeDto>(emptyRoot());
   loading = signal(false);
@@ -53,8 +53,20 @@ export class RuleEditComponent implements OnInit {
   lookups = signal<Record<string, LookupDto[]>>({});
   hasCustomeRule = signal<boolean>(false);
   ruleExpression = signal<string>('');
+  selectedViolationType = signal<ViolationType>(ViolationType.Error);
+  violationTypes = signal<LookupDto[]>([]);
+
 
   ngOnInit() {
+
+     this.violationTypes.set(
+    Object.entries(ViolationType)
+      .filter(([key]) => isNaN(Number(key)))
+      .map(([key, value]) => ({
+        id: String(value),
+        name: key
+      }))
+  );
     this.lookupService.getWorkflowsDropDownList().subscribe({
       next: result => {
         const options: SelectedDropDownListByGuid[] = [];
@@ -80,10 +92,10 @@ export class RuleEditComponent implements OnInit {
         this.isMultiple = rule.isMultiple ?? false;
         this.workflowId.set(rule.workflowId ?? null);
         this.hasCustomeRule.set(rule.workflowHasCustomeRule ?? false);
-        this.ruleExpression.set(rule.expression ?? '')
+        this.ruleExpression.set(rule.expression ?? '');
         this.expression.set(ruleExpressionResultDto);
         this.root.set(rule.root ?? emptyRoot());
-        if (rule.workflowId&&!this.hasCustomeRule()) this.loadConfig(rule.workflowId);
+        if (rule.workflowId && !this.hasCustomeRule()) this.loadConfig(rule.workflowId);
         else this.loading.set(false);
       },
       error: () => this.loading.set(false),
@@ -95,7 +107,7 @@ export class RuleEditComponent implements OnInit {
     this.config.set(null);
     this.expression.set(null);
     this.root.set(emptyRoot()); // conditions from another config may not fit
-    if (id&&!this.hasCustomeRule()) this.loadConfig(id);
+    if (id && !this.hasCustomeRule()) this.loadConfig(id);
   }
 
   private loadConfig(workflowId: string) {
@@ -159,6 +171,7 @@ export class RuleEditComponent implements OnInit {
       isActive: this.isActive,
       isMultiple: this.isMultiple,
       root: this.root(),
+      violationType: this.violationType(),
     };
     const request = this.ruleId
       ? this.service.update(this.ruleId, input)

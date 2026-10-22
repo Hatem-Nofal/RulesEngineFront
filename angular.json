@@ -2,9 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "analytics": false,
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -28,15 +26,10 @@
               "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": [
-              "chart.js",
-              "js-sha256"
-            ],
+            "allowedCommonJsDependencies": ["chart.js", "js-sha256"],
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -44,6 +37,11 @@
                 "glob": "web.config",
                 "input": ".",
                 "output": "."
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/primeicons",
+                "output": "/media/"
               }
             ],
             "styles": [
@@ -129,9 +127,7 @@
               },
               "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
             "browser": "src/main.ts"
           },
           "configurations": {
@@ -173,10 +169,9 @@
               "optimization": false,
               "outputHashing": "none",
               "sourceMap": true,
-               "namedChunks": true,
+              "namedChunks": true,
               "aot": false,
               "extractLicenses": false
-
             }
           },
           "defaultConfiguration": "production"
@@ -212,21 +207,21 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/primeicons",
+                "output": "/media/"
+              }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
