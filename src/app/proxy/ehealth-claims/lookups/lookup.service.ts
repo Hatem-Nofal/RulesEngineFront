@@ -31,6 +31,16 @@ export class LookupService {
   
 
   
+  getBatchTypesDropDownList = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownList[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/batch-types-drop-down-list',
+    },
+      { apiName: this.apiName,...config });
+  
+
+  
   getDiagnosisDropDownList = (config?: Partial<Rest.Config>) =>
     this.restService.request<any, SelectedDropDownList[]>({
       method: 'GET',

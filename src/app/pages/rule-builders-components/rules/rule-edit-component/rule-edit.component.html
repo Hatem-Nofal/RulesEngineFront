@@ -7,18 +7,13 @@
 
     <div class="rule-builder-card__body">
       <div class="rule-builder-form rule-editor-fields">
-        <div class="rule-builder-field">
-          <label for="rule-name">Name</label>
-          <input
-            pInputText
-            id="rule-name"
-            name="ruleName"
-            [(ngModel)]="name"
-            maxlength="200"
-            placeholder="Rule name"
-            autocomplete="off"
-          />
-        </div>
+        @if (ruleId) {
+          <div class="rule-builder-field">
+            <label for="rule-name">Name</label>
+
+            <span>{{name}}</span>
+          </div>
+        }
 
         <div class="rule-builder-field">
           <label for="rule-workflow">Workflow</label>

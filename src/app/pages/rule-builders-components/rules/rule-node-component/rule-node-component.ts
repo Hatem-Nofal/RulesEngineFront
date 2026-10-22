@@ -17,7 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
- import {
+import {
   defaultValue,
   isCollectionType,
   isDataType,
@@ -25,7 +25,7 @@ import { SelectModule } from 'primeng/select';
   operatorIds,
   OPERATORS,
 } from 'src/app/shared/models/constant';
-import { ActivityLookupService } from '../RulesServices/ActivityLookupService';
+import { LoadingLookupService } from '../RulesServices/LoadingLookupService';
 
 /**
  * Shared, referentially stable empty / static option lists.
@@ -42,17 +42,10 @@ type ListOption = { id?: string | number; name?: string; disabled?: boolean };
 const NO_OPTIONS: LookupDto[] = [];
 const NO_VALUES: string[] = [];
 const NO_ENUM_OPTIONS: any[] = [];
-const DIAGNOSIS_OPTIONS: LookupDto[] = [
-  { id: 'item3', name: 'item3' },
-  { id: 'item4', name: 'item4' },
-];
 
 /** Field keys that are filtered by an Activity Type before their own list is shown. */
-const ACTIVITY_FIELD_KEYS: ReadonlySet<string> = new Set([
-  'Activities',
-  'Activity'
-
-]);
+const ACTIVITY_FIELD_KEYS: ReadonlySet<string> = new Set(['Activities', 'Activity']);
+const DIAGNOSES_FIELD_KEYS: ReadonlySet<string> = new Set(['Diagnoses']);
 
 @Component({
   selector: 'app-rule-node',
@@ -64,8 +57,7 @@ const ACTIVITY_FIELD_KEYS: ReadonlySet<string> = new Set([
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RuleNodeComponent {
-  private readonly activityLookup = inject(ActivityLookupService);
-
+  private readonly loadingLookupService = inject(LoadingLookupService);
   node = model.required<RuleNodeDto>();
   fields = input.required<RuleFormFieldDto[]>();
   /** Preloaded options keyed by lookup source or field key. */
@@ -102,14 +94,17 @@ export class RuleNodeComponent {
   constructor() {
     // Activity Type list: only fetched (once, shared) when a node actually shows the select.
     effect(() => {
-      if (this.usesActivityType()) untracked(() => this.activityLookup.ensureTypes());
+      if (this.usesActivityType()) untracked(() => this.loadingLookupService.ensureTypes());
     });
 
     // Activities are requested only for a type that is selected, or that the saved node already carries
     // (activityTypeId). Nothing is loaded for a node without a type.
     effect(() => {
       const typeId = this.activityType();
-      if (typeId != null) untracked(() => this.activityLookup.ensureActivities(typeId));
+      if (typeId != null) untracked(() => this.loadingLookupService.ensureActivities(typeId));
+    });
+     effect(() => {
+        untracked(() => this.loadingLookupService.ensureDiagnoses());
     });
 
     // With exactly one operator there is nothing to choose: make sure it is the selected one.
@@ -149,7 +144,8 @@ export class RuleNodeComponent {
 
   // ---- Activity Type (Activities / PrimaryActivity / SecondaryActivity) ----
   /** Activity types from the API (loaded on demand, shared by all nodes). */
-  readonly activityTypes = this.activityLookup.types;
+  readonly activityTypes = this.loadingLookupService.types;
+  readonly diagnoses = this.loadingLookupService.diagnoses;
 
   readonly usesActivityType = computed(() => ACTIVITY_FIELD_KEYS.has(this.field()?.key ?? ''));
 
@@ -187,19 +183,22 @@ export class RuleNodeComponent {
     if (fieldKey && ACTIVITY_FIELD_KEYS.has(fieldKey)) {
       // Activities depend on the selected Activity Type; empty until that type's list has loaded.
       return (
-        (activityTypeId != null ? this.activityLookup.activitiesByType()[activityTypeId] : undefined) ??
-        NO_OPTIONS
+        (activityTypeId != null
+          ? this.loadingLookupService.activitiesByType()[activityTypeId]
+          : undefined) ?? NO_OPTIONS
       );
     }
-    return fieldKey === 'Diagnoses' ? DIAGNOSIS_OPTIONS : NO_OPTIONS;
+
+    if (fieldKey && fieldKey === 'Diagnoses') {
+      return this.loadingLookupService.diagnoses()
+    }
+    return NO_OPTIONS;
   }
 
   /** Older rules stored a single string; the editor always works with a list. */
   asArray(v: unknown): string[] {
     return Array.isArray(v) ? v : v ? [String(v)] : NO_VALUES;
   }
-
-
 
   isList(op?: number | null) {
     return isListOperator(op);
@@ -238,7 +237,7 @@ export class RuleNodeComponent {
       if (this.isMultipleSelect(f)) value = Array.isArray(v) ? v : v == null ? [] : [v];
       else value = Array.isArray(v) ? (v[0] ?? null) : v;
     }
-    this.patch({ operator: op,value: value  ,isMultiple:f?.isMultiple});
+    this.patch({ operator: op, value: value, isMultiple: f?.isMultiple });
   }
 
   toggleValue(option: string) {
@@ -257,12 +256,12 @@ export class RuleNodeComponent {
     const condition: RuleNodeDto = {
       nodeType: RuleNodeType.Condition,
       logicalJoinOperator: 1,
-      logicalOperator:1,
+      logicalOperator: 1,
       fieldKey: f.key,
       operator: op,
       value: defaultValue(f, op),
       children: [],
-      isMultiple:f.isMultiple
+      isMultiple: f.isMultiple,
     };
     this.patch({
       children: [condition, ...children],
@@ -292,9 +291,8 @@ export class RuleNodeComponent {
     this.patch({
       children: children.map((current, index) =>
         index === i ? { ...current, logicalJoinOperator: op } : current,
-
       ),
-      isMultiple:child.isMultiple
+      isMultiple: child.isMultiple,
     });
   }
 
@@ -309,7 +307,7 @@ export class RuleNodeComponent {
         : { ...updatedChild, nodeType: RuleNodeType.Condition };
     this.patch({
       children: children.map((current, index) => (index === childIndex ? child : current)),
-      isMultiple:child.isMultiple
+      isMultiple: child.isMultiple,
     });
   }
 
@@ -319,8 +317,8 @@ export class RuleNodeComponent {
     });
   }
   onValueChange(value: string): void {
-  this.patch({
-    value: value === '' ? null : Number(value)
-  });
-}
+    this.patch({
+      value: value === '' ? null : Number(value),
+    });
+  }
 }

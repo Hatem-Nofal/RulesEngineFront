@@ -1253,7 +1253,7 @@
           "displayName": null,
           "interfaces": [
             {
-              "type": "EhealthClaims.Lookups.ILookupAppService",
+              "type": "RulesEngine.Lookups.ILookupAppService",
               "name": "ILookupAppService",
               "methods": [
                 {
@@ -1366,6 +1366,17 @@
                     "contentTypes": null,
                     "isRemoteStream": false
                   }
+                },
+                {
+                  "name": "GetBatchTypesDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
                 }
               ]
             }
@@ -1420,7 +1431,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1447,7 +1458,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1474,7 +1485,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1501,7 +1512,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1528,7 +1539,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1555,7 +1566,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1582,7 +1593,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1609,7 +1620,7 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -1636,7 +1647,34 @@
               },
               "allowAnonymous": null,
               "authorizeDatas": [],
-              "implementFrom": "EhealthClaims.Lookups.ILookupAppService",
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetBatchTypesDropDownList": {
+              "uniqueName": "GetBatchTypesDropDownList",
+              "name": "GetBatchTypesDropDownList",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/batch-types-drop-down-list",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -9307,6 +9345,24 @@
       "description": null,
       "displayName": null
     },
+    "RulesEngine.Common.Enums.ViolationType": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Error",
+        "Warning"
+      ],
+      "enumValues": [
+        1,
+        2
+      ],
+      "genericArguments": null,
+      "properties": null,
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
     "RulesEngine.Integrations.ClaimDto": {
       "baseType": null,
       "isEnum": false,
@@ -10880,22 +10936,6 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "Name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
           "name": "WorkflowId",
           "jsonName": null,
           "type": "System.Guid",
@@ -10932,6 +10972,22 @@
           "jsonName": null,
           "type": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
           "typeSimple": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationType",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.ViolationType",
+          "typeSimple": "enum",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -11069,6 +11125,22 @@
           "displayName": null
         },
         {
+          "name": "ViolationType",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.ViolationType",
+          "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
           "name": "Root",
           "jsonName": null,
           "type": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
@@ -11166,6 +11238,22 @@
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationType",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.ViolationType",
+          "typeSimple": "enum",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

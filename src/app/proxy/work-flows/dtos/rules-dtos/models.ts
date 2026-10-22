@@ -1,10 +1,11 @@
 import type { RuleNodeDto } from '../rule-builders-dtos/models';
+import type { ViolationType } from '../../../common/enums/violation-type.enum';
 
 export interface CreateRuleDto {
-  name?: string;
   workflowId?: string;
   isActive?: boolean;
   root?: RuleNodeDto;
+  violationType?: ViolationType;
 }
 
 export interface RuleDto {
@@ -15,6 +16,7 @@ export interface RuleDto {
   isMultiple?: boolean;
   expression?: string | null;
   workflowHasCustomeRule?: boolean;
+  violationType?: ViolationType;
   root?: RuleNodeDto;
 }
 
@@ -24,4 +26,5 @@ export interface RuleListItemDto {
   workflowId?: string;
   workflowName?: string | null;
   isActive?: boolean;
+  violationType?: ViolationType;
 }

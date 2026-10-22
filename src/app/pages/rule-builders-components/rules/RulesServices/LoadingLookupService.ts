@@ -2,13 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import type { SelectedDropDownList } from '@proxy/common/dtos/models';
 import { LookupService } from '@proxy/ehealth-claims/lookups';
 
-export interface ActivityLookupItem {
-  id: number;
-  name: string;
-  disabled?: boolean;
-}
-
-const toItems = (list: SelectedDropDownList[] | null | undefined): ActivityLookupItem[] =>
+const toItems = (list: SelectedDropDownList[] | null | undefined): SelectedDropDownList[] =>
   (list ?? [])
     .filter(x => x.id != null)
     .map(x => ({ id: x.id as number, name: x.name ?? '', disabled: x.disabled }));
@@ -20,11 +14,12 @@ const toItems = (list: SelectedDropDownList[] | null | undefined): ActivityLooku
  * requested once and shared through signals. A failed request is forgotten so a later call can retry it.
  */
 @Injectable({ providedIn: 'root' })
-export class ActivityLookupService {
+export class LoadingLookupService {
   private readonly lookupService = inject(LookupService);
 
-  private readonly _types = signal<ActivityLookupItem[]>([]);
-  private readonly _activitiesByType = signal<Record<number, ActivityLookupItem[]>>({});
+  private readonly _types = signal<SelectedDropDownList[]>([]);
+  private readonly _activitiesByType = signal<Record<number, SelectedDropDownList[]>>({});
+  private readonly _diagnoses = signal<SelectedDropDownList[]>([]);
 
   private typesRequested = false;
   private readonly activitiesRequested = new Set<number>();
@@ -34,6 +29,7 @@ export class ActivityLookupService {
 
   /** Activities already loaded, keyed by activity type id (GET activity-sub-type-drop-down-list/{activityTypeId}). */
   readonly activitiesByType = this._activitiesByType.asReadonly();
+  readonly diagnoses = this._diagnoses.asReadonly();
 
   ensureTypes(): void {
     if (this.typesRequested) return;
@@ -53,6 +49,12 @@ export class ActivityLookupService {
       next: list =>
         this._activitiesByType.update(byType => ({ ...byType, [activityTypeId]: toItems(list) })),
       error: () => this.activitiesRequested.delete(activityTypeId),
+    });
+  }
+  ensureDiagnoses(): void {
+
+    this.lookupService.getDiagnosisDropDownList().subscribe({
+      next: list => this._diagnoses.set(toItems(list)),
     });
   }
 }
