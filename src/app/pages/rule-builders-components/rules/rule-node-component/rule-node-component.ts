@@ -7,8 +7,10 @@ import {
   input,
   model,
   output,
+  signal,
   untracked,
 } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
 import { LookupDto } from "@proxy/lookups/dtos";
 import {
@@ -29,7 +31,12 @@ import {
   OPERATORS,
 } from "src/app/shared/models/constant";
 import { LoadingLookupService } from "../rules-services/loadingLookup-service";
-import { AutoCompleteCompleteEvent, AutoCompleteModule } from "primeng/autocomplete";
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+} from "primeng/autocomplete";
+import { CheckboxModule } from "primeng/checkbox";
+import { catchError, Observable, of, Subject, switchMap } from "rxjs";
 
 /**
  * Shared, referentially stable empty / static option lists.
@@ -53,6 +60,21 @@ const ACTIVITY_FIELD_KEYS: ReadonlySet<string> = new Set([
   "Activity",
 ]);
 const DIAGNOSES_FIELD_KEYS: ReadonlySet<string> = new Set(["Diagnoses"]);
+const BATCHTYPE_FIELD_KEYS: ReadonlySet<string> = new Set(["BatchType"]);
+
+/** Server-searched lists (activities, diagnoses) are queried from this many characters on. */
+const SEARCH_MIN_LENGTH = 3;
+
+/**
+ * The value stored on a node is the option's *name*. Older nodes saved by an earlier autocomplete
+ * build hold whole option objects, so accept both.
+ */
+const toName = (v: unknown): string | undefined =>
+  v != null && typeof v === "object"
+    ? (v as ListOption).name
+    : v == null
+    ? undefined
+    : String(v);
 
 @Component({
   selector: "app-rule-node",
@@ -62,7 +84,8 @@ const DIAGNOSES_FIELD_KEYS: ReadonlySet<string> = new Set(["Diagnoses"]);
     InputTextModule,
     MultiSelectModule,
     SelectModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    CheckboxModule,
   ],
   templateUrl: "./rule-node-component.html",
   styleUrl: "./rule-node-component.scss",
@@ -124,20 +147,28 @@ export class RuleNodeComponent {
     //     untracked(() => this.loadingLookupService.ensureActivities(typeId));
     // });
 
+    // Suggestions of the autocomplete: one request per search, only the latest answer is used
+    // (switchMap drops stale responses); `null` cancels a request in flight and clears the list.
+    this.query$
+      .pipe(
+        switchMap((query) =>
+          query === null ? of([]) : this.loadSuggestions(query)
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe((items) => this.suggestions.set(items));
+
+    // The complete diagnoses list is only needed by controls that are not autocomplete-driven.
     effect(() => {
-      const typeId = this.activityType();
-      const search = this.searchInput();
-      if (typeId != null && search != null)
-        untracked(() =>
-          this.loadingLookupService.ensureActivitySubTypeDropDownListPaged(
-            typeId,
-            search
-          )
-        );
+      const key = this.field()?.key;
+      if (key && DIAGNOSES_FIELD_KEYS.has(key) && !this.usesAutoComplete())
+        untracked(() => this.loadingLookupService.ensureDiagnoses());
     });
 
     effect(() => {
-      untracked(() => this.loadingLookupService.ensureDiagnoses());
+      const key = this.field()?.key;
+      if (key && BATCHTYPE_FIELD_KEYS.has(key) && !this.usesAutoComplete())
+        untracked(() => this.loadingLookupService.ensureBatchTypes());
     });
 
     // With exactly one operator there is nothing to choose: make sure it is the selected one.
@@ -183,7 +214,6 @@ export class RuleNodeComponent {
   // ---- Activity Type (Activities / PrimaryActivity / SecondaryActivity) ----
   /** Activity types from the API (loaded on demand, shared by all nodes). */
   readonly activityTypes = this.loadingLookupService.types;
-  readonly searchInput = this.loadingLookupService.searchInput;
   readonly diagnoses = this.loadingLookupService.diagnoses;
 
   readonly usesActivityType = computed(() =>
@@ -201,6 +231,43 @@ export class RuleNodeComponent {
   /** The activity list can only be used once an Activity Type is chosen. */
   readonly valueSelectDisabled = computed(
     () => this.usesActivityType() && !this.activityType()
+  );
+
+  // ---- p-autoComplete (List fields: searched on the server for activities / diagnoses) ----
+  /** The list fields are rendered with p-autoComplete. */
+  readonly usesAutoComplete = computed(
+    () => this.field()?.dataType === "List" && this.collectionField()
+  );
+
+  /** Activities and diagnoses are too big to preload: they are searched on the server. */
+  private readonly serverSearched = computed(() => {
+    const key = this.field()?.key ?? "";
+    return ACTIVITY_FIELD_KEYS.has(key) || DIAGNOSES_FIELD_KEYS.has(key);
+  });
+
+  readonly searchMinLength = computed(() =>
+    this.serverSearched() ? SEARCH_MIN_LENGTH : 1
+  );
+
+  /** What the dropdown currently offers (result of the last search of THIS node). */
+  readonly suggestions = signal<ListOption[]>([]);
+  private readonly query$ = new Subject<string | null>();
+
+  /**
+   * p-autoComplete renders its chips / input text from the model entries via `optionLabel`, so the model has to
+   * hold option objects. The node stores plain names, so they are converted both ways and a saved rule
+   * shows its selection without any lookup request.
+   */
+  readonly selectedItems = computed<ListOption[]>(() =>
+    this.valueList().map((v) => ({ name: toName(v) ?? "" }))
+  );
+  readonly selectedItem = computed<ListOption | null>(() => {
+    const name = toName(this.valueList()[0]);
+    return name ? { name } : null;
+  });
+  /** Names that are selected – used to tick the suggestion rows. */
+  readonly selectedNames = computed(
+    () => new Set(this.valueList().map((v) => toName(v)))
   );
 
   readonly listOptions = computed<ListOption[]>(() =>
@@ -252,6 +319,25 @@ export class RuleNodeComponent {
     return isListOperator(op);
   }
 
+  /** Selection changed in p-autoComplete (objects or null) -> store the names. */
+  onAutoCompleteChange(selection: unknown): void {
+    if (this.multipleSelectField()) {
+      const items = Array.isArray(selection)
+        ? selection
+        : selection == null
+        ? []
+        : [selection];
+      this.patch({
+        value: items.map(toName).filter((name): name is string => !!name),
+      });
+    } else {
+      this.patch({
+        value:
+          toName(Array.isArray(selection) ? selection[0] : selection) || null,
+      });
+    }
+  }
+
   onField(key: string) {
     const f = this.fields().find((x) => x.key === key);
     if (!f) return;
@@ -263,6 +349,7 @@ export class RuleNodeComponent {
       isMultiple: f.isMultiple,
       activityTypeId: undefined, // belongs to the previous field
     });
+    this.query$.next(null);
   }
 
   /** Changing the Activity Type loads a different list, so previously selected activities no longer apply. */
@@ -271,6 +358,7 @@ export class RuleNodeComponent {
     if (!f) return;
     const op = this.node().operator ?? operatorIds(f)[0];
     this.patch({ activityTypeId: typeId, value: defaultValue(f, op) });
+    this.query$.next(null); // suggestions of the previous type no longer apply
   }
 
   /** Switching between single (Equals) and list (In) operators converts the value shape. */
@@ -379,10 +467,33 @@ export class RuleNodeComponent {
     });
   }
 
+  /** `completeMethod` of p-autoComplete (called after `minLength` characters, debounced by its `delay`). */
   search(event: AutoCompleteCompleteEvent): void {
-    if (event.query.length>2) {
-          this.loadingLookupService.search(event.query);
+    this.query$.next((event.query ?? "").trim());
+  }
 
+  private loadSuggestions(query: string): Observable<ListOption[]> {
+    const key = this.field()?.key ?? "";
+
+    if (ACTIVITY_FIELD_KEYS.has(key)) {
+      const typeId = this.activityType();
+      return typeId == null
+        ? of([])
+        : this.loadingLookupService
+            .searchActivities(typeId, query)
+            .pipe(catchError(() => of([])));
     }
+
+    if (DIAGNOSES_FIELD_KEYS.has(key)) {
+      return this.loadingLookupService
+        .searchDiagnoses(query)
+        .pipe(catchError(() => of([])));
+    }
+
+    // Any other list: filter the options that are available locally.
+    const q = query.toLowerCase();
+    return of(
+      this.listOptions().filter((o) => (o.name ?? "").toLowerCase().includes(q))
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import type { SelectedDropDownList } from "@proxy/common/dtos/models";
 import { LookupService } from "@proxy/ehealth-claims/lookups";
+import { map, Observable } from "rxjs";
 
 const toItems = (
   list: SelectedDropDownList[] | null | undefined
@@ -34,14 +35,13 @@ export class LoadingLookupService {
   private readonly _duplicateTherapyGroups = signal<SelectedDropDownList[]>([]);
   private readonly _morbidityGroups = signal<SelectedDropDownList[]>([]);
   private readonly _batchTypes = signal<SelectedDropDownList[]>([]);
-  private readonly _searchInput = signal<string | null>(null);
 
   private typesRequested = false;
+  private diagnosesRequested = false;
   private readonly activitiesRequested = new Set<number>();
 
   /** All activity types (GET activity-type-drop-down-list). */
   readonly types = this._types.asReadonly();
-  readonly searchInput = this._searchInput.asReadonly();
 
   /** Activities already loaded, keyed by activity type id (GET activity-sub-type-drop-down-list/{activityTypeId}). */
   readonly activitiesByType = this._activitiesByType.asReadonly();
@@ -74,8 +74,12 @@ export class LoadingLookupService {
   }
 
   ensureDiagnoses(): void {
+    if (this.diagnosesRequested) return;
+    this.diagnosesRequested = true;
+
     this.lookupService.getDiagnosisDropDownList().subscribe({
       next: (list) => this._diagnoses.set(toItems(list)),
+      error: () => (this.diagnosesRequested = false),
     });
   }
   ensureSpecialities(): void {
@@ -112,37 +116,26 @@ export class LoadingLookupService {
     });
   }
 
-  ensureActivitySubTypeDropDownListPaged(
+  /**
+   * Server-side search of the activities of one type (autocomplete). Returns the result instead of
+   * caching it: results depend on the search term, so they belong to the caller that asked for them.
+   */
+  searchActivities(
     activityTypeId: number,
-    searchtext: string
-  ): void {
-    if (this.activitiesRequested.has(activityTypeId)) return;
-    this.activitiesRequested.add(activityTypeId);
-
-    this.lookupService
+    searchTerm: string
+  ): Observable<SelectedDropDownList[]> {
+    return this.lookupService
       .getActivitySubTypeDropDownListPagedByActivityTypeIdAndSearchTerm(
         activityTypeId,
-        searchtext
+        searchTerm
       )
-      .subscribe({
-        next: (list) =>
-          this._activitiesByType.update((byType) => ({
-            ...byType,
-            [activityTypeId]: toItems(list),
-          })),
-        error: () => this.activitiesRequested.delete(activityTypeId),
-      });
+      .pipe(map(toItems));
   }
 
-  ensureDiagnosisDropDownListPagedBySearchTerm(searchtext: string): void {
-    this.lookupService
-      .getDiagnosisDropDownListPagedBySearchTerm(searchtext)
-      .subscribe({
-        next: (list) => this._diagnoses.set(toItems(list)),
-      });
-  }
-
-  search(input: string): void {
-    this._searchInput.set(input);
+  /** Server-side search of diagnoses (autocomplete). */
+  searchDiagnoses(searchTerm: string): Observable<SelectedDropDownList[]> {
+    return this.lookupService
+      .getDiagnosisDropDownListPagedBySearchTerm(searchTerm)
+      .pipe(map(toItems));
   }
 }

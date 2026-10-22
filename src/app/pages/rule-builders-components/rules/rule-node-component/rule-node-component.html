@@ -118,29 +118,30 @@
     />
     } @else if (f.dataType === 'List' && collectionField()) { @if (multipleSelectField()) {
     <p-autoComplete
-      [suggestions]="listOptions()"
-      (completeMethod)="search($event)"
       [multiple]="true"
-      [options]="listOptions()"
+      [ngModel]="selectedItems()"
+      (ngModelChange)="onAutoCompleteChange($event)"
+      [suggestions]="suggestions()"
+      (completeMethod)="search($event)"
+      [minLength]="searchMinLength()"
+      [forceSelection]="true"
+      [unique]="true"
       optionLabel="name"
-      placeholder="Select items"
-      [disabled]="valueSelectDisabled()"
+      dataKey="name"
       optionDisabled="disabled"
-      placeholder="Select options"
+      [disabled]="valueSelectDisabled()"
+      placeholder="Type to search…"
       styleClass="rule-node-select rule-node-select--autoComplete"
-      [ngModel]="valueList()"
-      (ngModelChange)="patch({ value: $event })"
       aria-label="Select multiple list options"
     >
       <ng-template #item let-item>
         <div class="d-flex align-items-center gap-2">
           <p-checkbox
-            [ngModel]="valueList()"
+            [ngModel]="selectedNames().has(item.name)"
             [binary]="true"
-            [ngModelOptions]="{ standalone: true }"
-          >
-          </p-checkbox>
-
+            [readonly]="true"
+            styleClass="pe-none"
+          />
           <span>{{ item.name }}</span>
         </div>
       </ng-template>
@@ -171,21 +172,24 @@
       (ngModelChange)="patch({ value: $event })"
       aria-label="Select list option"
     /> -->
-    <p-autoComplete
-      [ngModel]="n.value"
-      [suggestions]="listOptions()"
-      (completeMethod)="search($event)"
-      [options]="listOptions()"
-      [disabled]="valueSelectDisabled()"
-      optionDisabled="disabled"
-      optionLabel="name"
-      optionValue="name"
-      placeholder="Select…"
-      styleClass="rule-node-select"
-      (ngModelChange)="patch({ value: $event })"
-      aria-label="Select list option"
-      [disabled]="valueSelectDisabled()"
-    />
+ <div class="autocomplete-wrapper">
+  <p-autoComplete
+    [ngModel]="selectedItem()"
+    (ngModelChange)="onAutoCompleteChange($event)"
+    [suggestions]="suggestions()"
+    (completeMethod)="search($event)"
+    [minLength]="searchMinLength()"
+    [forceSelection]="true"
+    [showClear]="true"
+    optionLabel="name"
+    dataKey="name"
+    optionDisabled="disabled"
+    [disabled]="valueSelectDisabled()"
+    placeholder="Type to search…"
+    styleClass="rule-node-select"
+    aria-label="Select list option"
+  />
+</div>
     } } @else { @switch (f.dataType) { @case ('Number') {
     <input
       type="number"

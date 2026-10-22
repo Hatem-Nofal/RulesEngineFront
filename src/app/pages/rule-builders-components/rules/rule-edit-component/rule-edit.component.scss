@@ -47,3 +47,17 @@
     grid-template-columns: 1fr;
   }
 }
+:host ::ng-deep .rule-node-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+:host ::ng-deep .rule-node-select .p-autocomplete-clear-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+}
