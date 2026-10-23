@@ -7,14 +7,6 @@
 
     <div class="rule-builder-card__body">
       <div class="rule-builder-form rule-editor-fields">
-        @if (ruleId) {
-          <div class="rule-builder-field">
-            <label for="rule-name">Name</label>
-
-            <span>{{ name }}</span>
-          </div>
-        }
-
         <div class="rule-builder-field">
           <label for="rule-workflow">Workflow <span class="text-danger ms-1 fs-5">*</span></label>
           <p-select
@@ -29,8 +21,22 @@
             placeholder="Select a workflow"
           />
         </div>
+        @if (ruleId) {
+          <div class="rule-builder-field">
+            <label for="rule-name">Name</label>
+
+            <span
+              class="form-control d-flex align-items-center justify-content-between"
+              style="background-color: #e9eef5; border-color: #ced8e6; color: #52647a"
+              >{{ name }}</span
+            >
+          </div>
+        }
+
         <div class="rule-builder-field">
-          <label for="rule-workflow">Violation Type <span class="text-danger ms-1 fs-5">*</span></label>
+          <label for="rule-workflow"
+            >Violation Type <span class="text-danger ms-1 fs-5">*</span></label
+          >
           <p-select
             [options]="violationTypes()"
             optionLabel="name"
@@ -39,6 +45,19 @@
             (ngModelChange)="selectedViolationType.set($event)"
             placeholder="Select Violation Type"
             [showClear]="true"
+          />
+        </div>
+
+        <div class="rule-builder-field">
+          <label for="violation_Message">Violation Message</label>
+          <input
+            pInputText
+            id="violation_Message"
+            name="violationMessage"
+            [(ngModel)]="violationMessage"
+            maxlength="200"
+            placeholder="Violation Message"
+            autocomplete="off"
           />
         </div>
         <div class="rule-editor-active">

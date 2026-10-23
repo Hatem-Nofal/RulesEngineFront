@@ -30,7 +30,10 @@ import {
   operatorIds,
   OPERATORS,
 } from "src/app/shared/models/constant";
-import { LoadingLookupService } from "../rules-services/loadingLookup-service";
+import {
+  LoadingLookupService,
+  PreloadedLookup,
+} from "../rules-services/loadingLookup-service";
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
@@ -48,7 +51,12 @@ import { catchError, Observable, of, Subject, switchMap } from "rxjs";
 type RuleFieldWithLookup = RuleFormFieldDto & { lookupSource?: string | null };
 
 /** Anything a list control can show: lookup items (string ids) and activity lookups (numeric ids, optional `disabled`). */
-type ListOption = { id?: string | number; name?: string; disabled?: boolean };
+type ListOption = {
+  id?: string | number;
+  name?: string;
+  disabled?: boolean;
+  code?: string | null;
+};
 
 const NO_OPTIONS: LookupDto[] = [];
 const NO_VALUES: string[] = [];
@@ -60,7 +68,26 @@ const ACTIVITY_FIELD_KEYS: ReadonlySet<string> = new Set([
   "Activity",
 ]);
 const DIAGNOSES_FIELD_KEYS: ReadonlySet<string> = new Set(["Diagnoses"]);
-const BATCHTYPE_FIELD_KEYS: ReadonlySet<string> = new Set(["BatchType"]);
+
+/**
+ * List fields that are searched on the server while typing (too many entries to preload)
+ * -> rendered with p-autoComplete. A key needs a search source in `loadSuggestions`.
+ */
+const AUTOCOMPLETE_FIELD_KEYS: ReadonlySet<string> = new Set([
+  ...ACTIVITY_FIELD_KEYS,
+  ...DIAGNOSES_FIELD_KEYS,
+]);
+
+/**
+ * List fields whose complete list is preloaded once and shown in the classic
+ * p-multiselect (multiple) / p-select (single).
+ * Add one line per field key: `["<field key>", "<lookup in LoadingLookupService>"]`.
+ * (Loaders already exist for: batchTypes, specialities, genericDrugs, procedureGroups,
+ * duplicateTherapyGroups, morbidityGroups.)
+ */
+const MULTISELECT_FIELD_LOOKUPS: ReadonlyMap<string, PreloadedLookup> = new Map(
+  [["BatchType", "batchTypes"]]
+);
 
 /** Server-searched lists (activities, diagnoses) are queried from this many characters on. */
 const SEARCH_MIN_LENGTH = 3;
@@ -72,6 +99,13 @@ const SEARCH_MIN_LENGTH = 3;
 const toName = (v: unknown): string | undefined =>
   v != null && typeof v === "object"
     ? (v as ListOption).name
+    : v == null
+    ? undefined
+    : String(v);
+
+const toCode = (v: unknown): string | undefined =>
+  v != null && typeof v === "object"
+    ? (v as ListOption).code??''
     : v == null
     ? undefined
     : String(v);
@@ -165,10 +199,11 @@ export class RuleNodeComponent {
         untracked(() => this.loadingLookupService.ensureDiagnoses());
     });
 
+    // Preloaded list of a p-multiselect / p-select field: requested once, shared by all nodes.
     effect(() => {
-      const key = this.field()?.key;
-      if (key && BATCHTYPE_FIELD_KEYS.has(key) && !this.usesAutoComplete())
-        untracked(() => this.loadingLookupService.ensureBatchTypes());
+      const lookup = this.preloadedLookup();
+      if (lookup)
+        untracked(() => this.loadingLookupService.ensurePreloaded(lookup));
     });
 
     // With exactly one operator there is nothing to choose: make sure it is the selected one.
@@ -234,9 +269,17 @@ export class RuleNodeComponent {
   );
 
   // ---- p-autoComplete (List fields: searched on the server for activities / diagnoses) ----
-  /** The list fields are rendered with p-autoComplete. */
+  /** List fields of AUTOCOMPLETE_FIELD_KEYS are rendered with p-autoComplete; every other List field with the classic p-multiselect / p-select. */
   readonly usesAutoComplete = computed(
-    () => this.field()?.dataType === "List" && this.collectionField()
+    () =>
+      this.field()?.dataType === "List" &&
+      this.collectionField() &&
+      AUTOCOMPLETE_FIELD_KEYS.has(this.field()?.key ?? "")
+  );
+
+  /** The preloaded lookup behind this field's p-multiselect / p-select, if its key is registered. */
+  readonly preloadedLookup = computed<PreloadedLookup | null>(
+    () => MULTISELECT_FIELD_LOOKUPS.get(this.field()?.key ?? "") ?? null
   );
 
   /** Activities and diagnoses are too big to preload: they are searched on the server. */
@@ -304,6 +347,13 @@ export class RuleNodeComponent {
       );
     }
 
+    const preloaded = fieldKey
+      ? MULTISELECT_FIELD_LOOKUPS.get(fieldKey)
+      : undefined;
+    if (preloaded) {
+      return this.loadingLookupService.preloaded(preloaded)();
+    }
+
     if (fieldKey && fieldKey === "Diagnoses") {
       return this.loadingLookupService.diagnoses();
     }
@@ -328,7 +378,7 @@ export class RuleNodeComponent {
         ? []
         : [selection];
       this.patch({
-        value: items.map(toName).filter((name): name is string => !!name),
+        value: items.map(toName).filter((code): code is string => !!code),
       });
     } else {
       this.patch({
@@ -490,10 +540,7 @@ export class RuleNodeComponent {
         .pipe(catchError(() => of([])));
     }
 
-    // Any other list: filter the options that are available locally.
-    const q = query.toLowerCase();
-    return of(
-      this.listOptions().filter((o) => (o.name ?? "").toLowerCase().includes(q))
-    );
+    // Only the keys of AUTOCOMPLETE_FIELD_KEYS use the autocomplete, and they are all handled above.
+    return of([]);
   }
 }

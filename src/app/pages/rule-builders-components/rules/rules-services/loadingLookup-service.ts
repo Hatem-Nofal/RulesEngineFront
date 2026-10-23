@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { inject, Injectable, Signal, signal, WritableSignal } from "@angular/core";
 import type { SelectedDropDownList } from "@proxy/common/dtos/models";
 import { LookupService } from "@proxy/ehealth-claims/lookups";
 import { map, Observable } from "rxjs";
@@ -12,7 +12,20 @@ const toItems = (
       id: x.id as number,
       name: x.name ?? "",
       disabled: x.disabled,
+      code:x.code
     }));
+
+/**
+ * Lookups whose complete list is loaded once and then shared (shown in a p-multiselect / p-select).
+ * A field key is attached to one of these in RuleNodeComponent (MULTISELECT_FIELD_LOOKUPS).
+ */
+export type PreloadedLookup =
+  | "batchTypes"
+  | "specialities"
+  | "genericDrugs"
+  | "procedureGroups"
+  | "duplicateTherapyGroups"
+  | "morbidityGroups";
 
 /**
  * Loads and caches the Activity Type and Activity lookups.
@@ -29,12 +42,32 @@ export class LoadingLookupService {
     Record<number, SelectedDropDownList[]>
   >({});
   private readonly _diagnoses = signal<SelectedDropDownList[]>([]);
-  private readonly _specialities = signal<SelectedDropDownList[]>([]);
-  private readonly _genericDrugs = signal<SelectedDropDownList[]>([]);
-  private readonly _procedureGroups = signal<SelectedDropDownList[]>([]);
-  private readonly _duplicateTherapyGroups = signal<SelectedDropDownList[]>([]);
-  private readonly _morbidityGroups = signal<SelectedDropDownList[]>([]);
-  private readonly _batchTypes = signal<SelectedDropDownList[]>([]);
+  private readonly preloadedItems: Record<
+    PreloadedLookup,
+    WritableSignal<SelectedDropDownList[]>
+  > = {
+    batchTypes: signal<SelectedDropDownList[]>([]),
+    specialities: signal<SelectedDropDownList[]>([]),
+    genericDrugs: signal<SelectedDropDownList[]>([]),
+    procedureGroups: signal<SelectedDropDownList[]>([]),
+    duplicateTherapyGroups: signal<SelectedDropDownList[]>([]),
+    morbidityGroups: signal<SelectedDropDownList[]>([]),
+  };
+
+  private readonly preloadedLoaders: Record<
+    PreloadedLookup,
+    () => Observable<SelectedDropDownList[]>
+  > = {
+    batchTypes: () => this.lookupService.getBatchTypesDropDownList(),
+    specialities: () => this.lookupService.getSpecialitiesIdDropDownList(),
+    genericDrugs: () => this.lookupService.getGenericDrugsDropDownList(),
+    procedureGroups: () => this.lookupService.getProcedureGroupsDropDownList(),
+    duplicateTherapyGroups: () =>
+      this.lookupService.getDuplicateTherapyGroupsDropDownList(),
+    morbidityGroups: () => this.lookupService.getMorbidityGroupsDropDownList(),
+  };
+
+  private readonly preloadedRequested = new Set<PreloadedLookup>();
 
   private typesRequested = false;
   private diagnosesRequested = false;
@@ -82,38 +115,39 @@ export class LoadingLookupService {
       error: () => (this.diagnosesRequested = false),
     });
   }
-  ensureSpecialities(): void {
-    this.lookupService.getSpecialitiesIdDropDownList().subscribe({
-      next: (list) => this._specialities.set(toItems(list)),
+  /** The loaded list of a preloaded lookup (empty until `ensurePreloaded` has finished). */
+  preloaded(lookup: PreloadedLookup): Signal<SelectedDropDownList[]> {
+    return this.preloadedItems[lookup].asReadonly();
+  }
+
+  /** Requests the list once, however many nodes ask; a failed request is forgotten so it can be retried. */
+  ensurePreloaded(lookup: PreloadedLookup): void {
+    if (this.preloadedRequested.has(lookup)) return;
+    this.preloadedRequested.add(lookup);
+
+    this.preloadedLoaders[lookup]().subscribe({
+      next: (list) => this.preloadedItems[lookup].set(toItems(list)),
+      error: () => this.preloadedRequested.delete(lookup),
     });
+  }
+
+  ensureSpecialities(): void {
+    this.ensurePreloaded("specialities");
   }
   ensureGenericDrugs(): void {
-    this.lookupService.getGenericDrugsDropDownList().subscribe({
-      next: (list) => this._genericDrugs.set(toItems(list)),
-    });
+    this.ensurePreloaded("genericDrugs");
   }
-
   ensureProcedureGroups(): void {
-    this.lookupService.getProcedureGroupsDropDownList().subscribe({
-      next: (list) => this._procedureGroups.set(toItems(list)),
-    });
+    this.ensurePreloaded("procedureGroups");
   }
-
   ensureDuplicateTherapyGroups(): void {
-    this.lookupService.getDuplicateTherapyGroupsDropDownList().subscribe({
-      next: (list) => this._duplicateTherapyGroups.set(toItems(list)),
-    });
+    this.ensurePreloaded("duplicateTherapyGroups");
   }
-
   ensureMorbidityGroups(): void {
-    this.lookupService.getMorbidityGroupsDropDownList().subscribe({
-      next: (list) => this._morbidityGroups.set(toItems(list)),
-    });
+    this.ensurePreloaded("morbidityGroups");
   }
   ensureBatchTypes(): void {
-    this.lookupService.getBatchTypesDropDownList().subscribe({
-      next: (list) => this._batchTypes.set(toItems(list)),
-    });
+    this.ensurePreloaded("batchTypes");
   }
 
   /**

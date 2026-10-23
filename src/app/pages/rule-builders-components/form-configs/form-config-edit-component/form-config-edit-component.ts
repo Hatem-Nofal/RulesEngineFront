@@ -40,8 +40,7 @@ export class FormConfigEditComponent implements OnInit {
   metadataLoaded = signal(true);
   catalog = signal<RuleFieldCatalogDto[]>([]);
   available = computed(() => {
-    const used = new Set(this.selected().map(s => s.id));
-    return this.catalog().filter(f => !used.has(f.id));
+     return this.catalog();
   });
   picked = signal<Set<string>>(new Set());
   defaultCount = computed(() => this.selected().filter(field => field.isDefault).length);

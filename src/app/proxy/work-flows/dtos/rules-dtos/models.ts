@@ -4,6 +4,7 @@ import type { ViolationType } from '../../../common/enums/violation-type.enum';
 export interface CreateRuleDto {
   workflowId?: string;
   isActive?: boolean;
+  violationMessage?: string | null;
   root?: RuleNodeDto;
   violationType?: ViolationType;
 }
@@ -17,6 +18,7 @@ export interface RuleDto {
   expression?: string | null;
   workflowHasCustomeRule?: boolean;
   violationType?: ViolationType;
+  violationMessage?: string | null;
   root?: RuleNodeDto;
 }
 

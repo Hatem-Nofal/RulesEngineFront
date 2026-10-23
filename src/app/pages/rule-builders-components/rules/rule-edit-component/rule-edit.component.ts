@@ -14,17 +14,12 @@ import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
-import { LookupDto } from "@proxy/lookups/dtos/models";
-import { LookupService } from "@proxy/ehealth-claims/lookups";
-import { SelectedDropDownListByGuid } from "@proxy/common/dtos";
+ import { LookupService } from "@proxy/ehealth-claims/lookups";
+import { SelectedDropDownList, SelectedDropDownListByGuid } from "@proxy/common/dtos";
 import { ViolationType } from "@proxy/common/enums";
-import {
-  Confirmation,
-  ConfirmationService,
-  eFormComponets,
-  ToasterService,
-} from "@abp/ng.theme.shared";
+
 import { CustomConfirmationService } from "src/app/shared/services/customConfirmation.service";
+import { LookupDto } from "@proxy/lookups/dtos";
 @Component({
   selector: "app-rule-edit",
   imports: [
@@ -51,6 +46,8 @@ export class RuleEditComponent implements OnInit {
 
   ruleId: string | null = null;
   name = "";
+   violationMessage?: string | null;
+
   isActive = true;
   isMultiple = false;
 
@@ -62,7 +59,7 @@ export class RuleEditComponent implements OnInit {
   loading = signal(false);
   saving = signal(false);
   expression = signal<RuleExpressionResultDto | null>(null);
-  lookups = signal<Record<string, LookupDto[]>>({});
+  lookups = signal<Record<string, SelectedDropDownList[]>>({});
   hasCustomeRule = signal<boolean>(false);
   ruleExpression = signal<string>("");
   selectedViolationType = signal<ViolationType>(ViolationType.Error);
@@ -203,6 +200,7 @@ export class RuleEditComponent implements OnInit {
       isMultiple: this.isMultiple,
       root: this.root(),
       violationType: this.violationType(),
+      violationMessage:this.violationMessage
     };
     const request = this.ruleId
       ? this.service.update(this.ruleId, input)
