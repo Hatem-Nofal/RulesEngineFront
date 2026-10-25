@@ -31,6 +31,7 @@ import {
   OPERATORS,
 } from "src/app/shared/models/constant";
 import {
+  LabelSource,
   LoadingLookupService,
   PreloadedLookup,
 } from "../rules-services/loadingLookup-service";
@@ -93,22 +94,15 @@ const MULTISELECT_FIELD_LOOKUPS: ReadonlyMap<string, PreloadedLookup> = new Map(
 const SEARCH_MIN_LENGTH = 3;
 
 /**
- * The value stored on a node is the option's *name*. Older nodes saved by an earlier autocomplete
- * build hold whole option objects, so accept both.
+ * The value a node holds for one selected entry. Older nodes saved by an earlier autocomplete build hold
+ * whole option objects, so accept both.
  */
-const toName = (v: unknown): string | undefined =>
-  v != null && typeof v === "object"
-    ? (v as ListOption).name
-    : v == null
-    ? undefined
-    : String(v);
-
-const toCode = (v: unknown): string | undefined =>
-  v != null && typeof v === "object"
-    ? (v as ListOption).code??''
-    : v == null
-    ? undefined
-    : String(v);
+const storedValue = (v: unknown): string | undefined => {
+  if (v == null) return undefined;
+  if (typeof v !== "object") return String(v);
+  const option = v as ListOption;
+  return option.code ?? option.name ?? undefined;
+};
 
 @Component({
   selector: "app-rule-node",
@@ -192,6 +186,18 @@ export class RuleNodeComponent {
       )
       .subscribe((items) => this.suggestions.set(items));
 
+    // A saved rule only holds codes: look up their names (once per code, shared by all nodes).
+    // Until a name is known the chip shows the code.
+    effect(() => {
+      const source = this.labelSource();
+      if (!source) return;
+      const codes = this.valueList()
+        .map(storedValue)
+        .filter((code): code is string => !!code);
+      if (codes.length)
+        untracked(() => this.loadingLookupService.resolveLabels(source, codes));
+    });
+
     // The complete diagnoses list is only needed by controls that are not autocomplete-driven.
     effect(() => {
       const key = this.field()?.key;
@@ -239,6 +245,14 @@ export class RuleNodeComponent {
     const f = this.field();
     return !!f && !!this.isMultipleSelect(f);
   });
+
+  /**
+   * p-autoComplete in multiple mode: the field is flagged `isMultiple`, or the node already holds a list
+   * (a rule can hold a list for a field that is not flagged; as a single-select, the next pick would replace it).
+   */
+  readonly autoCompleteMultiple = computed(
+    () => this.multipleSelectField() || Array.isArray(this.node().value)
+  );
 
   readonly lookupOptions = computed<LookupDto[]>(() => {
     const source = (this.field() as RuleFieldWithLookup | undefined)
@@ -297,21 +311,64 @@ export class RuleNodeComponent {
   private readonly query$ = new Subject<string | null>();
 
   /**
-   * p-autoComplete renders its chips / input text from the model entries via `optionLabel`, so the model has to
-   * hold option objects. The node stores plain names, so they are converted both ways and a saved rule
-   * shows its selection without any lookup request.
+   * What the node stores for an option of this field: the CODE for the server-searched lists (activities,
+   * diagnoses), the name for every other autocomplete list.
+   */
+  readonly optionKey = computed<"code" | "name">(() =>
+    this.serverSearched() ? "code" : "name"
+  );
+
+  /** Where the stored codes of this field are resolved to names; null when the field stores names. */
+  private readonly labelSource = computed<LabelSource | null>(() => {
+    const key = this.field()?.key ?? "";
+    if (ACTIVITY_FIELD_KEYS.has(key)) {
+      const activityTypeId = this.activityType();
+      return activityTypeId == null
+        ? null
+        : { kind: "activity", activityTypeId };
+    }
+    return DIAGNOSES_FIELD_KEYS.has(key) ? { kind: "diagnosis" } : null;
+  });
+
+  /**
+   * p-autoComplete renders its chips / input text from the model entries via `optionLabel`, so the model holds
+   * option objects: the node stores the code, the control shows the NAME. The name of a saved code comes
+   * from the search results (`labelOf`); until it is known the code is shown.
+   * (Do not set `optionValue="code"` on the control: PrimeNG would then push bare codes next to
+   * these option objects and its `unique` check no longer recognises them, so one row can be added twice.)
    */
   readonly selectedItems = computed<ListOption[]>(() =>
-    this.valueList().map((v) => ({ name: toName(v) ?? "" }))
+    this.valueList().map((v) => this.toModelItem(storedValue(v) ?? ""))
   );
   readonly selectedItem = computed<ListOption | null>(() => {
-    const name = toName(this.valueList()[0]);
-    return name ? { name } : null;
+    const stored = storedValue(this.valueList()[0]);
+    return stored ? this.toModelItem(stored) : null;
   });
-  /** Names that are selected – used to tick the suggestion rows. */
-  readonly selectedNames = computed(
-    () => new Set(this.valueList().map((v) => toName(v)))
+  /** Stored values that are selected – used to tick the suggestion rows. */
+  readonly selectedKeys = computed(
+    () => new Set(this.valueList().map((v) => storedValue(v)))
   );
+
+  /**
+   * The dropdown rows. The node stores the code, so a row whose code is already selected is the same value:
+   * it is ticked AND disabled instead of being silently ignored when clicked.
+   */
+  readonly suggestionRows = computed<ListOption[]>(() => {
+    if (this.optionKey() !== "code") return this.suggestions();
+    const selected = this.selectedKeys();
+    return this.suggestions().map((row) =>
+      row.code && selected.has(row.code) ? { ...row, disabled: true } : row
+    );
+  });
+
+  private toModelItem(stored: string): ListOption {
+    if (this.optionKey() === "name") return { name: stored };
+    const source = this.labelSource();
+    return {
+      code: stored,
+      name: (source && this.loadingLookupService.labelOf(source, stored)) || stored,
+    };
+  }
 
   readonly listOptions = computed<ListOption[]>(() =>
     this.loadOptionsForField(this.field()?.key, this.activityType())
@@ -369,23 +426,48 @@ export class RuleNodeComponent {
     return isListOperator(op);
   }
 
-  /** Selection changed in p-autoComplete (objects or null) -> store the names. */
+  /** Selection changed in p-autoComplete (objects or null) -> store the CODES (names for non-searched lists). */
   onAutoCompleteChange(selection: unknown): void {
-    if (this.multipleSelectField()) {
+    this.pinPickedNames(selection);
+    if (this.autoCompleteMultiple()) {
       const items = Array.isArray(selection)
         ? selection
         : selection == null
         ? []
         : [selection];
       this.patch({
-        value: items.map(toName).filter((code): code is string => !!code),
+        value: items
+          .map((option) => this.pickValue(option))
+          .filter((code): code is string => !!code),
       });
     } else {
       this.patch({
         value:
-          toName(Array.isArray(selection) ? selection[0] : selection) || null,
+          this.pickValue(Array.isArray(selection) ? selection[0] : selection) ||
+          null,
       });
     }
+  }
+
+  /** Keeps the chip on the name the user clicked (see LoadingLookupService.pinLabel). */
+  private pinPickedNames(selection: unknown): void {
+    const source = this.labelSource();
+    if (!source || this.optionKey() !== "code") return;
+    const entries = Array.isArray(selection) ? selection : [selection];
+    for (const entry of entries) {
+      const option = entry as ListOption | null;
+      if (option && typeof option === "object" && option.code && option.name && option.name !== option.code) {
+        this.loadingLookupService.pinLabel(source, option.code, option.name);
+      }
+    }
+  }
+
+  /** What the node stores for one picked option. */
+  private pickValue(option: unknown): string | undefined {
+    if (option == null) return undefined;
+    if (typeof option !== "object") return String(option);
+    const picked = option as ListOption;
+    return (this.optionKey() === "code" ? picked.code : picked.name) ?? undefined;
   }
 
   onField(key: string) {

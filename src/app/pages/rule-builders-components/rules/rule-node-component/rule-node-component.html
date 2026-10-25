@@ -118,19 +118,18 @@
     />
     } @else if (f.dataType === 'List' && collectionField()) { @if (usesAutoComplete()) {
     <!-- AUTOCOMPLETE_FIELD_KEYS: searched on the server while typing -->
-    @if (multipleSelectField()) {
+    @if (autoCompleteMultiple()) {
     <p-autoComplete
       [multiple]="true"
       [ngModel]="selectedItems()"
       (ngModelChange)="onAutoCompleteChange($event)"
-      [suggestions]="suggestions()"
+      [suggestions]="suggestionRows()"
       (completeMethod)="search($event)"
       [minLength]="searchMinLength()"
       [forceSelection]="true"
       [unique]="true"
       optionLabel="name"
-      optionValue="code"
-      dataKey="name"
+      [dataKey]="optionKey()"
       optionDisabled="disabled"
       [disabled]="valueSelectDisabled()"
       placeholder="Type to search…"
@@ -140,12 +139,15 @@
       <ng-template #item let-item>
         <div class="d-flex align-items-center gap-2">
           <p-checkbox
-            [ngModel]="selectedNames().has(item.name)"
+            [ngModel]="selectedKeys().has(item[optionKey()])"
             [binary]="true"
             [readonly]="true"
             styleClass="pe-none"
           />
           <span>{{ item.name }}</span>
+          @if (item.code) {
+          <small class="text-muted">{{ item.code }}</small>
+          }
         </div>
       </ng-template>
     </p-autoComplete>
@@ -154,14 +156,13 @@
       <p-autoComplete
         [ngModel]="selectedItem()"
         (ngModelChange)="onAutoCompleteChange($event)"
-        [suggestions]="suggestions()"
+        [suggestions]="suggestionRows()"
         (completeMethod)="search($event)"
         [minLength]="searchMinLength()"
         [forceSelection]="true"
         [showClear]="true"
         optionLabel="name"
-        optionValue="code"
-        dataKey="name"
+        [dataKey]="optionKey()"
         optionDisabled="disabled"
         [disabled]="valueSelectDisabled()"
         placeholder="Type to search…"

@@ -17,6 +17,7 @@ export interface FormConfigFieldInputDto {
   allowedOperators?: number[] | null;
   isMultiple?: boolean;
   isDefault?: boolean;
+  isDeleted?: boolean;
 }
 
 export interface FormConfigListDto extends EntityDto<string> {
@@ -54,6 +55,7 @@ export interface RuleFormFieldDto {
   allowedOperators?: number[] | null;
   isMultiple?: boolean;
   isDefault?: boolean;
+  isDeleted?: boolean;
 }
 
 export interface RuleNodeDto {

@@ -142,6 +142,14 @@ export class FormConfigEditComponent implements OnInit {
   }
 
   remove(index: number) {
+
+    this.selected.update(fields =>
+    fields.map((field, fieldIndex) =>
+      fieldIndex === index
+        ? { ...field, isDeleted: true ,isDefault:false }
+        : field
+    )
+  );
     this.selected.update(fields => fields.filter((_, fieldIndex) => fieldIndex !== index));
   }
 

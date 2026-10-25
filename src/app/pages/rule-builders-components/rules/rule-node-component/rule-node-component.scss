@@ -185,3 +185,6 @@
     margin-inline-start: auto;
   }
 }
+::ng-deep .p-autocomplete-list-container {
+  max-height:400px !important;
+}
