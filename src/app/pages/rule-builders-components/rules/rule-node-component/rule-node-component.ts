@@ -205,12 +205,7 @@ export class RuleNodeComponent {
         untracked(() => this.loadingLookupService.ensureDiagnoses());
     });
 
-    // Preloaded list of a p-multiselect / p-select field: requested once, shared by all nodes.
-    effect(() => {
-      const lookup = this.preloadedLookup();
-      if (lookup)
-        untracked(() => this.loadingLookupService.ensurePreloaded(lookup));
-    });
+
 
     // With exactly one operator there is nothing to choose: make sure it is the selected one.
     // (New conditions already get it via onField; this also corrects rules loaded without it.)
@@ -404,12 +399,7 @@ export class RuleNodeComponent {
       );
     }
 
-    const preloaded = fieldKey
-      ? MULTISELECT_FIELD_LOOKUPS.get(fieldKey)
-      : undefined;
-    if (preloaded) {
-      return this.loadingLookupService.preloaded(preloaded)();
-    }
+
 
     if (fieldKey && fieldKey === "Diagnoses") {
       return this.loadingLookupService.diagnoses();

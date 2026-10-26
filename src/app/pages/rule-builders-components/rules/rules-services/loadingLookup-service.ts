@@ -1,4 +1,10 @@
-import { inject, Injectable, Signal, signal, WritableSignal } from "@angular/core";
+import {
+  inject,
+  Injectable,
+  Signal,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import type { SelectedDropDownList } from "@proxy/common/dtos/models";
 import { LookupService } from "@proxy/ehealth-claims/lookups";
 import { map, Observable, tap } from "rxjs";
@@ -13,7 +19,10 @@ const toItems = (
       name: x.name ?? "",
       disabled: x.disabled,
       // the autocomplete stores the code, so it must survive the mapping - as a trimmed string
-      code: x.code == null || String(x.code).trim() === "" ? null : String(x.code).trim(),
+      code:
+        x.code == null || String(x.code).trim() === ""
+          ? null
+          : String(x.code).trim(),
     }));
 
 /**
@@ -31,22 +40,46 @@ const toSearchResults = (
 /** Where a stored code is resolved: activity codes belong to an Activity Type, diagnosis codes are global. */
 export type LabelSource =
   | { kind: "activity"; activityTypeId: number }
-  | { kind: "diagnosis" };
+  | { kind: "diagnosis" }
+  | { kind: "genericsGroups" }
+  | { kind: "primaryGenericsGroup" }
+  | { kind: "specialitiesCode" }
+  | { kind: "diagnosisGroupCodes" };
 
-const scopeOf = (source: LabelSource): string =>
-  source.kind === "activity" ? `activity:${source.activityTypeId}` : "diagnosis";
+// const scopeOf = (source: LabelSource): string =>
+//   source.kind === "activity"
+//     ? `activity:${source.activityTypeId}`
+//     : "diagnosis";
+
+const scopeOf = (source: LabelSource): string => {
+  switch (source.kind) {
+    case "activity":
+      return `activity:${source.activityTypeId}`;
+
+    case "diagnosis":
+      return "diagnosis";
+
+    case "genericsGroups":
+      return "genericsGroups";
+
+    case "primaryGenericsGroup":
+      return "primaryGenericsGroup";
+
+    case "specialitiesCode":
+      return "specialitiesCode";
+
+    case "diagnosisGroupCodes":
+      return "diagnosisGroupCodes";
+    default:
+      return "";
+  }
+};
 
 /**
  * Lookups whose complete list is loaded once and then shared (shown in a p-multiselect / p-select).
  * A field key is attached to one of these in RuleNodeComponent (MULTISELECT_FIELD_LOOKUPS).
  */
-export type PreloadedLookup =
-  | "batchTypes"
-  | "specialities"
-  | "genericDrugs"
-  | "procedureGroups"
-  | "duplicateTherapyGroups"
-  | "morbidityGroups";
+export type PreloadedLookup = "batchTypes";
 
 /**
  * Loads and caches the Activity Type and Activity lookups.
@@ -68,11 +101,6 @@ export class LoadingLookupService {
     WritableSignal<SelectedDropDownList[]>
   > = {
     batchTypes: signal<SelectedDropDownList[]>([]),
-    specialities: signal<SelectedDropDownList[]>([]),
-    genericDrugs: signal<SelectedDropDownList[]>([]),
-    procedureGroups: signal<SelectedDropDownList[]>([]),
-    duplicateTherapyGroups: signal<SelectedDropDownList[]>([]),
-    morbidityGroups: signal<SelectedDropDownList[]>([]),
   };
 
   private readonly preloadedLoaders: Record<
@@ -80,12 +108,6 @@ export class LoadingLookupService {
     () => Observable<SelectedDropDownList[]>
   > = {
     batchTypes: () => this.lookupService.getBatchTypesDropDownList(),
-    specialities: () => this.lookupService.getSpecialitiesIdDropDownList(),
-    genericDrugs: () => this.lookupService.getGenericDrugsDropDownList(),
-    procedureGroups: () => this.lookupService.getProcedureGroupsDropDownList(),
-    duplicateTherapyGroups: () =>
-      this.lookupService.getDuplicateTherapyGroupsDropDownList(),
-    morbidityGroups: () => this.lookupService.getMorbidityGroupsDropDownList(),
   };
 
   private readonly preloadedRequested = new Set<PreloadedLookup>();
@@ -156,21 +178,6 @@ export class LoadingLookupService {
     });
   }
 
-  ensureSpecialities(): void {
-    this.ensurePreloaded("specialities");
-  }
-  ensureGenericDrugs(): void {
-    this.ensurePreloaded("genericDrugs");
-  }
-  ensureProcedureGroups(): void {
-    this.ensurePreloaded("procedureGroups");
-  }
-  ensureDuplicateTherapyGroups(): void {
-    this.ensurePreloaded("duplicateTherapyGroups");
-  }
-  ensureMorbidityGroups(): void {
-    this.ensurePreloaded("morbidityGroups");
-  }
   ensureBatchTypes(): void {
     this.ensurePreloaded("batchTypes");
   }
@@ -192,13 +199,40 @@ export class LoadingLookupService {
     const scope = scopeOf(source);
     for (const code of new Set(codes)) {
       const id = `${scope}|${code}`;
-      if (this._labels()[id] !== undefined || this.labelsRequested.has(id)) continue;
+      if (this._labels()[id] !== undefined || this.labelsRequested.has(id))
+        continue;
       this.labelsRequested.add(id);
 
-      const search$ =
-        source.kind === "activity"
-          ? this.searchActivities(source.activityTypeId, code)
-          : this.searchDiagnoses(code);
+      let search$;
+
+      switch (source.kind) {
+        case "activity":
+          search$ = this.searchActivities(source.activityTypeId, code);
+          break;
+
+        case "diagnosis":
+          search$ = this.searchDiagnoses(code);
+          break;
+
+        case "genericsGroups":
+          search$ = this.searchGenericsGroups(code);
+          break;
+
+        case "primaryGenericsGroup":
+          search$ = this.searchPrimaryGenericsGroup(code);
+          break;
+
+        case "specialitiesCode":
+          search$ = this.searchSpecialitiesCode(code);
+          break;
+
+        case "diagnosisGroupCodes":
+          search$ = this.searchDiagnosisGroupCodes(code);
+          break;
+
+        default:
+          return;
+      }
       search$.subscribe({ error: () => this.labelsRequested.delete(id) }); // allow a retry
     }
   }
@@ -213,7 +247,11 @@ export class LoadingLookupService {
     const found: Record<string, string> = {};
     for (const item of items) {
       const id = `${scope}|${item.code}`;
-      if (item.code && this._labels()[id] === undefined && found[id] === undefined) {
+      if (
+        item.code &&
+        this._labels()[id] === undefined &&
+        found[id] === undefined
+      ) {
         found[id] = item.name ?? "";
       }
     }
@@ -263,4 +301,53 @@ export class LoadingLookupService {
         tap((items) => this.remember(source, items))
       );
   }
+  searchGenericsGroups(searchTerm: string): Observable<SelectedDropDownList[]> {
+    const source: LabelSource = { kind: "genericsGroups" };
+    return this.lookupService
+      .getGenericDrugsDropDownListBySearchTerm(searchTerm)
+      .pipe(
+        map(toSearchResults),
+        tap((items) => this.remember(source, items))
+      );
+  }
+  searchPrimaryGenericsGroup(
+    searchTerm: string
+  ): Observable<SelectedDropDownList[]> {
+    const source: LabelSource = { kind: "primaryGenericsGroup" };
+    return this.lookupService
+      .getGenericDrugsDropDownListBySearchTerm(searchTerm)
+      .pipe(
+        map(toSearchResults),
+        tap((items) => this.remember(source, items))
+      );
+  }
+  searchSpecialitiesCode(
+    searchTerm: string
+  ): Observable<SelectedDropDownList[]> {
+    const source: LabelSource = { kind: "specialitiesCode" };
+    return this.lookupService
+      .getSpecialitiesIdDropDownListBySearchTerm(searchTerm)
+      .pipe(
+        map(toSearchResults),
+        tap((items) => this.remember(source, items))
+      );
+  }
+  searchDiagnosisGroupCodes(
+    searchTerm: string
+  ): Observable<SelectedDropDownList[]> {
+    const source: LabelSource = { kind: "diagnosisGroupCodes" };
+    return this.lookupService
+      .getMorbidityGroupsDropDownListBySearchTerm(searchTerm)
+      .pipe(
+        map(toSearchResults),
+        tap((items) => this.remember(source, items))
+      );
+  }
+
+  //  | { kind: "activity"; activityTypeId: number }
+  // | { kind: "diagnosis" }
+  // | { kind: "genericsGroups" }
+  // | { kind: "primaryGenericsGroup" }
+  // | { kind: "specialitiesCode" }
+  // | { kind: "diagnosisGroupCodes" };
 }
