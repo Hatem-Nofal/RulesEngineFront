@@ -14,7 +14,6 @@ export interface RuleDto {
   name?: string;
   workflowId?: string;
   isActive?: boolean;
-  isMultiple?: boolean;
   expression?: string | null;
   workflowHasCustomeRule?: boolean;
   violationType?: ViolationType;
