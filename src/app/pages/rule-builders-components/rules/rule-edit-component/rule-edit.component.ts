@@ -14,8 +14,11 @@ import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
- import { LookupService } from "@proxy/ehealth-claims/lookups";
-import { SelectedDropDownList, SelectedDropDownListByGuid } from "@proxy/common/dtos";
+import { LookupService } from "@proxy/ehealth-claims/lookups";
+import {
+  SelectedDropDownList,
+  SelectedDropDownListByGuid,
+} from "@proxy/common/dtos";
 import { ViolationType } from "@proxy/common/enums";
 
 import { CustomConfirmationService } from "src/app/shared/services/customConfirmation.service";
@@ -45,16 +48,14 @@ export class RuleEditComponent implements OnInit {
   );
 
   ruleId: string | null = null;
-  name = "";
-   violationMessage?: string | null;
+  name = signal<string | null>("");
+  violationMessage = signal<string | null>("");
 
-  isActive = true;
-  isMultiple = false;
+  isActive = signal<boolean>(false);
 
   workflows = signal<SelectedDropDownListByGuid[]>([]);
   workflowId = signal<string | null>(null);
-  violationType = signal<ViolationType>(ViolationType.Error);
-  config = signal<RuleFormConfigDto | null>(null);
+   config = signal<RuleFormConfigDto | null>(null);
   root = signal<RuleNodeDto>(emptyRoot());
   loading = signal(false);
   saving = signal(false);
@@ -94,13 +95,15 @@ export class RuleEditComponent implements OnInit {
         let ruleExpressionResultDto: RuleExpressionResultDto = {
           expression: rule.expression ?? "",
         };
-        this.name = rule.name ?? "";
-        this.isActive = rule.isActive ?? true;
-        this.isMultiple = rule.isMultiple ?? false;
+        this.name.set(rule.name ?? "");
+        this.isActive.set(rule.isActive ?? true);
         this.workflowId.set(rule.workflowId ?? null);
         this.hasCustomeRule.set(rule.workflowHasCustomeRule ?? false);
         this.ruleExpression.set(rule.expression ?? "");
         this.expression.set(ruleExpressionResultDto);
+        this.violationMessage.set(rule.violationMessage??"")
+        this.selectedViolationType.set(rule.violationType??ViolationType.Error)
+
         this.root.set(rule.root ?? emptyRoot());
         if (rule.workflowId && !this.hasCustomeRule())
           this.loadConfig(rule.workflowId);
@@ -150,7 +153,7 @@ export class RuleEditComponent implements OnInit {
 
   preview() {
     if (!this.workflowId() || !this.isValid(this.root())) {
-        this.customConfirmationService.error(
+      this.customConfirmationService.error(
         "Complete the conditions first.",
         "Error",
         5000
@@ -161,10 +164,11 @@ export class RuleEditComponent implements OnInit {
       this.service
         .previewExpressionByInput({
           id: this.ruleId,
-          name: this.name.trim() || "preview",
+          name: this.name()?.trim() || "preview",
           workflowId: this.workflowId()!,
-          isActive: this.isActive,
-          isMultiple: this.isMultiple,
+          isActive: this.isActive(),
+          violationMessage: this.violationMessage(),
+          violationType: this.selectedViolationType(),
           root: this.root(),
         })
         .subscribe((e) => this.expression.set(e));
@@ -172,7 +176,7 @@ export class RuleEditComponent implements OnInit {
   }
 
   save() {
-    if (!this.violationType() || !this.workflowId()) {
+    if (!this.selectedViolationType() || !this.workflowId()) {
       this.customConfirmationService.error(
         "violationType and workflow are required.",
         "Error",
@@ -193,13 +197,12 @@ export class RuleEditComponent implements OnInit {
     this.saving.set(true);
     const input = {
       id: this.ruleId,
-      name: this.name.trim(),
+      name: this.name()?.trim(),
       workflowId: this.workflowId()!,
-      isActive: this.isActive,
-      isMultiple: this.isMultiple,
+      isActive: this.isActive(),
       root: this.root(),
-      violationType: this.violationType(),
-      violationMessage:this.violationMessage
+      violationType: this.selectedViolationType(),
+      violationMessage: this.violationMessage(),
     };
     const request = this.ruleId
       ? this.service.update(this.ruleId, input)

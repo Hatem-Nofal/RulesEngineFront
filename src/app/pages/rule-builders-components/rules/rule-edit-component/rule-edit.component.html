@@ -28,7 +28,7 @@
             <span
               class="form-control d-flex align-items-center justify-content-between"
               style="background-color: #e9eef5; border-color: #ced8e6; color: #52647a"
-              >{{ name }}</span
+              >{{ name() }}</span
             >
           </div>
         }
@@ -54,7 +54,7 @@
             pInputText
             id="violation_Message"
             name="violationMessage"
-            [(ngModel)]="violationMessage"
+            [ngModel]="violationMessage()"
             maxlength="200"
             placeholder="Violation Message"
             autocomplete="off"
@@ -64,7 +64,7 @@
           <p-checkbox
             inputId="rule-active"
             name="ruleActive"
-            [(ngModel)]="isActive"
+            [ngModel]="isActive()"
             [binary]="true"
           />
           <label for="rule-active">Active</label>
