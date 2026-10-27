@@ -59,7 +59,6 @@ export class RuleEditComponent implements OnInit {
   loading = signal(false);
   saving = signal(false);
   expression = signal<RuleExpressionResultDto | null>(null);
-  lookups = signal<Record<string, SelectedDropDownList[]>>({});
   hasCustomeRule = signal<boolean>(false);
   ruleExpression = signal<string>("");
   selectedViolationType = signal<ViolationType>(ViolationType.Error);

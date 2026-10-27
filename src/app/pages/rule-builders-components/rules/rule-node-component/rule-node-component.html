@@ -41,7 +41,6 @@
       <app-rule-node
         [node]="c"
         [fields]="fields()"
-        [lookups]="lookups()"
         [allowGroups]="allowGroups()"
         [isRoot]="false"
         (nodeChange)="updateChild(c, $event)"
@@ -93,31 +92,8 @@
       aria-label="Rule operator"
     />
 
-    @if (f.lookupSource && multipleSelectField()) {
-    <p-multiselect
-      [options]="lookupOptions()"
-      optionLabel="name"
-      optionValue="code"
-      display="chip"
-      placeholder="Select options"
-      styleClass="rule-node-select rule-node-select--autoComplete"
-      [ngModel]="valueList()"
-      (ngModelChange)="patch({ value: $event })"
-      aria-label="Select multiple lookup options"
-    />
-    } @else if (f.lookupSource) {
-    <p-select
-      [options]="lookupOptions()"
-      optionLabel="name"
-      optionValue="code"
-      placeholder="Select…"
-      styleClass="rule-node-select"
-      [ngModel]="n.value"
-      (ngModelChange)="patch({ value: $event })"
-      aria-label="Select lookup option"
-    />
-    } @else if (f.dataType === 'List' && collectionField()) { @if (usesAutoComplete()) {
-    <!-- AUTOCOMPLETE_FIELD_KEYS: searched on the server while typing -->
+    @if (f.dataType === 'List' && collectionField()) { @if (usesAutoComplete()) {
+    <!-- SEARCHED_FIELDS: searched on the server while typing, the node stores the code -->
     @if (autoCompleteMultiple()) {
     <p-autoComplete
       [multiple]="true"
@@ -168,7 +144,16 @@
         placeholder="Type to search…"
         styleClass="rule-node-select"
         aria-label="Select list option"
-      />
+      >
+        <ng-template #item let-item>
+          <div class="d-flex align-items-center gap-2">
+            <span>{{ item.name }}</span>
+            @if (item.code) {
+            <small class="text-muted">{{ item.code }}</small>
+            }
+          </div>
+        </ng-template>
+      </p-autoComplete>
     </div>
     } } @else {
     <!-- MULTISELECT_FIELD_LOOKUPS (and any other List field): preloaded list in the classic controls -->

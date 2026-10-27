@@ -37,43 +37,24 @@ const toSearchResults = (
     disabled: item.disabled || !item.code,
   }));
 
-/** Where a stored code is resolved: activity codes belong to an Activity Type, diagnosis codes are global. */
+/**
+ * Where a stored code is resolved to its name. One kind per lookup that a field searches:
+ * activity codes belong to an Activity Type ("Activities" is the Activities field, "activity" the Activity field:
+ * same API, same names), every other kind is global.
+ */
 export type LabelSource =
   | { kind: "activity"; activityTypeId: number }
+  | { kind: "Activities"; activityTypeId: number }
   | { kind: "diagnosis" }
   | { kind: "genericsGroups" }
   | { kind: "primaryGenericsGroup" }
   | { kind: "specialitiesCode" }
   | { kind: "diagnosisGroupCodes" };
 
-// const scopeOf = (source: LabelSource): string =>
-//   source.kind === "activity"
-//     ? `activity:${source.activityTypeId}`
-//     : "diagnosis";
-
-const scopeOf = (source: LabelSource): string => {
-  switch (source.kind) {
-    case "activity":
-      return `activity:${source.activityTypeId}`;
-
-    case "diagnosis":
-      return "diagnosis";
-
-    case "genericsGroups":
-      return "genericsGroups";
-
-    case "primaryGenericsGroup":
-      return "primaryGenericsGroup";
-
-    case "specialitiesCode":
-      return "specialitiesCode";
-
-    case "diagnosisGroupCodes":
-      return "diagnosisGroupCodes";
-    default:
-      return "";
-  }
-};
+const scopeOf = (source: LabelSource): string =>
+  source.kind === "activity" || source.kind === "Activities"
+    ? `activity:${source.activityTypeId}`
+    : source.kind;
 
 /**
  * Lookups whose complete list is loaded once and then shared (shown in a p-multiselect / p-select).
@@ -144,11 +125,14 @@ export class LoadingLookupService {
     this.lookupService
       .getActivitySubTypeDropDownListByActivityTypeId(activityTypeId)
       .subscribe({
-        next: (list) =>
+        next: (list) => {
+          const items = toItems(list);
           this._activitiesByType.update((byType) => ({
             ...byType,
-            [activityTypeId]: toItems(list),
-          })),
+            [activityTypeId]: items,
+          }));
+          this.remember({ kind: "activity", activityTypeId }, items);
+        },
         error: () => this.activitiesRequested.delete(activityTypeId),
       });
   }
@@ -191,49 +175,28 @@ export class LoadingLookupService {
   }
 
   /**
-   * A saved rule only holds codes. Looks up the names of the codes that are not known yet, by searching
-   * for the code itself. Each code is requested once, however many nodes show it; the result lands in
+   * A saved rule only holds codes. Looks up the names of the codes that are not known yet; the result lands in
    * `labelOf`. A code that cannot be found keeps being shown as the code.
+   *  - activities: the backend search matches descriptions, not codes, so the type's full list is read
+   *    (once per type; a failed request is retried on the next call);
+   *  - every other kind: searched by the code itself, once per code, however many nodes show it.
    */
   resolveLabels(source: LabelSource, codes: readonly string[]): void {
     const scope = scopeOf(source);
     for (const code of new Set(codes)) {
       const id = `${scope}|${code}`;
-      if (this._labels()[id] !== undefined || this.labelsRequested.has(id))
+      if (this._labels()[id] !== undefined) continue;
+
+      if (source.kind === "activity" || source.kind === "Activities") {
+        this.ensureActivities(source.activityTypeId);
         continue;
-      this.labelsRequested.add(id);
-
-      let search$;
-
-      switch (source.kind) {
-        case "activity":
-          search$ = this.searchActivities(source.activityTypeId, code);
-          break;
-
-        case "diagnosis":
-          search$ = this.searchDiagnoses(code);
-          break;
-
-        case "genericsGroups":
-          search$ = this.searchGenericsGroups(code);
-          break;
-
-        case "primaryGenericsGroup":
-          search$ = this.searchPrimaryGenericsGroup(code);
-          break;
-
-        case "specialitiesCode":
-          search$ = this.searchSpecialitiesCode(code);
-          break;
-
-        case "diagnosisGroupCodes":
-          search$ = this.searchDiagnosisGroupCodes(code);
-          break;
-
-        default:
-          return;
       }
-      search$.subscribe({ error: () => this.labelsRequested.delete(id) }); // allow a retry
+
+      if (this.labelsRequested.has(id)) continue;
+      this.labelsRequested.add(id);
+      this.search(source, code).subscribe({
+        error: () => this.labelsRequested.delete(id), // allow a retry
+      });
     }
   }
 
@@ -270,84 +233,83 @@ export class LoadingLookupService {
     this._labels.update((labels) => ({ ...labels, [id]: name }));
   }
 
+  /** Server-side search (what the autocomplete types into) of whatever lookup `source` names. */
+  search(source: LabelSource, searchTerm: string): Observable<SelectedDropDownList[]> {
+    switch (source.kind) {
+      case "activity":
+      case "Activities":
+        return this.searchActivities(source.activityTypeId, searchTerm);
+      case "diagnosis":
+        return this.searchDiagnoses(searchTerm);
+      case "genericsGroups":
+        return this.searchGenericsGroups(searchTerm);
+      case "primaryGenericsGroup":
+        return this.searchPrimaryGenericsGroup(searchTerm);
+      case "specialitiesCode":
+        return this.searchSpecialitiesCode(searchTerm);
+      case "diagnosisGroupCodes":
+        return this.searchDiagnosisGroupCodes(searchTerm);
+    }
+  }
+
   /**
-   * Server-side search of the activities of one type (autocomplete). Returns the result instead of
-   * caching it: results depend on the search term, so they belong to the caller that asked for them.
-   * (Only the code -> name pairs are remembered, to label stored codes.)
+   * Results are what the user picks from (and the CODE is what gets stored). They are returned instead of
+   * cached - they depend on the search term - and only the code -> name pairs are remembered.
    */
-  searchActivities(
-    activityTypeId: number,
-    searchTerm: string
+  private searched(
+    source: LabelSource,
+    request$: Observable<SelectedDropDownList[]>
   ): Observable<SelectedDropDownList[]> {
-    const source: LabelSource = { kind: "activity", activityTypeId };
-    return this.lookupService
-      .getActivitySubTypeDropDownListPagedByActivityTypeIdAndSearchTerm(
+    return request$.pipe(
+      map(toSearchResults),
+      tap((items) => this.remember(source, items))
+    );
+  }
+
+  searchActivities(activityTypeId: number, searchTerm: string) {
+    return this.searched(
+      { kind: "activity", activityTypeId },
+      this.lookupService.getActivitySubTypeDropDownListPagedByActivityTypeIdAndSearchTerm(
         activityTypeId,
         searchTerm
       )
-      .pipe(
-        map(toSearchResults),
-        tap((items) => this.remember(source, items))
-      );
+    );
   }
 
-  /** Server-side search of diagnoses (autocomplete). */
-  searchDiagnoses(searchTerm: string): Observable<SelectedDropDownList[]> {
-    const source: LabelSource = { kind: "diagnosis" };
-    return this.lookupService
-      .getDiagnosisDropDownListPagedBySearchTerm(searchTerm)
-      .pipe(
-        map(toSearchResults),
-        tap((items) => this.remember(source, items))
-      );
-  }
-  searchGenericsGroups(searchTerm: string): Observable<SelectedDropDownList[]> {
-    const source: LabelSource = { kind: "genericsGroups" };
-    return this.lookupService
-      .getGenericDrugsDropDownListBySearchTerm(searchTerm)
-      .pipe(
-        map(toSearchResults),
-        tap((items) => this.remember(source, items))
-      );
-  }
-  searchPrimaryGenericsGroup(
-    searchTerm: string
-  ): Observable<SelectedDropDownList[]> {
-    const source: LabelSource = { kind: "primaryGenericsGroup" };
-    return this.lookupService
-      .getGenericDrugsDropDownListBySearchTerm(searchTerm)
-      .pipe(
-        map(toSearchResults),
-        tap((items) => this.remember(source, items))
-      );
-  }
-  searchSpecialitiesCode(
-    searchTerm: string
-  ): Observable<SelectedDropDownList[]> {
-    const source: LabelSource = { kind: "specialitiesCode" };
-    return this.lookupService
-      .getSpecialitiesIdDropDownListBySearchTerm(searchTerm)
-      .pipe(
-        map(toSearchResults),
-        tap((items) => this.remember(source, items))
-      );
-  }
-  searchDiagnosisGroupCodes(
-    searchTerm: string
-  ): Observable<SelectedDropDownList[]> {
-    const source: LabelSource = { kind: "diagnosisGroupCodes" };
-    return this.lookupService
-      .getMorbidityGroupsDropDownListBySearchTerm(searchTerm)
-      .pipe(
-        map(toSearchResults),
-        tap((items) => this.remember(source, items))
-      );
+  searchDiagnoses(searchTerm: string) {
+    return this.searched(
+      { kind: "diagnosis" },
+      this.lookupService.getDiagnosisDropDownListPagedBySearchTerm(searchTerm)
+    );
   }
 
-  //  | { kind: "activity"; activityTypeId: number }
-  // | { kind: "diagnosis" }
-  // | { kind: "genericsGroups" }
-  // | { kind: "primaryGenericsGroup" }
-  // | { kind: "specialitiesCode" }
-  // | { kind: "diagnosisGroupCodes" };
+  /** Generic drugs: also the list behind the Primary generics group. */
+  searchGenericsGroups(searchTerm: string) {
+    return this.searched(
+      { kind: "genericsGroups" },
+      this.lookupService.getGenericDrugsDropDownListBySearchTerm(searchTerm)
+    );
+  }
+
+  searchPrimaryGenericsGroup(searchTerm: string) {
+    return this.searched(
+      { kind: "primaryGenericsGroup" },
+      this.lookupService.getGenericDrugsDropDownListBySearchTerm(searchTerm)
+    );
+  }
+
+  searchSpecialitiesCode(searchTerm: string) {
+    return this.searched(
+      { kind: "specialitiesCode" },
+      this.lookupService.getSpecialitiesIdDropDownListBySearchTerm(searchTerm)
+    );
+  }
+
+  /** The Diagnosis groups field searches the morbidity groups. */
+  searchDiagnosisGroupCodes(searchTerm: string) {
+    return this.searched(
+      { kind: "diagnosisGroupCodes" },
+      this.lookupService.getMorbidityGroupsDropDownListBySearchTerm(searchTerm)
+    );
+  }
 }

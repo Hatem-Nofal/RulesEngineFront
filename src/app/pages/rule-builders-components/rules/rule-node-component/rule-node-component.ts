@@ -48,9 +48,6 @@ import { catchError, Observable, of, Subject, switchMap } from "rxjs";
  * pass (`[]`, `[{...}]`), which made every PrimeNG select/multiselect
  * re-process its options on each cycle.
  */
-/** `lookupSource` is read by the template but is not (yet) part of the generated RuleFormFieldDto proxy. */
-type RuleFieldWithLookup = RuleFormFieldDto & { lookupSource?: string | null };
-
 /** Anything a list control can show: lookup items (string ids) and activity lookups (numeric ids, optional `disabled`). */
 type ListOption = {
   id?: string | number;
@@ -71,20 +68,27 @@ const ACTIVITY_FIELD_KEYS: ReadonlySet<string> = new Set([
 const DIAGNOSES_FIELD_KEYS: ReadonlySet<string> = new Set(["Diagnoses"]);
 
 /**
- * List fields that are searched on the server while typing (too many entries to preload)
- * -> rendered with p-autoComplete. A key needs a search source in `loadSuggestions`.
+ * List fields that are searched on the server while typing (too many entries to preload):
+ * field key -> the lookup behind it. They are shown in p-autoComplete and the node stores the CODE.
+ * The kind decides the API - see LoadingLookupService.search.
  */
-const AUTOCOMPLETE_FIELD_KEYS: ReadonlySet<string> = new Set([
-  ...ACTIVITY_FIELD_KEYS,
-  ...DIAGNOSES_FIELD_KEYS,
-]);
+type SearchedKind = Exclude<LabelSource["kind"], "activity" | "Activities">;
+const SEARCHED_FIELDS: ReadonlyMap<string, SearchedKind | "activity" | "Activities"> =
+  new Map([
+    ["Activities", "Activities"],
+    ["Activity", "activity"],
+    ["Diagnoses", "diagnosis"],
+    ["GenericsGroups", "genericsGroups"],
+    ["PrimaryGenericsGroup", "primaryGenericsGroup"],
+    ["SpecialitiesCode", "specialitiesCode"],
+    ["DiagnosisGroupCodes", "diagnosisGroupCodes"],
+  ]);
 
 /**
  * List fields whose complete list is preloaded once and shown in the classic
  * p-multiselect (multiple) / p-select (single).
  * Add one line per field key: `["<field key>", "<lookup in LoadingLookupService>"]`.
- * (Loaders already exist for: batchTypes, specialities, genericDrugs, procedureGroups,
- * duplicateTherapyGroups, morbidityGroups.)
+ * Any other List field (e.g. ClaimTags) has no lookup yet and gets the same controls with no options.
  */
 const MULTISELECT_FIELD_LOOKUPS: ReadonlyMap<string, PreloadedLookup> = new Map(
   [["BatchType", "batchTypes"]]
@@ -125,8 +129,6 @@ export class RuleNodeComponent {
   private readonly loadingLookupService = inject(LoadingLookupService);
   node = model.required<RuleNodeDto>();
   fields = input.required<RuleFormFieldDto[]>();
-  /** Preloaded options keyed by lookup source or field key. */
-  lookups = input<Record<string, LookupDto[]>>({});
   allowGroups = input(true);
   isRoot = input(false);
   remove = output<void>();
@@ -198,6 +200,13 @@ export class RuleNodeComponent {
         untracked(() => this.loadingLookupService.resolveLabels(source, codes));
     });
 
+    // List of a p-multiselect / p-select field (BatchType ...): requested once, shared by all nodes.
+    effect(() => {
+      const lookup = this.preloadedLookup();
+      if (lookup)
+        untracked(() => this.loadingLookupService.ensurePreloaded(lookup));
+    });
+
     // The complete diagnoses list is only needed by controls that are not autocomplete-driven.
     effect(() => {
       const key = this.field()?.key;
@@ -249,12 +258,6 @@ export class RuleNodeComponent {
     () => this.multipleSelectField() || Array.isArray(this.node().value)
   );
 
-  readonly lookupOptions = computed<LookupDto[]>(() => {
-    const source = (this.field() as RuleFieldWithLookup | undefined)
-      ?.lookupSource;
-    return (source ? this.lookups()[source] : undefined) ?? NO_OPTIONS;
-  });
-
   // ---- Activity Type (Activities / PrimaryActivity / SecondaryActivity) ----
   /** Activity types from the API (loaded on demand, shared by all nodes). */
   readonly activityTypes = this.loadingLookupService.types;
@@ -277,13 +280,13 @@ export class RuleNodeComponent {
     () => this.usesActivityType() && !this.activityType()
   );
 
-  // ---- p-autoComplete (List fields: searched on the server for activities / diagnoses) ----
-  /** List fields of AUTOCOMPLETE_FIELD_KEYS are rendered with p-autoComplete; every other List field with the classic p-multiselect / p-select. */
+  // ---- p-autoComplete (List fields searched on the server: see SEARCHED_FIELDS) ----
+  /** List fields of SEARCHED_FIELDS are rendered with p-autoComplete; every other List field with the classic p-multiselect / p-select. */
   readonly usesAutoComplete = computed(
     () =>
       this.field()?.dataType === "List" &&
       this.collectionField() &&
-      AUTOCOMPLETE_FIELD_KEYS.has(this.field()?.key ?? "")
+      this.serverSearched()
   );
 
   /** The preloaded lookup behind this field's p-multiselect / p-select, if its key is registered. */
@@ -291,11 +294,10 @@ export class RuleNodeComponent {
     () => MULTISELECT_FIELD_LOOKUPS.get(this.field()?.key ?? "") ?? null
   );
 
-  /** Activities and diagnoses are too big to preload: they are searched on the server. */
-  private readonly serverSearched = computed(() => {
-    const key = this.field()?.key ?? "";
-    return ACTIVITY_FIELD_KEYS.has(key) || DIAGNOSES_FIELD_KEYS.has(key);
-  });
+  /** The field's list is too big to preload: it is searched on the server (see SEARCHED_FIELDS). */
+  private readonly serverSearched = computed(() =>
+    SEARCHED_FIELDS.has(this.field()?.key ?? "")
+  );
 
   readonly searchMinLength = computed(() =>
     this.serverSearched() ? SEARCH_MIN_LENGTH : 1
@@ -306,8 +308,8 @@ export class RuleNodeComponent {
   private readonly query$ = new Subject<string | null>();
 
   /**
-   * What the node stores for an option of this field: the CODE for the server-searched lists (activities,
-   * diagnoses), the name for every other autocomplete list.
+   * What the node stores for an option of this field: the CODE for the server-searched lists,
+   * the name for every other autocomplete list.
    */
   readonly optionKey = computed<"code" | "name">(() =>
     this.serverSearched() ? "code" : "name"
@@ -315,14 +317,13 @@ export class RuleNodeComponent {
 
   /** Where the stored codes of this field are resolved to names; null when the field stores names. */
   private readonly labelSource = computed<LabelSource | null>(() => {
-    const key = this.field()?.key ?? "";
-    if (ACTIVITY_FIELD_KEYS.has(key)) {
+    const kind = SEARCHED_FIELDS.get(this.field()?.key ?? "");
+    if (!kind) return null;
+    if (kind === "activity" || kind === "Activities") {
       const activityTypeId = this.activityType();
-      return activityTypeId == null
-        ? null
-        : { kind: "activity", activityTypeId };
+      return activityTypeId == null ? null : { kind, activityTypeId };
     }
-    return DIAGNOSES_FIELD_KEYS.has(key) ? { kind: "diagnosis" } : null;
+    return { kind };
   });
 
   /**
@@ -345,11 +346,14 @@ export class RuleNodeComponent {
   );
 
   /**
-   * The dropdown rows. The node stores the code, so a row whose code is already selected is the same value:
-   * it is ticked AND disabled instead of being silently ignored when clicked.
+   * The dropdown rows. The node stores the code, so in the multiple control a row whose code is already
+   * selected is the same value: it is ticked AND disabled instead of being silently ignored when clicked.
+   * Not in the single control: there the selected row must stay a valid option, otherwise p-autoComplete's
+   * `forceSelection` finds no valid match for the text it shows and clears the value again.
    */
   readonly suggestionRows = computed<ListOption[]>(() => {
-    if (this.optionKey() !== "code") return this.suggestions();
+    if (this.optionKey() !== "code" || !this.autoCompleteMultiple())
+      return this.suggestions();
     const selected = this.selectedKeys();
     return this.suggestions().map((row) =>
       row.code && selected.has(row.code) ? { ...row, disabled: true } : row
@@ -399,7 +403,10 @@ export class RuleNodeComponent {
       );
     }
 
-
+    const preloaded = MULTISELECT_FIELD_LOOKUPS.get(fieldKey ?? "");
+    if (preloaded) {
+      return this.loadingLookupService.preloaded(preloaded)();
+    }
 
     if (fieldKey && fieldKey === "Diagnoses") {
       return this.loadingLookupService.diagnoses();
@@ -595,24 +602,11 @@ export class RuleNodeComponent {
   }
 
   private loadSuggestions(query: string): Observable<ListOption[]> {
-    const key = this.field()?.key ?? "";
-
-    if (ACTIVITY_FIELD_KEYS.has(key)) {
-      const typeId = this.activityType();
-      return typeId == null
-        ? of([])
-        : this.loadingLookupService
-            .searchActivities(typeId, query)
-            .pipe(catchError(() => of([])));
-    }
-
-    if (DIAGNOSES_FIELD_KEYS.has(key)) {
-      return this.loadingLookupService
-        .searchDiagnoses(query)
-        .pipe(catchError(() => of([])));
-    }
-
-    // Only the keys of AUTOCOMPLETE_FIELD_KEYS use the autocomplete, and they are all handled above.
-    return of([]);
+    const source = this.labelSource(); // null: not a searched field, or an activity field without a type yet
+    return source
+      ? this.loadingLookupService
+          .search(source, query)
+          .pipe(catchError(() => of([])))
+      : of([]);
   }
 }
