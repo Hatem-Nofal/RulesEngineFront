@@ -37,15 +37,15 @@
           <label for="rule-workflow"
             >Violation Type <span class="text-danger ms-1 fs-5">*</span></label
           >
-          <p-select
-            [options]="violationTypes()"
-            optionLabel="name"
-            optionValue="id"
-            [ngModel]="selectedViolationType()"
-            (ngModelChange)="selectedViolationType.set($event)"
-            placeholder="Select Violation Type"
-            [showClear]="true"
-          />
+<p-select
+  [options]="violationTypes()"
+  optionLabel="name"
+  optionValue="id"
+  [ngModel]="selectedViolationType"
+  (ngModelChange)="selectedViolationType = $event"
+  placeholder="Select Violation Type"
+  [showClear]="true"
+/>
         </div>
 
         <div class="rule-builder-field">
@@ -54,7 +54,7 @@
             pInputText
             id="violation_Message"
             name="violationMessage"
-            [ngModel]="violationMessage()"
+            [(ngModel)]="violationMessage"
             maxlength="200"
             placeholder="Violation Message"
             autocomplete="off"

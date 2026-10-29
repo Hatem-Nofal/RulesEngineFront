@@ -49,20 +49,20 @@ export class RuleEditComponent implements OnInit {
 
   ruleId: string | null = null;
   name = signal<string | null>("");
-  violationMessage = signal<string | null>("");
+  violationMessage = "";
 
   isActive = signal<boolean>(false);
 
   workflows = signal<SelectedDropDownListByGuid[]>([]);
   workflowId = signal<string | null>(null);
-   config = signal<RuleFormConfigDto | null>(null);
+  config = signal<RuleFormConfigDto | null>(null);
   root = signal<RuleNodeDto>(emptyRoot());
   loading = signal(false);
   saving = signal(false);
   expression = signal<RuleExpressionResultDto | null>(null);
   hasCustomeRule = signal<boolean>(false);
   ruleExpression = signal<string>("");
-  selectedViolationType = signal<ViolationType>(ViolationType.Error);
+  selectedViolationType = ViolationType.Error;
   violationTypes = signal<LookupDto[]>([]);
 
   ngOnInit() {
@@ -101,8 +101,8 @@ export class RuleEditComponent implements OnInit {
         this.hasCustomeRule.set(rule.workflowHasCustomeRule ?? false);
         this.ruleExpression.set(rule.expression ?? "");
         this.expression.set(ruleExpressionResultDto);
-        this.violationMessage.set(rule.violationMessage??"")
-        this.selectedViolationType.set(rule.violationType??ViolationType.Error)
+        this.violationMessage = rule.violationMessage ?? "";
+        this.selectedViolationType = rule.violationType ?? ViolationType.Error;
 
         this.root.set(rule.root ?? emptyRoot());
         if (rule.workflowId && !this.hasCustomeRule())
@@ -167,8 +167,8 @@ export class RuleEditComponent implements OnInit {
           name: this.name()?.trim() || "preview",
           workflowId: this.workflowId()!,
           isActive: this.isActive(),
-          violationMessage: this.violationMessage(),
-          violationType: this.selectedViolationType(),
+          violationMessage: this.violationMessage,
+          violationType: this.selectedViolationType,
           root: this.root(),
         })
         .subscribe((e) => this.expression.set(e));
@@ -176,7 +176,7 @@ export class RuleEditComponent implements OnInit {
   }
 
   save() {
-    if (!this.selectedViolationType() || !this.workflowId()) {
+    if (!this.selectedViolationType || !this.workflowId()) {
       this.customConfirmationService.error(
         "violationType and workflow are required.",
         "Error",
@@ -201,8 +201,8 @@ export class RuleEditComponent implements OnInit {
       workflowId: this.workflowId()!,
       isActive: this.isActive(),
       root: this.root(),
-      violationType: this.selectedViolationType(),
-      violationMessage: this.violationMessage(),
+      violationType: this.selectedViolationType,
+      violationMessage: this.violationMessage,
     };
     const request = this.ruleId
       ? this.service.update(this.ruleId, input)

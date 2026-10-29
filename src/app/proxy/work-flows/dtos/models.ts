@@ -7,6 +7,7 @@ export interface SaveWorkflowDto {
   rejectionLevel?: RejectionLevel;
   hasCustomeRule?: boolean;
   ruleExpression?: string;
+  violationMessage?: string | null;
 }
 
 export interface WorkflowDto {
@@ -18,6 +19,7 @@ export interface WorkflowDto {
   rejectionLevel?: RejectionLevel;
   hasCustomeRule?: boolean;
   ruleExpression?: string | null;
+  violationMessage?: string | null;
 }
 
 export interface WorkflowPagedAndFilterDto extends PagedAndSortedResultRequestDto {
