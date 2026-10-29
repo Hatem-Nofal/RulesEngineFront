@@ -1,10 +1,9 @@
 import * as Common from './common';
-import * as EhealthClaims from './ehealth-claims';
+import * as CustomAppServices from './custom-app-services';
 import * as Integrations from './integrations';
-import * as IntegrationsNew from './integrations-new';
 import * as Lookups from './lookups';
-import * as RuleBuilder from './rule-builder';
 import * as System from './system';
+import * as Volo from './volo';
 import * as WorkFlows from './work-flows';
 export * from './models';
-export { Common, EhealthClaims, Integrations, IntegrationsNew, Lookups, RuleBuilder, System, WorkFlows };
+export { Common, CustomAppServices, Integrations, Lookups, System, Volo, WorkFlows };

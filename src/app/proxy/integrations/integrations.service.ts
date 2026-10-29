@@ -1,6 +1,6 @@
+import type { ClaimValidation, ClaimValidationResponse } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
-import type { ClaimValidation, ClaimValidationResponse } from '../integrations/models';
 
 @Injectable({
   providedIn: 'root',

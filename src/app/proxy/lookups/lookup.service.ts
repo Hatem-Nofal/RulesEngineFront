@@ -1,6 +1,6 @@
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
-import type { SelectedDropDownList, SelectedDropDownListByGuid } from '../../common/dtos/models';
+import type { SelectedDropDownList, SelectedDropDownListByGuid } from '../common/dtos/models';
 
 @Injectable({
   providedIn: 'root',

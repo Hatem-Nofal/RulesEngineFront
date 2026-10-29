@@ -1,8 +1,8 @@
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
-import type { LookupDto } from '../../lookups/dtos/models';
-import type { CreateFormConfigEditDto, FormConfigListDto, RuleFieldCatalogDto, RuleFormConfigDto } from '../../work-flows/dtos/rule-builders-dtos/models';
+import type { CreateFormConfigEditDto, FormConfigListDto, RuleFieldCatalogDto, RuleFormConfigDto } from '../../dtos/rule-builders-dtos/models';
+import type { LookupDto } from '../../../lookups/dtos/models';
 
 @Injectable({
   providedIn: 'root',

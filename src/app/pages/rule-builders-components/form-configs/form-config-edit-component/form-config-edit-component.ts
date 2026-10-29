@@ -1,13 +1,13 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { RuleFormConfigService } from '@proxy/rule-builder/api';
-import {
+ import {
   CreateFormConfigEditDto,
   FormConfigListDto,
   RuleFieldCatalogDto,
   RuleFormFieldDto,
 } from '@proxy/work-flows/dtos/rule-builders-dtos';
+import { RuleFormConfigService } from '@proxy/work-flows/rules/rule-builders';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';

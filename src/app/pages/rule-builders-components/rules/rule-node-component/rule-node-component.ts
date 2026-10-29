@@ -35,12 +35,13 @@ import {
   LoadingLookupService,
   PreloadedLookup,
 } from "../rules-services/loadingLookup-service";
-import {
+ import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from "primeng/autocomplete";
 import { CheckboxModule } from "primeng/checkbox";
 import { catchError, Observable, of, Subject, switchMap } from "rxjs";
+import { countFieldKeys, numberedFieldLabel } from "../rules-services/repeated-field-label";
 
 /**
  * Shared, referentially stable empty / static option lists.
@@ -131,6 +132,10 @@ export class RuleNodeComponent {
   fields = input.required<RuleFormFieldDto[]>();
   allowGroups = input(true);
   isRoot = input(false);
+  /** Set by the parent group (the root works it out itself): how often each field key is used in the whole rule. */
+  keyTotals = input<Record<string, number>>({});
+  /** Set by the parent group: how many conditions of each field key come before this node in the rule. */
+  keysBefore = input<Record<string, number>>({});
   remove = output<void>();
 
   logicalOperators = [
@@ -141,6 +146,31 @@ export class RuleNodeComponent {
   field = computed(() =>
     this.fields().find((f) => f.key === this.node().fieldKey)
   );
+
+  // ---- the same field used more than once: "Primary Activity", "Secondary Activity" ... ----
+  /** How often each field key is used in the whole rule. */
+  readonly keyTotalsInRule = computed(() =>
+    this.isRoot() ? countFieldKeys(this.node()) : this.keyTotals()
+  );
+
+  /** For each child, in order: how many conditions of each field key come before it in the whole rule. */
+  readonly childKeysBefore = computed<Record<string, number>[]>(() => {
+    const running = { ...this.keysBefore() };
+    return (this.node().children ?? []).map((child) => {
+      const before = { ...running };
+      countFieldKeys(child, running);
+      return before;
+    });
+  });
+
+  /** The field's label as shown for this condition; numbered when the rule uses the field more than once. */
+  readonly fieldLabel = computed(() => {
+    const key = this.node().fieldKey;
+    const label = this.field()?.label ?? key ?? "";
+    return key && (this.keyTotalsInRule()[key] ?? 0) > 1
+      ? numberedFieldLabel(label, this.keysBefore()[key] ?? 0)
+      : label;
+  });
 
   operators = computed(() => {
     const f = this.field();

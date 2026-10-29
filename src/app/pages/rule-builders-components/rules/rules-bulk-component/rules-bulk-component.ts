@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LookupService } from '@proxy/ehealth-claims/lookups';
-import { LookupDto } from '@proxy/lookups/dtos';
+import { LookupService } from '@proxy/lookups';
+ import { LookupDto } from '@proxy/lookups/dtos';
 import { RuleService } from '@proxy/work-flows/rules';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';

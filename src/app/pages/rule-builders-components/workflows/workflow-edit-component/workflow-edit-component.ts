@@ -2,8 +2,7 @@ import { Component, inject, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { LookupDto } from "@proxy/lookups/dtos";
-import { RuleFormConfigService } from "@proxy/rule-builder/api";
-import { WorkFlowService } from "@proxy/work-flows";
+ import { WorkFlowService } from "@proxy/work-flows";
 import { SaveWorkflowDto } from "@proxy/work-flows/dtos";
 import {
   RejectionLevel,
@@ -13,6 +12,7 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
 import { BaseCoreModule } from "@abp/ng.core";
+import { RuleFormConfigService } from "@proxy/work-flows/rules/rule-builders";
 
 @Component({
   selector: "app-workflow-edit-component",

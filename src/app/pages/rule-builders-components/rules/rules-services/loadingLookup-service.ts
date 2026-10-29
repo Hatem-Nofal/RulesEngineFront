@@ -6,8 +6,8 @@ import {
   WritableSignal,
 } from "@angular/core";
 import type { SelectedDropDownList } from "@proxy/common/dtos/models";
-import { LookupService } from "@proxy/ehealth-claims/lookups";
-import { map, Observable, tap } from "rxjs";
+import { LookupService } from "@proxy/lookups";
+ import { map, Observable, tap } from "rxjs";
 
 const toItems = (
   list: SelectedDropDownList[] | null | undefined

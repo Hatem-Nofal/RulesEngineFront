@@ -9,13 +9,11 @@ import {
 } from "@proxy/work-flows/dtos/rule-builders-dtos";
 import { RuleExpressionResultDto } from "@proxy/work-flows/rules/rule-expression-builders";
 import { emptyRoot } from "src/app/shared/models/constant";
-import { RuleFormConfigService } from "@proxy/rule-builder/api/rule-form-config.service";
-import { ButtonModule } from "primeng/button";
+ import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
-import { LookupService } from "@proxy/ehealth-claims/lookups";
-import {
+ import {
   SelectedDropDownList,
   SelectedDropDownListByGuid,
 } from "@proxy/common/dtos";
@@ -23,6 +21,8 @@ import { ViolationType } from "@proxy/common/enums";
 
 import { CustomConfirmationService } from "src/app/shared/services/customConfirmation.service";
 import { LookupDto } from "@proxy/lookups/dtos";
+import { LookupService } from "@proxy/lookups";
+import { RuleFormConfigService } from "@proxy/work-flows/rules/rule-builders";
 @Component({
   selector: "app-rule-edit",
   imports: [

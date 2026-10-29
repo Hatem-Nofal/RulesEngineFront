@@ -43,6 +43,8 @@
         [fields]="fields()"
         [allowGroups]="allowGroups()"
         [isRoot]="false"
+        [keyTotals]="keyTotalsInRule()"
+        [keysBefore]="childKeysBefore()[i]"
         (nodeChange)="updateChild(c, $event)"
         (remove)="removeChild($index)"
       />
@@ -66,7 +68,11 @@
       [ngModel]="n.fieldKey"
       (ngModelChange)="onField($event)"
       aria-label="Rule field"
-    />
+    >
+      <!-- only the shown value is numbered; the list keeps the plain field labels -->
+      <!-- pTemplate, not `#selectedItem`: that would hide the component's own selectedItem() used further down -->
+      <ng-template pTemplate="selectedItem" let-item>{{ fieldLabel() }}</ng-template>
+    </p-select>
     @if (usesActivityType()) {
     <p-select
       [options]="activityTypes()"

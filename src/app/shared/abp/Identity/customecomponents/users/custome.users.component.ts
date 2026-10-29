@@ -37,7 +37,7 @@ import {
 } from '@angular/forms';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 import { eIdentityComponents } from '@abp/ng.identity';
-import { LookupService } from '@proxy/ehealth-claims/lookups';
+import { LookupService } from '@proxy/lookups';
 
 
 

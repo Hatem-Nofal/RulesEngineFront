@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { RuleFormConfigService } from '@proxy/rule-builder/api';
-import { FormConfigListDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
+ import { FormConfigListDto } from '@proxy/work-flows/dtos/rule-builders-dtos';
+import { RuleFormConfigService } from '@proxy/work-flows/rules/rule-builders';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';

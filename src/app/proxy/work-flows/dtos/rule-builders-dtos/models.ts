@@ -1,7 +1,20 @@
-import type { EntityDto } from '@abp/ng.core';
 import type { RuleNodeType } from '../../../common/enums/rule-node-type.enum';
 import type { LogicalOperator } from '../../../common/enums/logical-operator.enum';
 import type { RuleOperator } from '../../../common/enums/rule-operator.enum';
+import type { EntityDto } from '@abp/ng.core';
+
+export interface RuleNodeDto {
+  id?: string;
+  nodeType?: RuleNodeType;
+  logicalOperator?: LogicalOperator | null;
+  logicalJoinOperator?: LogicalOperator | null;
+  fieldKey?: string | null;
+  operator?: RuleOperator | null;
+  value?: any | null;
+  isMultiple?: boolean;
+  activityTypeId?: number | null;
+  children?: RuleNodeDto[];
+}
 
 export interface CreateFormConfigEditDto {
   id?: string | null;
@@ -56,17 +69,4 @@ export interface RuleFormFieldDto {
   isMultiple?: boolean;
   isDefault?: boolean;
   isDeleted?: boolean;
-}
-
-export interface RuleNodeDto {
-  id?: string;
-  nodeType?: RuleNodeType;
-  logicalOperator?: LogicalOperator | null;
-  logicalJoinOperator?: LogicalOperator | null;
-  fieldKey?: string | null;
-  operator?: RuleOperator | null;
-  value?: any | null;
-  isMultiple?: boolean;
-  activityTypeId?: number | null;
-  children?: RuleNodeDto[];
 }
