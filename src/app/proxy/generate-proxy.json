@@ -1447,6 +1447,10 @@
                   "roles": null
                 },
                 {
+                  "policy": "AbpIdentity.Roles",
+                  "roles": null
+                },
+                {
                   "policy": "AbpIdentity.Roles.Delete",
                   "roles": null
                 }
@@ -1509,6 +1513,10 @@
                 {
                   "policy": "AbpIdentity.Roles",
                   "roles": null
+                },
+                {
+                  "policy": "AbpIdentity.Roles",
+                  "roles": null
                 }
               ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.Identity.IdentityRoleDto,Volo.Abp.Identity.IdentityRoleDto,System.Guid,Volo.Abp.Identity.GetIdentityRolesInput>",
@@ -1538,6 +1546,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Roles",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Roles",
                   "roles": null
@@ -1661,6 +1673,10 @@
                 {
                   "policy": "AbpIdentity.Roles",
                   "roles": null
+                },
+                {
+                  "policy": "AbpIdentity.Roles",
+                  "roles": null
                 }
               ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.Identity.IdentityRoleDto,Volo.Abp.Identity.IdentityRoleDto,System.Guid,Volo.Abp.Identity.GetIdentityRolesInput>",
@@ -1718,6 +1734,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Roles",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Roles",
                   "roles": null
@@ -1808,6 +1828,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Roles",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Roles",
                   "roles": null
@@ -2158,6 +2182,10 @@
               "allowAnonymous": false,
               "authorizeDatas": [
                 {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
+                {
                   "policy": "AbpIdentity.Users.Create",
                   "roles": null
                 }
@@ -2243,6 +2271,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Users.Update",
                   "roles": null
@@ -2366,6 +2398,10 @@
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
+                },
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
                 }
               ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.Identity.IdentityUserDto,Volo.Abp.Identity.IdentityUserDto,System.Guid,Volo.Abp.Identity.GetIdentityUsersInput>",
@@ -2423,6 +2459,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
@@ -2486,6 +2526,10 @@
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
+                },
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
                 }
               ],
               "implementFrom": "Volo.Abp.Identity.IIdentityUserAppService",
@@ -2515,6 +2559,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
@@ -2571,6 +2619,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Users.Delete",
                   "roles": null
@@ -2654,6 +2706,10 @@
               "allowAnonymous": false,
               "authorizeDatas": [
                 {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
+                {
                   "policy": "AbpIdentity.Users.Update",
                   "roles": null
                 }
@@ -2713,6 +2769,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
@@ -2776,6 +2836,10 @@
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
+                },
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
                 }
               ],
               "implementFrom": "Volo.Abp.Identity.IIdentityUserAppService",
@@ -2833,6 +2897,10 @@
               },
               "allowAnonymous": false,
               "authorizeDatas": [
+                {
+                  "policy": "AbpIdentity.Users",
+                  "roles": null
+                },
                 {
                   "policy": "AbpIdentity.Users",
                   "roles": null
@@ -2936,8 +3004,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Validation",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Integrations.IIntegrationsAppService",
               "summary": null,
               "remarks": null,
@@ -3229,8 +3302,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3310,8 +3388,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3365,8 +3448,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3392,8 +3480,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3419,8 +3512,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3474,8 +3572,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3501,8 +3604,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3556,8 +3664,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3611,8 +3724,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3666,8 +3784,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3693,8 +3816,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -4006,8 +4134,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.RuleListItemDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>",
               "summary": null,
               "remarks": null,
@@ -4061,8 +4194,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.RuleListItemDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>",
               "summary": null,
               "remarks": null,
@@ -4116,8 +4254,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.CreateRuleDto>",
               "summary": null,
               "remarks": null,
@@ -4197,8 +4340,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,System.Guid,RulesEngine.WorkFlows.Dtos.RulesDtos.CreateRuleDto>",
               "summary": null,
               "remarks": null,
@@ -4248,8 +4396,13 @@
                 "contentTypes": null,
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>",
               "summary": null,
               "remarks": null,
@@ -4303,8 +4456,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.WorkFlows.Rules.IRuleAppService",
               "summary": null,
               "remarks": null,
@@ -4358,8 +4516,13 @@
                 ],
                 "isRemoteStream": true
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.WorkFlows.Rules.IRuleAppService",
               "summary": null,
               "remarks": null,
@@ -4439,8 +4602,13 @@
                 ],
                 "isRemoteStream": true
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Rules",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.WorkFlows.Rules.IRuleAppService",
               "summary": null,
               "remarks": null,
@@ -4648,8 +4816,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.WorkFlows.Rules.RuleBuilders.IRuleFormConfigAppService",
               "summary": null,
               "remarks": null,
@@ -4703,8 +4876,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleFormConfigDto,RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.FormConfigListDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>",
               "summary": null,
               "remarks": null,
@@ -4730,8 +4908,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.WorkFlows.Rules.RuleBuilders.RuleFormConfigAppService",
               "summary": null,
               "remarks": null,
@@ -4785,8 +4968,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "RulesEngine.WorkFlows.Rules.RuleBuilders.IRuleFormConfigAppService",
               "summary": null,
               "remarks": null,
@@ -4870,8 +5058,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleFormConfigDto,RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.FormConfigListDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>",
               "summary": null,
               "remarks": null,
@@ -4925,8 +5118,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleFormConfigDto,RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.CreateFormConfigEditDto>",
               "summary": null,
               "remarks": null,
@@ -5006,8 +5204,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleFormConfigDto,System.Guid,RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.CreateFormConfigEditDto>",
               "summary": null,
               "remarks": null,
@@ -5057,8 +5260,13 @@
                 "contentTypes": null,
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.RuleFormConfigs",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>",
               "summary": null,
               "remarks": null,
@@ -5335,8 +5543,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Workflows",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.WorkflowDto,RulesEngine.WorkFlows.Dtos.WorkflowDto,System.Guid,RulesEngine.WorkFlows.Dtos.WorkflowPagedAndFilterDto>",
               "summary": null,
               "remarks": null,
@@ -5390,8 +5603,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Workflows",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.WorkflowDto,RulesEngine.WorkFlows.Dtos.WorkflowDto,System.Guid,RulesEngine.WorkFlows.Dtos.WorkflowPagedAndFilterDto>",
               "summary": null,
               "remarks": null,
@@ -5445,8 +5663,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Workflows",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<RulesEngine.WorkFlows.Dtos.WorkflowDto,RulesEngine.WorkFlows.Dtos.SaveWorkflowDto>",
               "summary": null,
               "remarks": null,
@@ -5526,8 +5749,13 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Workflows",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<RulesEngine.WorkFlows.Dtos.WorkflowDto,System.Guid,RulesEngine.WorkFlows.Dtos.SaveWorkflowDto>",
               "summary": null,
               "remarks": null,
@@ -5577,8 +5805,13 @@
                 "contentTypes": null,
                 "isRemoteStream": false
               },
-              "allowAnonymous": null,
-              "authorizeDatas": [],
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Workflows",
+                  "roles": null
+                }
+              ],
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>",
               "summary": null,
               "remarks": null,

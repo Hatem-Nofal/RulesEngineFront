@@ -18,13 +18,9 @@ export const routes: Routes = [
     path: 'account',
     loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
   },
-  {
+   {
     path: 'identity',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../shared/abp/Identity/customeidentity/customeidentity.module').then(m =>
-        m.CustomeIdentityModule.forLazy(),
-      ),
+    loadChildren: () => import('@abp/ng.identity').then(c => c.createRoutes()),
   },
   {
     path: 'tenant-management',
