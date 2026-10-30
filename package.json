@@ -12,16 +12,16 @@
   },
   "private": true,
   "dependencies": {
-    "@abp/ng.account": "~10.7.0",
-    "@abp/ng.components": "~10.7.0",
-    "@abp/ng.core": "~10.7.0",
-    "@abp/ng.feature-management": "~10.7.0",
-    "@abp/ng.identity": "~10.7.0",
-    "@abp/ng.oauth": "~10.7.0",
-    "@abp/ng.setting-management": "~10.7.0",
-    "@abp/ng.tenant-management": "~10.7.0",
-    "@abp/ng.theme.lepton-x": "~5.7.0",
-    "@abp/ng.theme.shared": "~10.7.0",
+    "@abp/ng.account": "~10.6.1",
+    "@abp/ng.components": "~10.6.1",
+    "@abp/ng.core": "~10.6.1",
+    "@abp/ng.feature-management": "~10.6.1",
+    "@abp/ng.identity": "~10.6.1",
+    "@abp/ng.oauth": "~10.6.1",
+    "@abp/ng.setting-management": "~10.6.1",
+    "@abp/ng.tenant-management": "~10.6.1",
+    "@abp/ng.theme.lepton-x": "~5.6.1",
+    "@abp/ng.theme.shared": "~10.6.1",
     "@angular/animations": "~21.2.25",
     "@angular/aria": "^21.2.14",
     "@angular/cdk": "^21.2.14",
@@ -36,8 +36,7 @@
     "@microsoft/signalr": "^8.0.29",
     "@ng-bootstrap/ng-bootstrap": "~20.0.0",
     "@primeuix/themes": "^3.0.1",
-    "@swimlane/ngx-datatable": "^25.1.0",
-    "bootstrap-icons": "^1.13.2",
+     "bootstrap-icons": "^1.13.2",
     "jwt-decode": "^4.0.0",
     "primeicons": "^8.0.2",
     "primeng": "^21.1.10",
@@ -46,7 +45,7 @@
     "zone.js": "~0.16.3"
   },
   "devDependencies": {
-    "@abp/ng.schematics": "~10.7.0",
+    "@abp/ng.schematics": "~10.6.1",
     "@angular-devkit/build-angular": "~21.2.26",
     "@angular-devkit/core": "~21.2.26",
     "@angular-devkit/schematics": "~21.2.26",
@@ -74,8 +73,5 @@
     "karma-jasmine-html-reporter": "^2.3.0",
     "nx": "23.3.0",
     "typescript": "~5.9.3"
-  },
-  "overrides": {
-    "@swimlane/ngx-datatable": "$@swimlane/ngx-datatable"
   }
 }
