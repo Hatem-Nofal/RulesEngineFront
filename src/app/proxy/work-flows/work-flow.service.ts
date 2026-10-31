@@ -11,7 +11,6 @@ export class WorkFlowService {
   apiName = 'Default';
   
 
-  
   create = (input: SaveWorkflowDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, WorkflowDto>({
       method: 'POST',
@@ -19,40 +18,36 @@ export class WorkFlowService {
       url: '/api/app/work-flow',
       body: input,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   delete = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'DELETE',
       url: `/api/app/work-flow/${id}`,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   get = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, WorkflowDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: `/api/app/work-flow/${id}`,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   getList = (input: WorkflowPagedAndFilterDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<WorkflowDto>>({
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/work-flow',
-      params: { name: input.name, ruleFormConfigName: input.ruleFormConfigName, rejectionLevel: input.rejectionLevel, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { name: input.name, ruleFormConfigId: input.ruleFormConfigId, rejectionLevel: input.rejectionLevel, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   update = (id: string, input: SaveWorkflowDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, WorkflowDto>({
       method: 'PUT',
@@ -60,5 +55,5 @@ export class WorkFlowService {
       url: `/api/app/work-flow/${id}`,
       body: input,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
 }

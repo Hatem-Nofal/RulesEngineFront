@@ -24,6 +24,11 @@ export interface WorkflowDto {
 
 export interface WorkflowPagedAndFilterDto extends PagedAndSortedResultRequestDto {
   name?: string | null;
-  ruleFormConfigName?: string | null;
+  ruleFormConfigId?: string | null;
   rejectionLevel?: RejectionLevel | null;
+}
+
+export interface RulePagedAndSortedResultRequestDto extends PagedAndSortedResultRequestDto {
+  workflowId?: string | null;
+  ruleName?: string | null;
 }

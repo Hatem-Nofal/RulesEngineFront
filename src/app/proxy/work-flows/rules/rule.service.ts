@@ -1,7 +1,8 @@
 import type { RuleExpressionResultDto } from './rule-expression-builders/models';
 import { RestService, Rest } from '@abp/ng.core';
-import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
+import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
+import type { RulePagedAndSortedResultRequestDto } from '../dtos/models';
 import type { CreateRuleDto, RuleDto, RuleListItemDto } from '../dtos/rules-dtos/models';
 
 @Injectable({
@@ -12,7 +13,6 @@ export class RuleService {
   apiName = 'Default';
   
 
-  
   bulkUpload = (workflowId: string, fileContent: FormData, config?: Partial<Rest.Config>) =>
     this.restService.request<any, Blob>({
       method: 'POST',
@@ -21,10 +21,9 @@ export class RuleService {
       url: `/api/app/rule/bulk-upload/${workflowId}`,
       body: fileContent,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   create = (input: CreateRuleDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleDto>({
       method: 'POST',
@@ -32,40 +31,36 @@ export class RuleService {
       url: '/api/app/rule',
       body: input,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   delete = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'DELETE',
       url: `/api/app/rule/${id}`,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   get = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: `/api/app/rule/${id}`,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
-  getList = (input: PagedAndSortedResultRequestDto, config?: Partial<Rest.Config>) =>
+  getList = (input: RulePagedAndSortedResultRequestDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<RuleListItemDto>>({
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/rule',
-      params: { sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { workflowId: input.workflowId, ruleName: input.ruleName, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   getRulesSample = (workflowId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, Blob>({
       method: 'GET',
@@ -73,10 +68,9 @@ export class RuleService {
       headers: { Accept: 'application/octet-stream' },
       url: `/api/app/rule/rules-sample/${workflowId}`,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   previewExpressionByInput = (input: RuleDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleExpressionResultDto>({
       method: 'POST',
@@ -84,10 +78,9 @@ export class RuleService {
       url: '/api/app/rule/preview-expression',
       body: input,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
   
 
-  
   update = (id: string, input: CreateRuleDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleDto>({
       method: 'PUT',
@@ -95,5 +88,5 @@ export class RuleService {
       url: `/api/app/rule/${id}`,
       body: input,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
 }

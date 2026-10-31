@@ -10,7 +10,6 @@ export class IntegrationsService {
   apiName = 'Default';
   
 
-  
   validateClaimsIntegrationExtendedByInput = (input: ClaimValidation, config?: Partial<Rest.Config>) =>
     this.restService.request<any, ClaimValidationResponse>({
       method: 'POST',
@@ -18,5 +17,5 @@ export class IntegrationsService {
       url: '/api/app/integrations/validate-claims-integration-extended',
       body: input,
     },
-      { apiName: this.apiName,...config });
+    { apiName: this.apiName,...config });
 }

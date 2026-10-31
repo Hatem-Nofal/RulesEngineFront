@@ -2,7 +2,6 @@
   "generated": [
     "app"
   ],
-  "resourceApi": false,
   "modules": {
     "abp": {
       "rootPath": "abp",
@@ -2914,6 +2913,180 @@
             }
           }
         },
+        "RulesEngine.Dashboards.DashboardAppService": {
+          "controllerName": "Dashboard",
+          "controllerGroupName": "Dashboard",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "RulesEngine.Dashboards.DashboardAppService",
+          "summary": null,
+          "remarks": null,
+          "description": null,
+          "displayName": null,
+          "interfaces": [
+            {
+              "type": "RulesEngine.Dashboards.IDashboardAppService",
+              "name": "IDashboardAppService",
+              "methods": [
+                {
+                  "name": "GeetWorkflowViolationsCounts",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.WorkflowViolationsCountDto>",
+                    "typeSimple": "[RulesEngine.Dashboards.Dtos.WorkflowViolationsCountDto]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GeetClaimNumberViolationsCounts",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.ClaimNumberViolationsCountDto>",
+                    "typeSimple": "[RulesEngine.Dashboards.Dtos.ClaimNumberViolationsCountDto]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GeetActivityViolationsCounts",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.ActivityViolationsCountDto>",
+                    "typeSimple": "[RulesEngine.Dashboards.Dtos.ActivityViolationsCountDto]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
+                  "name": "GeetRuleViolationsCounts",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.RuleViolationsCountDto>",
+                    "typeSimple": "[RulesEngine.Dashboards.Dtos.RuleViolationsCountDto]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GeetActivityViolationsCounts": {
+              "uniqueName": "GeetActivityViolationsCounts",
+              "name": "GeetActivityViolationsCounts",
+              "httpMethod": "POST",
+              "url": "api/app/dashboard/geet-activity-violations-counts",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.ActivityViolationsCountDto>",
+                "typeSimple": "[RulesEngine.Dashboards.Dtos.ActivityViolationsCountDto]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Dashboards.IDashboardAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GeetClaimNumberViolationsCounts": {
+              "uniqueName": "GeetClaimNumberViolationsCounts",
+              "name": "GeetClaimNumberViolationsCounts",
+              "httpMethod": "POST",
+              "url": "api/app/dashboard/geet-claim-number-violations-counts",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.ClaimNumberViolationsCountDto>",
+                "typeSimple": "[RulesEngine.Dashboards.Dtos.ClaimNumberViolationsCountDto]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Dashboards.IDashboardAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GeetRuleViolationsCounts": {
+              "uniqueName": "GeetRuleViolationsCounts",
+              "name": "GeetRuleViolationsCounts",
+              "httpMethod": "POST",
+              "url": "api/app/dashboard/geet-rule-violations-counts",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.RuleViolationsCountDto>",
+                "typeSimple": "[RulesEngine.Dashboards.Dtos.RuleViolationsCountDto]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Dashboards.IDashboardAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GeetWorkflowViolationsCounts": {
+              "uniqueName": "GeetWorkflowViolationsCounts",
+              "name": "GeetWorkflowViolationsCounts",
+              "httpMethod": "POST",
+              "url": "api/app/dashboard/geet-workflow-violations-counts",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Dashboards.Dtos.WorkflowViolationsCountDto>",
+                "typeSimple": "[RulesEngine.Dashboards.Dtos.WorkflowViolationsCountDto]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": null,
+              "authorizeDatas": [],
+              "implementFrom": "RulesEngine.Dashboards.IDashboardAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            }
+          }
+        },
         "RulesEngine.Integrations.IntegrationsAppService": {
           "controllerName": "Integrations",
           "controllerGroupName": "Integrations",
@@ -3004,13 +3177,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Validation",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Integrations.IIntegrationsAppService",
               "summary": null,
               "remarks": null,
@@ -3955,9 +4123,9 @@
                   "parametersOnMethod": [
                     {
                       "name": "input",
-                      "typeAsString": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto, Volo.Abp.Ddd.Application.Contracts",
-                      "type": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
-                      "typeSimple": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                      "typeAsString": "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto, RulesEngine.Application.Contracts",
+                      "type": "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto",
+                      "typeSimple": "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto",
                       "isOptional": false,
                       "defaultValue": null,
                       "summary": null,
@@ -4066,9 +4234,9 @@
               "parametersOnMethod": [
                 {
                   "name": "input",
-                  "typeAsString": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto, Volo.Abp.Ddd.Application.Contracts",
-                  "type": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
-                  "typeSimple": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                  "typeAsString": "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto, RulesEngine.Application.Contracts",
+                  "type": "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto",
+                  "typeSimple": "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto",
                   "isOptional": false,
                   "defaultValue": null,
                   "summary": null,
@@ -4077,6 +4245,36 @@
                 }
               ],
               "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "WorkflowId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "RuleName",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
                 {
                   "nameOnMethod": "input",
                   "name": "Sorting",
@@ -4141,7 +4339,7 @@
                   "roles": null
                 }
               ],
-              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.RuleListItemDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>",
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.RuleListItemDto,System.Guid,RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto>",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -4201,7 +4399,7 @@
                   "roles": null
                 }
               ],
-              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.RuleListItemDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>",
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<RulesEngine.WorkFlows.Dtos.RulesDtos.RuleDto,RulesEngine.WorkFlows.Dtos.RulesDtos.RuleListItemDto,System.Guid,RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto>",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -5458,10 +5656,10 @@
                 },
                 {
                   "nameOnMethod": "input",
-                  "name": "RuleFormConfigName",
+                  "name": "RuleFormConfigId",
                   "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
                   "isOptional": false,
                   "defaultValue": null,
                   "constraintTypes": null,
@@ -11517,6 +11715,186 @@
       "description": null,
       "displayName": null
     },
+    "RulesEngine.Dashboards.Dtos.ActivityViolationsCountDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Activity",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationsCounts",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Dashboards.Dtos.ClaimNumberViolationsCountDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "ClaimNumber",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationsCounts",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Dashboards.Dtos.RuleViolationsCountDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "RuleName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationsCounts",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.Dashboards.Dtos.WorkflowViolationsCountDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "WorkFlowName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationsCounts",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
     "RulesEngine.Integrations.ClaimValidation": {
       "baseType": null,
       "isEnum": false,
@@ -12652,6 +13030,51 @@
       "description": null,
       "displayName": null
     },
+    "RulesEngine.WorkFlows.Dtos.RulePagedAndSortedResultRequestDto": {
+      "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "WorkflowId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "RuleName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
     "RulesEngine.WorkFlows.Dtos.RulesDtos.CreateRuleDto": {
       "baseType": null,
       "isEnum": false,
@@ -13301,10 +13724,10 @@
           "displayName": null
         },
         {
-          "name": "RuleFormConfigName",
+          "name": "RuleFormConfigId",
           "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
+          "type": "System.Guid?",
+          "typeSimple": "string?",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
