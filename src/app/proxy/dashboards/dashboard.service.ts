@@ -1,4 +1,4 @@
-import type { ActivityViolationsCountDto, ClaimNumberViolationsCountDto, RuleViolationsCountDto, WorkflowViolationsCountDto } from './dtos/models';
+import type { ActivityViolationsDto, ClaimNumberViolationsDto, DashboardFilterDto, RuleViolationsDto, ViolationsDetailsDto, WorkflowViolationsDto } from './dtos/models';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
 
@@ -10,38 +10,52 @@ export class DashboardService {
   apiName = 'Default';
   
 
-  geetActivityViolationsCounts = (config?: Partial<Rest.Config>) =>
-    this.restService.request<any, ActivityViolationsCountDto[]>({
-      method: 'POST',
+  getActivityViolationsCountsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, ActivityViolationsDto>({
+      method: 'GET',
       headers: { Accept: 'application/json' },
-      url: '/api/app/dashboard/geet-activity-violations-counts',
+      url: '/api/app/dashboard/activity-violations-counts',
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
     },
     { apiName: this.apiName,...config });
   
 
-  geetClaimNumberViolationsCounts = (config?: Partial<Rest.Config>) =>
-    this.restService.request<any, ClaimNumberViolationsCountDto[]>({
-      method: 'POST',
+  getClaimNumberViolationsCountsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, ClaimNumberViolationsDto>({
+      method: 'GET',
       headers: { Accept: 'application/json' },
-      url: '/api/app/dashboard/geet-claim-number-violations-counts',
+      url: '/api/app/dashboard/claim-number-violations-counts',
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
     },
     { apiName: this.apiName,...config });
   
 
-  geetRuleViolationsCounts = (config?: Partial<Rest.Config>) =>
-    this.restService.request<any, RuleViolationsCountDto[]>({
-      method: 'POST',
+  getRuleViolationsCountsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RuleViolationsDto>({
+      method: 'GET',
       headers: { Accept: 'application/json' },
-      url: '/api/app/dashboard/geet-rule-violations-counts',
+      url: '/api/app/dashboard/rule-violations-counts',
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
     },
     { apiName: this.apiName,...config });
   
 
-  geetWorkflowViolationsCounts = (config?: Partial<Rest.Config>) =>
-    this.restService.request<any, WorkflowViolationsCountDto[]>({
-      method: 'POST',
+  getViolationsDetailsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, ViolationsDetailsDto>({
+      method: 'GET',
       headers: { Accept: 'application/json' },
-      url: '/api/app/dashboard/geet-workflow-violations-counts',
+      url: '/api/app/dashboard/violations-details',
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getWorkflowViolationsCountsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, WorkflowViolationsDto>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/dashboard/workflow-violations-counts',
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
     },
     { apiName: this.apiName,...config });
 }
