@@ -1,4 +1,4 @@
-import type { ActivityViolationsDto, ClaimNumberViolationsDto, DashboardFilterDto, RuleViolationsDto, ViolationsDetailsDto, WorkflowViolationsDto } from './dtos/models';
+import type { ActivityViolationsDto, ClaimNumberViolationsDto, DashboardDetailsDto, DashboardFilterDto, RuleViolationsDto, WorkflowViolationsDto } from './dtos/models';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
 
@@ -40,11 +40,11 @@ export class DashboardService {
     { apiName: this.apiName,...config });
   
 
-  getViolationsDetailsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, ViolationsDetailsDto>({
+  getDashboardDetailsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, DashboardDetailsDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
-      url: '/api/app/dashboard/violations-details',
+      url: '/api/app/dashboard/dashboard-details',
       params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
     },
     { apiName: this.apiName,...config });

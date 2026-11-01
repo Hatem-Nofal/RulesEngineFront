@@ -1,0 +1,75 @@
+<section class="dashboard" aria-labelledby="dashboard-title">
+  <div class="dashboard-heading">
+    <div>
+      <h2 id="dashboard-title">Violations overview</h2>
+      <p>Summary and breakdown of violations across the system</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="dashboard-message" role="status">Loading dashboard summary...</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && !errorMessage) {
+    <div class="metrics-grid">
+      @for (metric of metrics; track metric.label) {
+        <article class="metric-card">
+          <div class="metric-icon" aria-hidden="true">
+            <i class="bi" [ngClass]="metric.icon"></i>
+          </div>
+          <div class="metric-content">
+            <p class="metric-label">{{ metric.label }}</p>
+            <p class="metric-value">{{ metric.count | number }}</p>
+          </div>
+        </article>
+      }
+    </div>
+
+  }
+
+  <!-- <article class="chart-card summary-chart-card" [hidden]="(loading || !!errorMessage)">
+    <div class="chart-heading">
+      <div class="chart-heading-icon" aria-hidden="true"><i class="bi bi-bar-chart-line"></i></div>
+      <div>
+        <h3>Top violations by type</h3>
+        <p>Most violated item in each category</p>
+      </div>
+    </div>
+    <div class="chart-container summary-chart-container">
+      <canvas #summaryChart aria-label="Bar chart comparing violations by type"></canvas>
+    </div>
+  </article> -->
+
+  <div class="charts-grid">
+    @for (chart of violationCharts; track chart.key) {
+      <article class="chart-card detail-chart-card">
+        <div class="chart-heading">
+          <div class="chart-heading-icon" aria-hidden="true"><i class="bi" [ngClass]="chart.icon"></i></div>
+          <div>
+            <h3>{{ chart.title }}</h3>
+            <p>
+              @if (chart.total !== undefined) {
+                {{ chart.total | number }} total violations
+              } @else {
+                Top 10 by violation count
+              }
+            </p>
+          </div>
+        </div>
+        @if (chart.loading) {
+          <div class="chart-message" role="status">Loading chart data...</div>
+        } @else if (chart.error) {
+          <div class="chart-message chart-error" role="alert">{{ chart.error }}</div>
+        } @else if (chart.entries.length === 0) {
+          <div class="chart-message">No violations found.</div>
+        }
+        <div class="chart-container detail-chart-container" [hidden]="chart.loading || !!chart.error || chart.entries.length === 0">
+          <canvas #chartCanvas [attr.data-chart]="chart.key" [attr.aria-label]="chart.title"></canvas>
+        </div>
+      </article>
+    }
+  </div>
+</section>

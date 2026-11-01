@@ -36,16 +36,12 @@ export interface RuleViolationsDto {
   total?: number;
 }
 
-export interface ViolationsDetailsDto {
-  maxWorkFlowNameViolated?: string;
-  maxWorkFlowViolatedCount?: number;
-  maxRuleNameViolated?: string;
-  maxRuleViolatedCount?: number;
-  maxActivityViolated?: string;
-  maxActivityViolatedCount?: number;
-  maxClaimNumberViolated?: string;
-  maxClaimNumberViolatedCount?: number;
+export interface DashboardDetailsDto {
   totalViolationCount?: number;
+  totalWorkflowsCount?: number;
+  totalRulesCount?: number;
+  totalClaimNumberViolatedCount?: number;
+  totalWorkFlowViolatedCount?: number;
 }
 
 export interface WorkflowViolationsCountDto {
