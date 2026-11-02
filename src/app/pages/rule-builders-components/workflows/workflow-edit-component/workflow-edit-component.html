@@ -59,7 +59,21 @@
             placeholder="Select rejection level"
           />
         </div>
-  <div class="rule-builder-field">
+        <div class="rule-builder-field">
+          <label for="rule-workflow"
+            >Violation Type <span class="text-danger ms-1 fs-5">*</span></label
+          >
+          <p-select
+            [options]="violationTypes()"
+            optionLabel="name"
+            optionValue="id"
+            [ngModel]="selectedViolationType()"
+            (onChange)="selectedViolationType.set($event.value)"
+            placeholder="Select Violation Type"
+            [appendTo]="'body'"
+          />
+        </div>
+        <div class="rule-builder-field">
           <label for="violation_Message">Violation Message</label>
           <input
             pInputText
@@ -71,6 +85,7 @@
             autocomplete="off"
           />
         </div>
+
         <div class="mt-2 d-flex flex-wrap gap-3 align-items-center">
           <div class="form-check form-check-inline m-0">
             <input
@@ -82,7 +97,7 @@
             <label class="form-check-label">Is Workflow Level</label>
           </div>
         </div>
-        @if (isWorkflowLevel  ()) {
+        @if (isWorkflowLevel ()) {
 
         <div class="rule-builder-field">
           <label for="workflow-name">Rule Expression</label>

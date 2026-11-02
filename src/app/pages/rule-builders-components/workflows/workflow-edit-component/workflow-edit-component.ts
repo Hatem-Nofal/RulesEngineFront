@@ -13,6 +13,8 @@ import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
 import { BaseCoreModule } from "@abp/ng.core";
 import { RuleFormConfigService } from "@proxy/work-flows/rules/rule-builders";
+import { ViolationType } from "@proxy/common/enums";
+import { SelectedDropDownList } from "@proxy/common/dtos";
 
 @Component({
   selector: "app-workflow-edit-component",
@@ -46,8 +48,17 @@ export class WorkflowEditComponent implements OnInit {
   ruleCount = signal(0);
   saving = signal(false);
   loading = signal(false);
-
+  selectedViolationType = signal<ViolationType>(ViolationType.Error);
+  violationTypes = signal<SelectedDropDownList[]>([]);
   ngOnInit() {
+    this.violationTypes.set(
+      Object.entries(ViolationType)
+        .filter(([key]) => isNaN(Number(key)))
+        .map(([key, value]) => ({
+          id: Number(value),
+          name: key,
+        }))
+    );
     this.loading.set(true);
     this.formConfigService.getConfigs().subscribe({
       next: (configs) => this.configs.set(configs),
@@ -71,6 +82,7 @@ export class WorkflowEditComponent implements OnInit {
         this.isWorkflowLevel.set(workflow.isWorkflowLevel ?? false);
         this.ruleExpression = workflow.ruleExpression;
         this.violationMessage.set(workflow.violationMessage ?? "");
+        this.selectedViolationType.set(workflow.violationType ?? ViolationType.Error);
 
         this.loading.set(false);
       },
@@ -91,7 +103,8 @@ export class WorkflowEditComponent implements OnInit {
       isWorkflowLevel: this.isWorkflowLevel(),
       ruleExpression: this.ruleExpression ?? "",
       violationMessage:this.violationMessage()??"",
-      ruleFormConfigId:this.configId
+      ruleFormConfigId:this.configId,
+      violationType:this.selectedViolationType(),
     };
     if (this.configId) dto.ruleFormConfigId = this.configId;
     const request = this.workflowId
