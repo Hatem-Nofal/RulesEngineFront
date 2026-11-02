@@ -1,4 +1,4 @@
-import type { SaveWorkflowDto, WorkflowDto, WorkflowPagedAndFilterDto } from './dtos/models';
+import type { SaveWorkflowDto, WorkflowDto, WorkflowForRuleDto, WorkflowPagedAndFilterDto } from './dtos/models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
@@ -44,6 +44,15 @@ export class WorkFlowService {
       headers: { Accept: 'application/json' },
       url: '/api/app/work-flow',
       params: { name: input.name, ruleFormConfigId: input.ruleFormConfigId, rejectionLevel: input.rejectionLevel, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getWorkflowForRule = (workflowId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, WorkflowForRuleDto>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: `/api/app/work-flow/workflow-for-rule/${workflowId}`,
     },
     { apiName: this.apiName,...config });
   

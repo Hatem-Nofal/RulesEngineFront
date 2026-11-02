@@ -1,12 +1,16 @@
 <main class="rule-builder-page">
+  <div class="filter-inputs">
+    <app-form-page [dynamicControls]="dynamicControls" (formSubmit)="sumbitFilter($event)" (formResets)="resetFilter()">
+    </app-form-page>
+  </div>
   <section class="rule-builder-card">
     <header class="rule-builder-card__header">
       <h1 class="rule-builder-card__title">Rules</h1>
       <a pButton routerLink="/rules/new" icon="pi pi-plus" label="Create rule"></a>
     </header>
-
     <div class="rule-builder-card__body">
       <p-table
+        #dt
         [value]="rules()"
         [lazy]="true"
         [paginator]="true"
@@ -26,8 +30,8 @@
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
-            <th pSortableColumn="workflowName">Workflow <p-sortIcon field="workflowName" /></th>
-            <th>State</th>
+            <th pSortableColumn="workflow.Name">Workflow <p-sortIcon field="workflow.Name" /></th>
+            <th pSortableColumn="workflow.rejectionLevel">Rejection Level <p-sortIcon field="workflow.rejectionLevel" /></th>
             <th class="text-end">Actions</th>
           </tr>
         </ng-template>

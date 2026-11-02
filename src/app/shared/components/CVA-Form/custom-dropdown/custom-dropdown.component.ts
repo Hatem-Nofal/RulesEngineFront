@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   templateUrl: './custom-dropdown.component.html',
   styleUrls: ['./custom-dropdown.component.scss'],
   standalone: true,
-  imports: [SharedModule, NgFor],
+  imports: [SharedModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

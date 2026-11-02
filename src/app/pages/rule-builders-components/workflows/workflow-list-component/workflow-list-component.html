@@ -1,4 +1,12 @@
 <main class="rule-builder-page">
+  <div class="filter-inputs">
+    <app-form-page
+      [dynamicControls]="dynamicControls"
+      (formSubmit)="sumbitFilter($event)"
+      (formResets)="resetFilter()"
+    >
+    </app-form-page>
+  </div>
   <section class="rule-builder-card">
     <header class="rule-builder-card__header">
       <h1 class="rule-builder-card__title">Workflows</h1>
@@ -7,6 +15,7 @@
 
     <div class="rule-builder-card__body">
       <p-table
+        #dt
         [value]="workflows()"
         [lazy]="true"
         [paginator]="true"
@@ -26,8 +35,16 @@
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
-            <th>Form config</th>
+            <th pSortableColumn="ruleFormConfig.Name">
+              Form config <p-sortIcon field="ruleFormConfig.Name" />
+            </th>
+            <th pSortableColumn="rejectionLevel">
+              Rejection Level <p-sortIcon field="rejectionLevel" />
+            </th>
             <th pSortableColumn="ruleCount">Rules <p-sortIcon field="ruleCount" /></th>
+            <th pSortableColumn="isWorkflowLevel">
+              Is Workflow Level <p-sortIcon field="isWorkflowLevel" />
+            </th>
             <th class="text-end">Actions</th>
           </tr>
         </ng-template>
@@ -39,7 +56,15 @@
               </a>
             </td>
             <td>{{ workflow.ruleFormConfigName || 'None' }}</td>
+            <td>{{ getEnumText(workflow.rejectionLevel) }}</td>
             <td>{{ workflow.ruleCount ?? 0 }}</td>
+            <td>
+              @if (workflow.isWorkflowLevel) {
+              <i class="bi bi-check-circle-fill text-success"></i>
+              } @else {
+              <i class="bi bi-x-circle-fill text-danger"></i>
+              }
+            </td>
             <td class="text-end">
               <a
                 pButton

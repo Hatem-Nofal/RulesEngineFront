@@ -11,7 +11,7 @@
       (input)="onInput($event)"
       (blur)="onBlur($event)"
       [disabled]="isdisabled"
-      [placeholder]="label"
+      [placeholder]="type === 'month' ? 'mm-yyyy' : type === 'date' ? 'mm-dd-yyyy' : label"
       [min]="min"
       [max]="max"
     />

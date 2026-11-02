@@ -19,11 +19,20 @@ export interface ClaimNumberViolationsDto {
   total?: number;
 }
 
+export interface DashboardDetailsDto {
+  totalViolationCount?: number;
+  totalWorkflowsCount?: number;
+  totalRulesCount?: number;
+  totalClaimNumberViolatedCount?: number;
+  totalWorkFlowViolatedCount?: number;
+}
+
 export interface DashboardFilterDto {
   workFlowName?: string | null;
   fromDate?: string | null;
   toDate?: string | null;
   activity?: string | null;
+  claimNumber?: string | null;
 }
 
 export interface RuleViolationsCountDto {
@@ -34,14 +43,6 @@ export interface RuleViolationsCountDto {
 export interface RuleViolationsDto {
   ruleViolationsCounts?: RuleViolationsCountDto[];
   total?: number;
-}
-
-export interface DashboardDetailsDto {
-  totalViolationCount?: number;
-  totalWorkflowsCount?: number;
-  totalRulesCount?: number;
-  totalClaimNumberViolatedCount?: number;
-  totalWorkFlowViolatedCount?: number;
 }
 
 export interface WorkflowViolationsCountDto {

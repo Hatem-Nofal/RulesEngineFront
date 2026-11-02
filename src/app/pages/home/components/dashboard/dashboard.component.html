@@ -27,7 +27,6 @@
         </article>
       }
     </div>
-
   }
 
   <!-- <article class="chart-card summary-chart-card" [hidden]="(loading || !!errorMessage)">
@@ -42,12 +41,17 @@
       <canvas #summaryChart aria-label="Bar chart comparing violations by type"></canvas>
     </div>
   </article> -->
-
+  <div class="filter-inputs">
+    <app-form-page [dynamicControls]="dynamicControls" (formSubmit)="sumbitFilter($event)" (formResets)="resetFilter()">
+    </app-form-page>
+  </div>
   <div class="charts-grid">
     @for (chart of violationCharts; track chart.key) {
       <article class="chart-card detail-chart-card">
         <div class="chart-heading">
-          <div class="chart-heading-icon" aria-hidden="true"><i class="bi" [ngClass]="chart.icon"></i></div>
+          <div class="chart-heading-icon" aria-hidden="true">
+            <i class="bi" [ngClass]="chart.icon"></i>
+          </div>
           <div>
             <h3>{{ chart.title }}</h3>
             <p>
@@ -66,8 +70,15 @@
         } @else if (chart.entries.length === 0) {
           <div class="chart-message">No violations found.</div>
         }
-        <div class="chart-container detail-chart-container" [hidden]="chart.loading || !!chart.error || chart.entries.length === 0">
-          <canvas #chartCanvas [attr.data-chart]="chart.key" [attr.aria-label]="chart.title"></canvas>
+        <div
+          class="chart-container detail-chart-container"
+          [hidden]="chart.loading || !!chart.error || chart.entries.length === 0"
+        >
+          <canvas
+            #chartCanvas
+            [attr.data-chart]="chart.key"
+            [attr.aria-label]="chart.title"
+          ></canvas>
         </div>
       </article>
     }

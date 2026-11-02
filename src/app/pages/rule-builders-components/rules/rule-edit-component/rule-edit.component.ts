@@ -60,17 +60,17 @@ export class RuleEditComponent implements OnInit {
   loading = signal(false);
   saving = signal(false);
   expression = signal<RuleExpressionResultDto | null>(null);
-  hasCustomeRule = signal<boolean>(false);
+  isWorkflowLevel = signal<boolean>(false);
   ruleExpression = signal<string>("");
-  selectedViolationType = ViolationType.Error;
-  violationTypes = signal<LookupDto[]>([]);
+  selectedViolationType = signal<ViolationType>(ViolationType.Error);
+  violationTypes = signal<SelectedDropDownList[]>([]);
 
   ngOnInit() {
     this.violationTypes.set(
       Object.entries(ViolationType)
         .filter(([key]) => isNaN(Number(key)))
         .map(([key, value]) => ({
-          id: String(value),
+          id: Number(value),
           name: key,
         }))
     );
@@ -98,14 +98,14 @@ export class RuleEditComponent implements OnInit {
         this.name.set(rule.name ?? "");
         this.isActive.set(rule.isActive ?? true);
         this.workflowId.set(rule.workflowId ?? null);
-        this.hasCustomeRule.set(rule.workflowHasCustomeRule ?? false);
+        this.isWorkflowLevel.set(rule.workflowIsWorkflowLevel ?? false);
         this.ruleExpression.set(rule.expression ?? "");
         this.expression.set(ruleExpressionResultDto);
         this.violationMessage = rule.violationMessage ?? "";
-        this.selectedViolationType = rule.violationType ?? ViolationType.Error;
+        this.selectedViolationType.set(rule.violationType ?? ViolationType.Error);
 
         this.root.set(rule.root ?? emptyRoot());
-        if (rule.workflowId && !this.hasCustomeRule())
+        if (rule.workflowId && !this.isWorkflowLevel())
           this.loadConfig(rule.workflowId);
         else this.loading.set(false);
       },
@@ -118,7 +118,7 @@ export class RuleEditComponent implements OnInit {
     this.config.set(null);
     this.expression.set(null);
     this.root.set(emptyRoot()); // conditions from another config may not fit
-    if (id && !this.hasCustomeRule()) this.loadConfig(id);
+    if (id && !this.isWorkflowLevel()) this.loadConfig(id);
   }
 
   private loadConfig(workflowId: string) {
@@ -160,7 +160,7 @@ export class RuleEditComponent implements OnInit {
       );
       return;
     }
-    if (!this.hasCustomeRule()) {
+    if (!this.isWorkflowLevel()) {
       this.service
         .previewExpressionByInput({
           id: this.ruleId,
@@ -168,7 +168,7 @@ export class RuleEditComponent implements OnInit {
           workflowId: this.workflowId()!,
           isActive: this.isActive(),
           violationMessage: this.violationMessage,
-          violationType: this.selectedViolationType,
+          violationType: this.selectedViolationType() ,
           root: this.root(),
         })
         .subscribe((e) => this.expression.set(e));
@@ -201,8 +201,9 @@ export class RuleEditComponent implements OnInit {
       workflowId: this.workflowId()!,
       isActive: this.isActive(),
       root: this.root(),
-      violationType: this.selectedViolationType,
+      violationType: this.selectedViolationType(),
       violationMessage: this.violationMessage,
+
     };
     const request = this.ruleId
       ? this.service.update(this.ruleId, input)

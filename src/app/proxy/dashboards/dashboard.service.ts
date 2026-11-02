@@ -15,7 +15,7 @@ export class DashboardService {
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/dashboard/activity-violations-counts',
-      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity, claimNumber: input.claimNumber },
     },
     { apiName: this.apiName,...config });
   
@@ -25,17 +25,7 @@ export class DashboardService {
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/dashboard/claim-number-violations-counts',
-      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
-    },
-    { apiName: this.apiName,...config });
-  
-
-  getRuleViolationsCountsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, RuleViolationsDto>({
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-      url: '/api/app/dashboard/rule-violations-counts',
-      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity, claimNumber: input.claimNumber },
     },
     { apiName: this.apiName,...config });
   
@@ -45,7 +35,17 @@ export class DashboardService {
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/dashboard/dashboard-details',
-      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity, claimNumber: input.claimNumber },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getRuleViolationsCountsByInput = (input: DashboardFilterDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RuleViolationsDto>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/dashboard/rule-violations-counts',
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity, claimNumber: input.claimNumber },
     },
     { apiName: this.apiName,...config });
   
@@ -55,7 +55,7 @@ export class DashboardService {
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/dashboard/workflow-violations-counts',
-      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity },
+      params: { workFlowName: input.workFlowName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity, claimNumber: input.claimNumber },
     },
     { apiName: this.apiName,...config });
 }

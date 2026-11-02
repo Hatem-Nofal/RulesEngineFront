@@ -5,6 +5,7 @@ import { RuleFormConfigService } from '@proxy/work-flows/rules/rule-builders';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { FormPageComponent } from 'src/app/shared/components/CVA-Form/form-page/form-page.component';
 
 @Component({
   selector: 'app-form-config-list-component',
@@ -19,7 +20,10 @@ export class FormConfigListComponent {
   loading = signal(false);
   first = signal(0);
   rows = 10;
-
+//  dynamicControls: any[] = [
+//     { name: "workFlowName", label: "work Flow Name", type: "text" },
+//     { name: "ruleName", label: "Rule Name", type: "text" },
+//   ];
   load(event: TableLazyLoadEvent = {}) {
     const first = event.first ?? 0;
     this.first.set(first);
@@ -49,4 +53,5 @@ export class FormConfigListComponent {
     this.first.set(0);
     this.service.delete(c.id).subscribe(() => this.load({ first: 0, rows: this.rows }));
   }
+    // sumbitFilter(event: any) {}
 }

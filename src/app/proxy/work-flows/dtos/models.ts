@@ -1,13 +1,15 @@
 import type { RejectionLevel } from '../../common/enums/rejection-level.enum';
+import type { ViolationType } from '../../common/enums/violation-type.enum';
 import type { PagedAndSortedResultRequestDto } from '@abp/ng.core';
 
 export interface SaveWorkflowDto {
   name?: string;
   ruleFormConfigId?: string | null;
   rejectionLevel?: RejectionLevel;
-  hasCustomeRule?: boolean;
+  isWorkflowLevel?: boolean;
   ruleExpression?: string;
   violationMessage?: string | null;
+  violationType?: ViolationType;
 }
 
 export interface WorkflowDto {
@@ -17,9 +19,17 @@ export interface WorkflowDto {
   ruleFormConfigName?: string | null;
   ruleCount?: number;
   rejectionLevel?: RejectionLevel;
-  hasCustomeRule?: boolean;
+  isWorkflowLevel?: boolean;
   ruleExpression?: string | null;
   violationMessage?: string | null;
+  violationType?: ViolationType;
+}
+
+export interface WorkflowForRuleDto {
+  isWorkflowLevel?: boolean;
+  ruleExpression?: string | null;
+  violationMessage?: string | null;
+  violationType?: ViolationType;
 }
 
 export interface WorkflowPagedAndFilterDto extends PagedAndSortedResultRequestDto {

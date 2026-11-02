@@ -39,6 +39,7 @@ export class FormPageComponent implements OnInit {
     options?: any[];
   }[] = [];
   @Output() formSubmit = new EventEmitter<any>();
+  @Output() formResets = new EventEmitter<any>();
   @Input() encounterNumber: string | null = null;
   form = this.fb.group({});
   constructor(private fb: FormBuilder) {}
@@ -52,9 +53,10 @@ export class FormPageComponent implements OnInit {
     });
     this.form.reset(resetValues);
     this.formSubmit.emit(null);
+    this.formResets.emit(null);
   }
 
-  submit() {    
+  submit() {
     if(this.form.valid){
       this.formSubmit.emit(this.form.value);
     } else {

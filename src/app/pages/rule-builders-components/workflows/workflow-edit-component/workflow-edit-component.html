@@ -26,7 +26,7 @@
           />
         </div>
 
-        @if (!hasCustomeRule()) {
+        @if (!isWorkflowLevel()) {
 
         <div class="rule-builder-field">
           <label for="workflow-config">Form configuration</label>
@@ -75,14 +75,14 @@
           <div class="form-check form-check-inline m-0">
             <input
               type="checkbox"
-              [ngModel]="hasCustomeRule() ?? false"
-              (ngModelChange)="hasCustomeRule.set($event)"
+              [ngModel]="isWorkflowLevel() ?? false"
+              (ngModelChange)="isWorkflowLevel.set($event)"
               class="form-check-input"
             />
-            <label class="form-check-label">Has Custome Rule</label>
+            <label class="form-check-label">Is Workflow Level</label>
           </div>
         </div>
-        @if (hasCustomeRule()) {
+        @if (isWorkflowLevel  ()) {
 
         <div class="rule-builder-field">
           <label for="workflow-name">Rule Expression</label>

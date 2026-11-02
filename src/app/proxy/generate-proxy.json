@@ -3022,7 +3022,7 @@
                   }
                 },
                 {
-                  "name": "GetViolationsDetails",
+                  "name": "GetDashboardDetails",
                   "parametersOnMethod": [
                     {
                       "name": "input",
@@ -3116,6 +3116,21 @@
                 {
                   "nameOnMethod": "input",
                   "name": "Activity",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ClaimNumber",
                   "jsonName": null,
                   "type": "System.String",
                   "typeSimple": "string",
@@ -3227,6 +3242,21 @@
                   "summary": null,
                   "description": null,
                   "displayName": null
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ClaimNumber",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
                 }
               ],
               "returnValue": {
@@ -3316,6 +3346,21 @@
                 {
                   "nameOnMethod": "input",
                   "name": "Activity",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ClaimNumber",
                   "jsonName": null,
                   "type": "System.String",
                   "typeSimple": "string",
@@ -3427,6 +3472,21 @@
                   "summary": null,
                   "description": null,
                   "displayName": null
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ClaimNumber",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
                 }
               ],
               "returnValue": {
@@ -3516,6 +3576,21 @@
                 {
                   "nameOnMethod": "input",
                   "name": "Activity",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ClaimNumber",
                   "jsonName": null,
                   "type": "System.String",
                   "typeSimple": "string",
@@ -3881,6 +3956,17 @@
                     "contentTypes": null,
                     "isRemoteStream": false
                   }
+                },
+                {
+                  "name": "GetWorkflowsForCreateRuleDropDownList",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListByGuid>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListByGuid]",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
                 }
               ]
             }
@@ -4221,6 +4307,38 @@
               "name": "GetWorkflowsDropDownList",
               "httpMethod": "GET",
               "url": "api/app/lookup/workflows-drop-down-list",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListByGuid>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListByGuid]",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Lookups",
+                  "roles": null
+                }
+              ],
+              "implementFrom": "RulesEngine.Lookups.ILookupAppService",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetWorkflowsForCreateRuleDropDownList": {
+              "uniqueName": "GetWorkflowsForCreateRuleDropDownList",
+              "name": "GetWorkflowsForCreateRuleDropDownList",
+              "httpMethod": "GET",
+              "url": "api/app/lookup/workflows-for-create-rule-drop-down-list",
               "supportedVersions": [],
               "parametersOnMethod": [],
               "parameters": [],
@@ -5953,6 +6071,29 @@
               "name": "IWorkFlowAppService",
               "methods": [
                 {
+                  "name": "GetWorkflowForRuleAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "workflowId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "RulesEngine.WorkFlows.Dtos.WorkflowForRuleDto",
+                    "typeSimple": "RulesEngine.WorkFlows.Dtos.WorkflowForRuleDto",
+                    "summary": null,
+                    "contentTypes": null,
+                    "isRemoteStream": false
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [
                     {
@@ -6474,6 +6615,66 @@
                 }
               ],
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>",
+              "summary": null,
+              "remarks": null,
+              "description": null,
+              "displayName": null
+            },
+            "GetWorkflowForRuleAsyncByWorkflowId": {
+              "uniqueName": "GetWorkflowForRuleAsyncByWorkflowId",
+              "name": "GetWorkflowForRuleAsync",
+              "httpMethod": "GET",
+              "url": "api/app/work-flow/workflow-for-rule/{workflowId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "workflowId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "workflowId",
+                  "name": "workflowId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": "",
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                }
+              ],
+              "returnValue": {
+                "type": "RulesEngine.WorkFlows.Dtos.WorkflowForRuleDto",
+                "typeSimple": "RulesEngine.WorkFlows.Dtos.WorkflowForRuleDto",
+                "summary": null,
+                "contentTypes": [
+                  "text/plain",
+                  "application/json",
+                  "text/json"
+                ],
+                "isRemoteStream": false
+              },
+              "allowAnonymous": false,
+              "authorizeDatas": [
+                {
+                  "policy": "RulesEngine.Workflows",
+                  "roles": null
+                }
+              ],
+              "implementFrom": "RulesEngine.WorkFlows.IWorkFlowAppService",
               "summary": null,
               "remarks": null,
               "description": null,
@@ -12358,6 +12559,99 @@
       "description": null,
       "displayName": null
     },
+    "RulesEngine.Dashboards.Dtos.DashboardDetailsDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "TotalViolationCount",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "TotalWorkflowsCount",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "TotalRulesCount",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "TotalClaimNumberViolatedCount",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "TotalWorkFlowViolatedCount",
+          "jsonName": null,
+          "type": "System.Int64",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
     "RulesEngine.Dashboards.Dtos.DashboardFilterDto": {
       "baseType": null,
       "isEnum": false,
@@ -12415,6 +12709,22 @@
         },
         {
           "name": "Activity",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ClaimNumber",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
@@ -12505,99 +12815,6 @@
         },
         {
           "name": "Total",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        }
-      ],
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
-    "RulesEngine.Dashboards.Dtos.DashboardDetailsDto": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "TotalViolationCount",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "TotalWorkflowsCount",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "TotalRulesCount",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "TotalClaimNumberViolatedCount",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "TotalWorkFlowViolatedCount",
           "jsonName": null,
           "type": "System.Int64",
           "typeSimple": "number",
@@ -14069,7 +14286,7 @@
           "displayName": null
         },
         {
-          "name": "WorkflowHasCustomeRule",
+          "name": "WorkflowIsWorkflowLevel",
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",
@@ -14303,7 +14520,7 @@
           "displayName": null
         },
         {
-          "name": "HasCustomeRule",
+          "name": "IsWorkflowLevel",
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",
@@ -14346,6 +14563,22 @@
           "maximum": null,
           "regex": null,
           "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationType",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.ViolationType",
+          "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
           "summary": null,
           "description": null,
           "displayName": null
@@ -14460,7 +14693,7 @@
           "displayName": null
         },
         {
-          "name": "HasCustomeRule",
+          "name": "IsWorkflowLevel",
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",
@@ -14503,6 +14736,99 @@
           "maximum": null,
           "regex": null,
           "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationType",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.ViolationType",
+          "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "RulesEngine.WorkFlows.Dtos.WorkflowForRuleDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "IsWorkflowLevel",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "RuleExpression",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationMessage",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": true,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "ViolationType",
+          "jsonName": null,
+          "type": "RulesEngine.Common.Enums.ViolationType",
+          "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
           "summary": null,
           "description": null,
           "displayName": null

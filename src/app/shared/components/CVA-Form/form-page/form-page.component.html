@@ -1,7 +1,6 @@
 <form [formGroup]="form" class="form-section" (ngSubmit)="submit()">
   <div class="row gap-4 w-100">
     @for (control of dynamicControls; track $index; let i = $index) {
-
       <div class="col">
         @switch (control.type) {
           @case ('text') {
@@ -13,9 +12,11 @@
           @case ('month') {
             <app-custom-input appTrimInputs [formControlName]="control.name" [label]="control.label" [type]="control.type"></app-custom-input>
           }
+          @case ('date') {
+            <app-custom-input appTrimInputs [formControlName]="control.name" [label]="control.label" [type]="control.type"></app-custom-input>
+          }
           @case ('checkbox') {
             <app-custom-checkbox [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-custom-checkbox>
-    
           }
           @case ('dropdown') {
             <app-custom-dropdown [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-custom-dropdown>
@@ -26,11 +27,11 @@
           @case ('radio') {
             <app-custom-radio [formControlName]="control.name" [label]="control.label" [options]="control.options"></app-custom-radio>
           }
-        } 
+        }
         <app-forms-error [control]="this.form.controls[control.name]" ></app-forms-error>
-      
+
       </div>
-   
+
     }
 
   </div>
@@ -39,6 +40,6 @@
     <button type="button" class=" btn form-btn"  style="background-color: #bb1b10;  color: white;"(click)="formReset()">Reset</button>
   </div>
 
- 
+
 </form>
 

@@ -143,7 +143,10 @@ body.dark-theme {
 .invalid-feedback {
   display: none !important;
 }
-
+.filter-inputs{
+      padding: 16px;
+    margin-bottom: 20px;
+}
 html[dir='rtl'] [type='tel'],
 html[dir='rtl'] [type='url'],
 html[dir='rtl'] [type='email'],

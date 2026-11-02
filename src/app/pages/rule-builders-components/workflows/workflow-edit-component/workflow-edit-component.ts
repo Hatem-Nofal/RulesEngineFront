@@ -41,7 +41,7 @@ export class WorkflowEditComponent implements OnInit {
   violationMessage = signal<string | null>("");
 
   configs = signal<LookupDto[]>([]);
-  hasCustomeRule = signal<boolean>(false);
+  isWorkflowLevel = signal<boolean>(false);
   rejectionLevels = rejectionLevelOptions;
   ruleCount = signal(0);
   saving = signal(false);
@@ -68,7 +68,7 @@ export class WorkflowEditComponent implements OnInit {
         this.rejectionLevel =
           workflow.rejectionLevel ?? RejectionLevel.Activity;
         this.ruleCount.set(workflow.ruleCount ?? 0);
-        this.hasCustomeRule.set(workflow.hasCustomeRule ?? false);
+        this.isWorkflowLevel.set(workflow.isWorkflowLevel ?? false);
         this.ruleExpression = workflow.ruleExpression;
         this.violationMessage.set(workflow.violationMessage ?? "");
 
@@ -88,7 +88,7 @@ export class WorkflowEditComponent implements OnInit {
     const dto: SaveWorkflowDto = {
       name: this.name.trim(),
       rejectionLevel: this.rejectionLevel,
-      hasCustomeRule: this.hasCustomeRule(),
+      isWorkflowLevel: this.isWorkflowLevel(),
       ruleExpression: this.ruleExpression ?? "",
       violationMessage:this.violationMessage()??"",
       ruleFormConfigId:this.configId

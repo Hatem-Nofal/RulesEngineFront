@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -17,7 +17,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     },
   ],
 })
-export class CustomInputComponent implements ControlValueAccessor {
+export class CustomInputComponent implements ControlValueAccessor{
+
   @Input({ required: true }) label: string = '';
   @Input({ required: true }) type: string = 'text';
   @Input() min: string = '';

@@ -37,15 +37,16 @@
           <label for="rule-workflow"
             >Violation Type <span class="text-danger ms-1 fs-5">*</span></label
           >
-<p-select
-  [options]="violationTypes()"
-  optionLabel="name"
-  optionValue="id"
-  [ngModel]="selectedViolationType"
-  (ngModelChange)="selectedViolationType = $event"
-  placeholder="Select Violation Type"
-  [showClear]="true"
-/>
+          <p-select
+            [options]="violationTypes()"
+            optionLabel="name"
+            optionValue="id"
+            [ngModel]="selectedViolationType()"
+            (onChange)="selectedViolationType.set($event.value)"
+            placeholder="Select Violation Type"
+            [showClear]="true"
+            [appendTo]="'body'"
+          />
         </div>
 
         <div class="rule-builder-field">
@@ -74,7 +75,7 @@
       @if (loading()) {
         <p class="text-muted mt-4" role="status">Loading rule configuration…</p>
       }
-      @if (ruleExpression() && hasCustomeRule()) {
+      @if (ruleExpression() && isWorkflowLevel()) {
         <section class="rule-expression mt-4" aria-label="Rule expression preview">
           <pre>{{ ruleExpression() }}</pre>
         </section>
@@ -121,11 +122,11 @@
             <pre>{{ result.expression }}</pre>
           </section>
         }
-      } @else if (workflowId() && !loading() && !hasCustomeRule()) {
+      } @else if (workflowId() && !loading() && !isWorkflowLevel()) {
         <div class="alert alert-warning mt-4" role="status">
           No active form configuration is assigned to this workflow.
         </div>
-      } @else if (!loading() && !hasCustomeRule()) {
+      } @else if (!loading() && !isWorkflowLevel()) {
         <div class="rule-builder-empty mt-3">
           Select a workflow to load its form configuration and build rule conditions.
         </div>

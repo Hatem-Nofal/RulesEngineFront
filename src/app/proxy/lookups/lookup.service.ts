@@ -113,4 +113,13 @@ export class LookupService {
       url: '/api/app/lookup/workflows-drop-down-list',
     },
     { apiName: this.apiName,...config });
+  
+
+  getWorkflowsForCreateRuleDropDownList = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SelectedDropDownListByGuid[]>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/lookup/workflows-for-create-rule-drop-down-list',
+    },
+    { apiName: this.apiName,...config });
 }
