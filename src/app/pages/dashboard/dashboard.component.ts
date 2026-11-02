@@ -12,9 +12,11 @@ import {
   inject,
   signal,
 } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { SelectedDropDownListByGuid } from "@proxy/common/dtos";
 import { LookupService } from "@proxy/lookups";
+import { FormPageComponent } from "src/app/shared/components/CVA-Form/form-page/form-page.component";
 import type { Chart as ChartInstance } from "chart.js";
 import type { Observable } from "rxjs";
 import { DashboardService } from "src/app/proxy/dashboards/dashboard.service";
@@ -53,7 +55,8 @@ interface ViolationChart {
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.scss",
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormPageComponent],
 })
 export class DashboardComponent implements AfterViewInit, OnDestroy, OnInit {
   // @ViewChild('summaryChart') private summaryCanvas!: ElementRef<HTMLCanvasElement>;
@@ -78,7 +81,16 @@ export class DashboardComponent implements AfterViewInit, OnDestroy, OnInit {
   workflows = signal<SelectedDropDownListByGuid[]>([]);
 
   readonly violationCharts: ViolationChart[] = [
+       // { key: 'rule', title: 'Rule violations', icon: 'bi-journal-check', entries: [], loading: true, error: '' },
     {
+      key: "workflow",
+      title: "Workflow violations",
+      icon: "bi-diagram-3",
+      type: "bar",
+      entries: [],
+      loading: true,
+      error: "",
+    }, {
       key: "activity",
       title: "Activity violations",
       icon: "bi-activity",
@@ -96,16 +108,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy, OnInit {
       loading: true,
       error: "",
     },
-    // { key: 'rule', title: 'Rule violations', icon: 'bi-journal-check', entries: [], loading: true, error: '' },
-    {
-      key: "workflow",
-      title: "Workflow violations",
-      icon: "bi-diagram-3",
-      type: "bar",
-      entries: [],
-      loading: true,
-      error: "",
-    },
+
   ];
   dynamicControls: any[] = [
     {

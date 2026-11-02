@@ -1,0 +1,22 @@
+import type { RulesEngineExecutionLogFiltersDto, RulesEngineExecutionLogListDto } from './dtos/models';
+import { RestService, Rest } from '@abp/ng.core';
+import type { PagedResultDto } from '@abp/ng.core';
+import { Injectable, inject } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class RulesEngineExecutionLogService {
+  private restService = inject(RestService);
+  apiName = 'Default';
+  
+
+  getRulesEngineExecutionLogListByInput = (input: RulesEngineExecutionLogFiltersDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, PagedResultDto<RulesEngineExecutionLogListDto>>({
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      url: '/api/app/rules-engine-execution-log/rules-engine-execution-log-list',
+      params: { workFlowName: input.workFlowName, ruleName: input.ruleName, fromDate: input.fromDate, toDate: input.toDate, activity: input.activity, claimNumber: input.claimNumber, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+    },
+    { apiName: this.apiName,...config });
+}

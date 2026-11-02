@@ -1,0 +1,164 @@
+<main class="execution-logs-page">
+  <section class="execution-logs-card">
+    <header class="execution-logs-card__header">
+      <div>
+        <h1 class="execution-logs-card__title">Rules engine execution logs</h1>
+        <p class="execution-logs-card__description">Review rule execution results and violations.</p>
+      </div>
+    </header>
+
+    <form class="execution-log-filters" (ngSubmit)="applyFilters()">
+      <div class="filter-field">
+        <label for="log-workflow">Workflow</label>
+        <p-select
+          inputId="log-workflow"
+          name="workFlowName"
+          [options]="workflows()"
+          optionLabel="name"
+          optionValue="name"
+          [(ngModel)]="filters.workFlowName"
+          [showClear]="true"
+          placeholder="All workflows"
+          styleClass="w-100"
+        />
+      </div>
+      <div class="filter-field">
+        <label for="log-from-date">From date</label>
+        <input
+          pInputText
+          id="log-from-date"
+          name="fromDate"
+          type="date"
+          [(ngModel)]="filters.fromDate"
+        />
+      </div>
+      <div class="filter-field">
+        <label for="log-to-date">To date</label>
+        <input
+          pInputText
+          id="log-to-date"
+          name="toDate"
+          type="date"
+          [(ngModel)]="filters.toDate"
+        />
+      </div>
+      <div class="filter-field">
+        <label for="log-activity">Activity</label>
+        <input
+          pInputText
+          id="log-activity"
+          name="activity"
+          type="text"
+          [(ngModel)]="filters.activity"
+          placeholder="Filter by activity"
+        />
+      </div>
+      <div class="filter-field">
+        <label for="log-claim-number">Claim number</label>
+        <input
+          pInputText
+          id="log-claim-number"
+          name="claimNumber"
+          type="text"
+          [(ngModel)]="filters.claimNumber"
+          placeholder="Filter by claim number"
+        />
+      </div>
+        <div class="filter-field">
+        <label for="log-claim-number">Rule Name</label>
+        <input
+          pInputText
+          id="log-claim-number"
+          name="ruleName"
+          type="text"
+          [(ngModel)]="filters.ruleName"
+          placeholder="Filter by rule name"
+        />
+      </div>
+      <div class="filter-actions">
+        <button pButton type="submit" icon="pi pi-search" label="Search"></button>
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          icon="pi pi-filter-slash"
+          label="Reset"
+          (click)="resetFilters()"
+        ></button>
+      </div>
+    </form>
+
+    @if (workflowErrorMessage()) {
+      <div class="alert alert-warning" role="alert">{{ workflowErrorMessage() }}</div>
+    }
+    @if (errorMessage()) {
+      <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <p-table
+      #table
+      [value]="logs()"
+      [lazy]="true"
+      [paginator]="true"
+      [rows]="rows"
+      [first]="first()"
+      [totalRecords]="totalRecords()"
+      [loading]="loading()"
+      [rowHover]="true"
+      [stripedRows]="true"
+      [scrollable]="true"
+      (onLazyLoad)="load($event)"
+      [rowsPerPageOptions]="[10, 25, 50, 100]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} execution logs"
+      styleClass="execution-log-table"
+      aria-label="Rules engine execution logs"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+
+          <th pSortableColumn="workFlowName">Workflow <p-sortIcon field="workFlowName" /></th>
+          <th pSortableColumn="rule">Rule <p-sortIcon field="rule" /></th>
+          <th>Activity</th>
+          <th>Claim number</th>
+          <th pSortableColumn="errorType">Error type <p-sortIcon field="errorType" /></th>
+          <th>Error message</th>
+          <th>Expression</th>
+            <th pSortableColumn="creationTime">
+            Created <p-sortIcon field="creationTime" />
+          </th>
+          <th pSortableColumn="isViolated">Violated <p-sortIcon field="isViolated" /></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-log>
+        <tr>
+          <td>{{ log.workFlowName || '—' }}</td>
+          <td>{{ log.rule || '—' }}</td>
+          <td>{{ log.activity || '—' }}</td>
+          <td>{{ log.claimNumber || '—' }}</td>
+          <td>{{ log.errorType || '—' }}</td>
+          <td class="log-long-value" [title]="log.errorMessage || ''">
+            {{ log.errorMessage || '—' }}
+          </td>
+          <td class="log-expression" [title]="log.expression || ''">
+            <code>{{ log.expression || '—' }}</code>
+          </td>
+                    <td class="log-date">{{ log.creationTime | date: 'short' }}</td>
+
+          <td>
+            <p-tag
+              [value]="log.isViolated ? 'Yes' : 'No'"
+              [severity]="log.isViolated ? 'danger' : 'success'"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="empty-logs">No execution logs found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+</main>

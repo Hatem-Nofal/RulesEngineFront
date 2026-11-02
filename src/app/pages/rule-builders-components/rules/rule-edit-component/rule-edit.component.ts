@@ -121,6 +121,18 @@ export class RuleEditComponent implements OnInit {
     if (id && !this.isWorkflowLevel()) this.loadConfig(id);
   }
 
+  workflowName(): string {
+    const workflowId = this.workflowId();
+    return this.workflows().find((workflow) => workflow.id === workflowId)?.name
+      ?? workflowId
+      ?? "Not specified";
+  }
+
+  violationTypeName(): string {
+    return this.violationTypes().find((type) => type.id === this.selectedViolationType())?.name
+      ?? "Not specified";
+  }
+
   private loadConfig(workflowId: string) {
     this.loading.set(true);
     this.ruleFormConfigService.getByWorkflow(workflowId).subscribe({

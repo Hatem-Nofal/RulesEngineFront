@@ -9,27 +9,26 @@
       <div class="rule-builder-form rule-editor-fields">
         <div class="rule-builder-field">
           <label for="rule-workflow">Workflow <span class="text-danger ms-1 fs-5">*</span></label>
-          <p-select
-            inputId="rule-workflow"
-            name="ruleWorkflow"
-            [options]="workflows()"
-            optionLabel="name"
-            optionValue="id"
-            [ngModel]="workflowId()"
-            (ngModelChange)="onWorkflowChange($event)"
-            [disabled]="!!ruleId"
-            placeholder="Select a workflow"
-          />
+          @if (isWorkflowLevel()) {
+            <span class="form-control rule-readonly-value">{{ workflowName() }}</span>
+          } @else {
+            <p-select
+              inputId="rule-workflow"
+              name="ruleWorkflow"
+              [options]="workflows()"
+              optionLabel="name"
+              optionValue="id"
+              [ngModel]="workflowId()"
+              (ngModelChange)="onWorkflowChange($event)"
+              [disabled]="!!ruleId"
+              placeholder="Select a workflow"
+            />
+          }
         </div>
-        @if (ruleId) {
+        @if (ruleId || isWorkflowLevel()) {
           <div class="rule-builder-field">
             <label for="rule-name">Name</label>
-
-            <span
-              class="form-control d-flex align-items-center justify-content-between"
-              style="background-color: #e9eef5; border-color: #ced8e6; color: #52647a"
-              >{{ name() }}</span
-            >
+            <span class="form-control rule-readonly-value">{{ name() || 'Not specified' }}</span>
           </div>
         }
 
@@ -37,47 +36,66 @@
           <label for="rule-workflow"
             >Violation Type <span class="text-danger ms-1 fs-5">*</span></label
           >
-          <p-select
-            [options]="violationTypes()"
-            optionLabel="name"
-            optionValue="id"
-            [ngModel]="selectedViolationType()"
-            (onChange)="selectedViolationType.set($event.value)"
-            placeholder="Select Violation Type"
-            [appendTo]="'body'"
-          />
+          @if (isWorkflowLevel()) {
+            <span class="form-control rule-readonly-value">{{ violationTypeName() }}</span>
+          } @else {
+            <p-select
+              [options]="violationTypes()"
+              optionLabel="name"
+              optionValue="id"
+              [ngModel]="selectedViolationType()"
+              (onChange)="selectedViolationType.set($event.value)"
+              placeholder="Select Violation Type"
+              [appendTo]="'body'"
+            />
+          }
         </div>
 
         <div class="rule-builder-field">
           <label for="violation_Message">Violation Message</label>
-          <input
-            pInputText
-            id="violation_Message"
-            name="violationMessage"
-            [(ngModel)]="violationMessage"
-            maxlength="200"
-            placeholder="Violation Message"
-            autocomplete="off"
-          />
+          @if (isWorkflowLevel()) {
+            <span class="form-control rule-readonly-value">{{
+              violationMessage || 'Not specified'
+            }}</span>
+          } @else {
+            <input
+              pInputText
+              id="violation_Message"
+              name="violationMessage"
+              [(ngModel)]="violationMessage"
+              maxlength="200"
+              placeholder="Violation Message"
+              autocomplete="off"
+            />
+          }
         </div>
         <div class="rule-editor-active">
-          <p-checkbox
-            inputId="rule-active"
-            name="ruleActive"
-            [ngModel]="isActive()"
-            [binary]="true"
-          />
-          <label for="rule-active">Active</label>
+          @if (isWorkflowLevel()) {
+            <p-checkbox
+              inputId="rule-active"
+              name="ruleActive"
+              [ngModel]="isActive()"
+              [binary]="true"
+              [disabled]="true"
+            />
+            <label for="rule-active">Active</label>
+          } @else {
+            <p-checkbox
+              inputId="rule-active"
+              name="ruleActive"
+              [ngModel]="isActive()"
+              [binary]="true"
+            />
+            <label for="rule-active">Active</label>
+          }
         </div>
       </div>
 
       @if (loading()) {
         <p class="text-muted mt-4" role="status">Loading rule configuration…</p>
       }
-      @if (ruleExpression() && isWorkflowLevel()) {
-        <section class="rule-expression mt-4" aria-label="Rule expression preview">
-          <pre>{{ ruleExpression() }}</pre>
-        </section>
+      @if (isWorkflowLevel()) {
+        <span class="form-control rule-readonly-value">{{ ruleExpression() }}</span>
       }
       @if (config(); as cfg) {
         <section class="rule-editor-builder" aria-label="Rule conditions">

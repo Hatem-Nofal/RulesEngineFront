@@ -1,0 +1,110 @@
+:root {
+  --app-brand: #274da5;
+  --app-brand-hover: #1b3c89;
+  --app-brand-soft: #eef2fc;
+  --app-border: #e6eaf2;
+  --app-text: #344054;
+  --app-muted: #687386;
+}
+
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-danger):not(.p-button-success):not(.p-button-warn):not(.p-button-help):not(.p-button-info):not(.p-button-contrast) {
+  background: var(--app-brand);
+  border-color: var(--app-brand);
+  color: #fff;
+}
+
+.p-button:not(:disabled):hover:not(.p-button-text):not(.p-button-outlined):not(.p-button-danger):not(.p-button-success):not(.p-button-warn):not(.p-button-help):not(.p-button-info):not(.p-button-contrast) {
+  background: var(--app-brand-hover);
+  border-color: var(--app-brand-hover);
+}
+
+.p-button.p-button-outlined:not(.p-button-danger):not(.p-button-success):not(.p-button-warn):not(.p-button-help):not(.p-button-info):not(.p-button-contrast),
+.p-button.p-button-text:not(.p-button-danger):not(.p-button-success):not(.p-button-warn):not(.p-button-help):not(.p-button-info):not(.p-button-contrast) {
+  color: var(--app-brand);
+}
+
+.p-button.p-button-outlined:not(:disabled):hover:not(.p-button-danger):not(.p-button-success):not(.p-button-warn):not(.p-button-help):not(.p-button-info):not(.p-button-contrast),
+.p-button.p-button-text:not(:disabled):hover:not(.p-button-danger):not(.p-button-success):not(.p-button-warn):not(.p-button-help):not(.p-button-info):not(.p-button-contrast) {
+  background: var(--app-brand-soft);
+  border-color: var(--app-brand);
+  color: var(--app-brand-hover);
+}
+
+.btn-primary,
+.btn-outline-primary {
+  --bs-btn-bg: var(--app-brand);
+  --bs-btn-border-color: var(--app-brand);
+  --bs-btn-hover-bg: var(--app-brand-hover);
+  --bs-btn-hover-border-color: var(--app-brand-hover);
+  --bs-btn-active-bg: var(--app-brand-hover);
+  --bs-btn-active-border-color: var(--app-brand-hover);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--app-brand);
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: var(--app-brand);
+}
+
+.p-datatable,
+.table {
+  color: var(--app-text);
+}
+
+.p-datatable {
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  box-shadow: 0 5px 16px rgb(35 57 93 / 7%);
+  overflow: hidden;
+}
+
+.p-datatable .p-datatable-table-container {
+  overflow-x: auto;
+}
+
+.p-datatable .p-datatable-thead > tr > th,
+.table thead th {
+  background: #f3f6fc;
+  border-color: var(--app-border);
+  color: var(--app-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.9rem 1rem;
+  vertical-align: middle;
+}
+
+.p-datatable .p-datatable-tbody > tr > td,
+.table tbody > tr > td {
+  border-color: var(--app-border);
+  color: var(--app-text);
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover,
+.table tbody > tr:hover {
+  background: #f7f9fd;
+}
+
+.p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background: #fbfcfe;
+}
+
+.p-datatable .p-datatable-tbody > tr:nth-child(even):hover {
+  background: #f3f6fc;
+}
+
+.p-datatable .p-paginator {
+  background: #fff;
+  border-top: 1px solid var(--app-border);
+  color: var(--app-muted);
+  padding: 0.65rem 0.75rem;
+}
+
+.p-datatable .p-paginator .p-paginator-page.p-paginator-page-selected {
+  background: var(--app-brand-soft);
+  color: var(--app-brand);
+}

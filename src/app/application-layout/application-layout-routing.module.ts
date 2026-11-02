@@ -2,7 +2,6 @@ import { authGuard, permissionGuard } from '@abp/ng.core';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { loginGuard } from 'src/app/shared/guards/login/login.guard';
-import { RulesPermissions, WorkflowsPermissions } from 'src/app/shared/models/appPermissions';
 
 export const routes: Routes = [
   /* *** *** *** *project Modules* *** *** *** */
@@ -11,6 +10,15 @@ export const routes: Routes = [
     canActivate: [authGuard, loginGuard],
     loadChildren: () => import('src/app/pages/home/home.module').then(m => m.HomeModule),
     data: { breadcrumb: 'Home' },
+  },
+  {
+    path: 'dashboard',
+    canActivate: [authGuard, loginGuard],
+    loadComponent: () =>
+      import('../pages/dashboard/dashboard.component').then(
+        (module) => module.DashboardComponent,
+      ),
+    data: { breadcrumb: 'Dashboard' },
   },
 
   /* *** *** *** *abp Modules* *** *** *** */
@@ -56,6 +64,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import('../pages/rule-builders-components/form-configs/form-configs.routes').then(
         m => m.FORM_CONFIGS_ROUTES,
+      ),
+  },
+  {
+    path: 'execution-logs',
+    canActivate: [authGuard, loginGuard],
+    loadChildren: () =>
+      import('../pages/execution-logs/execution-logs.routes').then(
+        (module) => module.EXECUTION_LOGS_ROUTES,
       ),
   },
   {

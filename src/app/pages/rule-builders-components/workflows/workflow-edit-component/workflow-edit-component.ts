@@ -40,7 +40,7 @@ export class WorkflowEditComponent implements OnInit {
   name = "";
   configId: string | null = null;
   rejectionLevel = RejectionLevel.Activity;
-  violationMessage = signal<string | null>("");
+  violationMessage ?: string | null = null;
 
   configs = signal<LookupDto[]>([]);
   isWorkflowLevel = signal<boolean>(false);
@@ -81,7 +81,7 @@ export class WorkflowEditComponent implements OnInit {
         this.ruleCount.set(workflow.ruleCount ?? 0);
         this.isWorkflowLevel.set(workflow.isWorkflowLevel ?? false);
         this.ruleExpression = workflow.ruleExpression;
-        this.violationMessage.set(workflow.violationMessage ?? "");
+        this.violationMessage = workflow.violationMessage ?? "";
         this.selectedViolationType.set(workflow.violationType ?? ViolationType.Error);
 
         this.loading.set(false);
@@ -102,7 +102,7 @@ export class WorkflowEditComponent implements OnInit {
       rejectionLevel: this.rejectionLevel,
       isWorkflowLevel: this.isWorkflowLevel(),
       ruleExpression: this.ruleExpression ?? "",
-      violationMessage:this.violationMessage()??"",
+      violationMessage:this.violationMessage??"",
       ruleFormConfigId:this.configId,
       violationType:this.selectedViolationType(),
     };

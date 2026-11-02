@@ -14,6 +14,27 @@
   min-height: 2.75rem;
 }
 
+.rule-readonly-value {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  background-color: #e9eef5;
+  border-color: #ced8e6;
+  color: #52647a;
+  cursor: default;
+}
+
+.rule-readonly-value--compact {
+  min-width: 5rem;
+}
+
+.rule-readonly-value--multiline {
+  align-items: flex-start;
+  min-height: 5rem;
+  padding: 0.75rem;
+  white-space: pre-wrap;
+}
+
 .rule-editor-builder {
   margin-top: 2rem;
   padding-top: 0.5rem;
@@ -21,8 +42,11 @@
 
 .rule-expression {
   overflow: hidden;
-  border: 1px solid var(--surface-border, #e4e7ec);
-  border-radius: 0.625rem;
+  margin-top: 1rem;
+}
+
+.rule-expression__field {
+  width: 100%;
 }
 
 .rule-expression__title {

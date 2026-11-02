@@ -1,0 +1,98 @@
+.execution-logs-page {
+  margin: 1.5rem auto;
+  max-width: 1600px;
+  padding: 0 1rem;
+}
+
+.execution-logs-card {
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--surface-border, #e6eaf2);
+  border-radius: 14px;
+  box-shadow: 0 5px 16px rgb(35 57 93 / 7%);
+  padding: 1.25rem;
+}
+
+.execution-logs-card__header {
+  margin-bottom: 1.25rem;
+}
+
+.execution-logs-card__title {
+  color: #274da5;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.execution-logs-card__description {
+  color: #687386;
+  margin: 0.35rem 0 0;
+}
+
+.execution-log-filters {
+  align-items: end;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-bottom: 1.25rem;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.filter-field label {
+  color: #344054;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-field input {
+  width: 100%;
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.execution-log-table {
+  min-width: 1200px;
+}
+
+.log-date {
+  min-width: 140px;
+  white-space: nowrap;
+}
+
+.log-long-value,
+.log-expression {
+  max-width: 280px;
+  min-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log-expression code {
+  color: #475467;
+}
+
+.empty-logs {
+  color: #687386;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+@media (max-width: 576px) {
+  .execution-logs-card {
+    padding: 0.9rem;
+  }
+
+  .filter-actions {
+    grid-column: 1 / -1;
+  }
+}

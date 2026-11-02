@@ -62,6 +62,11 @@ export class SidebarComponent implements OnInit {
         icon: 'bi bi-file-earmark-code me-1',
         items: [
           {
+            label: 'Dashboard',
+            icon: 'bi bi-bar-chart-line me-1',
+            routerLink: '/dashboard',
+          },
+          {
             label: 'Rules',
             icon: 'bi bi-box me-1',
             routerLink: '/rules',
@@ -82,6 +87,11 @@ export class SidebarComponent implements OnInit {
             routerLink: '/rules/rules-bulk',
 
           },
+           {
+             label: 'ExecutionLogs',
+             icon: 'bi bi-journal-text me-1',
+             routerLink: '/execution-logs',
+           },
         ],
        },
 
