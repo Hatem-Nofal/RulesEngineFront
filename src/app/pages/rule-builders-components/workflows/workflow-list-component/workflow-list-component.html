@@ -25,12 +25,13 @@
         [loading]="loading()"
         [rowHover]="true"
         [stripedRows]="true"
+        [scrollable]="true"
         (onLazyLoad)="load($event)"
-        styleClass="rule-builder-table"
+        styleClass="app-data-table rule-builder-table"
         aria-label="Workflows"
         [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[5,10, 25, 50,100]"
-        currentPageReportTemplate="Total : {totalRecords}  "
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} workflows"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -88,7 +89,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="4" class="rule-builder-empty">No workflows found.</td>
+            <td colspan="6" class="rule-builder-empty">No workflows found.</td>
           </tr>
         </ng-template>
       </p-table>
