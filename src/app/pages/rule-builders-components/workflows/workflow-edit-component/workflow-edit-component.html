@@ -37,7 +37,7 @@
             optionLabel="name"
             optionValue="id"
             [ngModel]="configId"
-            (ngModelChange)="configId = $event"
+            (ngModelChange)="onConfigChange($event)"
             [showClear]="true"
             placeholder="No configuration"
             [loading]="loading()"
@@ -119,6 +119,25 @@
         {{ ruleCount() }} rule(s) use this workflow. Changing its form configuration may make
         existing rule fields unavailable.
       </div>
+      }
+
+      @if (!isWorkflowLevel() && config(); as cfg) {
+      <section class="rule-editor-builder" aria-label="Workflow condition configuration">
+        <div class="rule-editor-builder__heading">
+          <div>
+            <h2 class="rule-builder-section">Condition configuration</h2>
+            <p class="text-muted mb-0">Form: {{ cfg.name }}</p>
+            <small class="text-muted">Set up the conditions here. Rule values are entered when creating a rule.</small>
+          </div>
+        </div>
+        <app-rule-node
+          [(node)]="root"
+          [fields]="cfg.fields ?? []"
+          [allowGroups]="cfg.allowNestedGroups ?? false"
+          [isRoot]="true"
+          mode="configure"
+        />
+      </section>
       }
 
       <div class="rule-builder-actions">

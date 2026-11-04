@@ -150,11 +150,10 @@
                   type="checkbox"
                   [id]="'field-' + (s.id || i) + '-default'"
                   [ngModel]="s.isDefault"
-                  [disabled]="!(s.isDefault ?? false) && defaultCount() >= 2"
                   (ngModelChange)="setDefault(i, $event)"
                 />
                 <label class="form-check-label" [for]="'field-' + (s.id || i) + '-default'"
-                  >Default field</label
+                  >Rule Sample field</label
                 >
               </div>
               <span class="small text-muted">(none checked = all)</span>
@@ -171,9 +170,7 @@
     <button type="button" class="btn btn-primary mt-3" [disabled]="!canSave()" (click)="save()">
       Save
     </button>
-    @if (defaultCount() !== 2) {
-    <small class="d-block text-danger mt-1">Select exactly two default fields to save.</small>
-    }
+
   </div>
 </div>
 

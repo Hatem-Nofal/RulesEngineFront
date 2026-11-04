@@ -4,6 +4,7 @@
     <div class="bar">
       <span class="group-title">{{ isRoot() ? 'Conditions' : 'Group' }}</span>
       <div class="group-actions">
+        @if (isConfiguring()) {
         <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCondition()">
           + Condition
         </button>
@@ -21,6 +22,7 @@
           ✕
         </button>
         }
+        }
       </div>
     </div>
 
@@ -33,6 +35,7 @@
         styleClass="rule-node-select rule-node-select--join"
         [ngModel]="c.logicalJoinOperator ?? 1"
         (ngModelChange)="setJoin(i, $event)"
+        [disabled]="!isConfiguring()"
         aria-label="Condition join operator"
       />
     </div>
@@ -41,6 +44,7 @@
       <app-rule-node
         [node]="c"
         [fields]="fields()"
+        [mode]="mode()"
         [allowGroups]="allowGroups()"
         [isRoot]="false"
         [keyTotals]="keyTotalsInRule()"
@@ -67,13 +71,14 @@
       styleClass="rule-node-select"
       [ngModel]="n.fieldKey"
       (ngModelChange)="onField($event)"
+      [disabled]="!isConfiguring()"
       aria-label="Rule field"
     >
       <!-- only the shown value is numbered; the list keeps the plain field labels -->
       <!-- pTemplate, not `#selectedItem`: that would hide the component's own selectedItem() used further down -->
       <ng-template pTemplate="selectedItem" let-item>{{ fieldLabel() }}</ng-template>
     </p-select>
-    @if (usesActivityType()) {
+    @if (usesActivityType() && isValueEntry()) {
     <p-select
       [options]="activityTypes()"
       optionLabel="name"
@@ -98,6 +103,7 @@
       aria-label="Rule operator"
     />
 
+    @if (isValueEntry()) {
     @if (f.dataType === 'List' && collectionField()) { @if (usesAutoComplete()) {
     <!-- SEARCHED_FIELDS: searched on the server while typing, the node stores the code -->
     @if (autoCompleteMultiple()) {
@@ -267,11 +273,13 @@
       [ngModel]="n.value"
       (ngModelChange)="patch({ value: $event })"
     />
-    } } } } @else {
+    } } } } } @else {
     <span class="text-warning">Field no longer available in this workflow's form.</span>
     }
 
+    @if (isConfiguring()) {
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove.emit()">✕</button>
+    }
   </div>
   }
 </ng-container>

@@ -130,6 +130,7 @@ export class RuleNodeComponent {
   private readonly loadingLookupService = inject(LoadingLookupService);
   node = model.required<RuleNodeDto>();
   fields = input.required<RuleFormFieldDto[]>();
+  mode = input<"configure" | "values">("values");
   allowGroups = input(true);
   isRoot = input(false);
   /** Set by the parent group (the root works it out itself): how often each field key is used in the whole rule. */
@@ -146,6 +147,8 @@ export class RuleNodeComponent {
   field = computed(() =>
     this.fields().find((f) => f.key === this.node().fieldKey)
   );
+  isConfiguring = computed(() => this.mode() === "configure");
+  isValueEntry = computed(() => this.mode() === "values");
 
   // ---- the same field used more than once: "Primary Activity", "Secondary Activity" ... ----
   /** How often each field key is used in the whole rule. */
@@ -195,7 +198,7 @@ export class RuleNodeComponent {
   constructor() {
     // Activity Type list: only fetched (once, shared) when a node actually shows the select.
     effect(() => {
-      if (this.usesActivityType())
+      if (this.usesActivityType() && this.isValueEntry())
         untracked(() => this.loadingLookupService.ensureTypes());
     });
 

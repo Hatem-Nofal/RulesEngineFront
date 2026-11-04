@@ -106,9 +106,9 @@ export class RuleEditComponent implements OnInit {
         );
 
         this.root.set(rule.root ?? emptyRoot());
-        if (rule.workflowId && !this.isWorkflowLevel())
-          this.loadConfig(rule.workflowId);
-        else this.loading.set(false);
+        if (rule.workflowId) {
+          this.loadWorkflow(rule.workflowId, !this.hasConditions(rule.root));
+        } else this.loading.set(false);
       },
       error: () => this.loading.set(false),
     });
@@ -119,18 +119,34 @@ export class RuleEditComponent implements OnInit {
     this.config.set(null);
     this.expression.set(null);
     this.root.set(emptyRoot()); // conditions from another config may not fit
-    if (id && !this.isWorkflowLevel()) this.loadConfig(id);
+    this.isWorkflowLevel.set(false);
     if (id) {
-      this.workFlowService.getWorkflowForRule(id).subscribe({
-        next: (workflow) => {
-          this.isWorkflowLevel.set(workflow.isWorkflowLevel ?? false);
-          this.violationMessage = workflow.violationMessage ?? "";
-          this.selectedViolationType.set(
-            workflow.violationType ?? ViolationType.Error
-          );
-        },
-      });
+      this.loadWorkflow(id, true);
     }
+  }
+
+  private loadWorkflow(workflowId: number, useWorkflowConditions: boolean) {
+    this.workFlowService.get(workflowId).subscribe({
+      next: (workflow) => {
+        this.isWorkflowLevel.set(workflow.isWorkflowLevel ?? false);
+        this.violationMessage = workflow.violationMessage ?? "";
+        this.selectedViolationType.set(
+          workflow.violationType ?? ViolationType.Error
+        );
+        if (useWorkflowConditions)
+          this.root.set(workflow.root ?? emptyRoot());
+        if (!this.isWorkflowLevel()) this.loadConfig(workflowId);
+      },
+      error: () => this.loading.set(false),
+    });
+  }
+
+  private hasConditions(node?: RuleNodeDto | null): boolean {
+    if (!node) return false;
+    return (
+      node.nodeType === 2 ||
+      (node.children ?? []).some((child) => this.hasConditions(child))
+    );
   }
 
   workflowName(): string {

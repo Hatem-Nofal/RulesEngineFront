@@ -56,8 +56,7 @@ export class FormConfigEditComponent implements OnInit {
       !this.loading() &&
       this.metadataLoaded() &&
       this.selected().length > 0 &&
-      this.selected().every(field => !!field.id) &&
-      this.defaultCount() === 2,
+      this.selected().every(field => !!field.id)
   );
 
   ngOnInit() {
@@ -122,7 +121,6 @@ export class FormConfigEditComponent implements OnInit {
   }
 
   setDefault(index: number, isDefault: boolean) {
-    if (isDefault && this.defaultCount() >= 2) return;
 
     this.selected.update(fields =>
       fields.map((field, fieldIndex) =>
@@ -169,10 +167,7 @@ export class FormConfigEditComponent implements OnInit {
       return;
     }
 
-    if (this.defaultCount() !== 2) {
-      alert('Exactly two fields must be marked as default.');
-      return;
-    }
+
 
     const input: CreateFormConfigEditDto = {
       name: this.name.trim(),

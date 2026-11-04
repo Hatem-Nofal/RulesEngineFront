@@ -15,6 +15,12 @@ import { BaseCoreModule } from "@abp/ng.core";
 import { RuleFormConfigService } from "@proxy/work-flows/rules/rule-builders";
 import { ViolationType } from "@proxy/common/enums";
 import { SelectedDropDownList } from "@proxy/common/dtos";
+import {
+  RuleFormConfigDto,
+  RuleNodeDto,
+} from "@proxy/work-flows/dtos/rule-builders-dtos";
+import { RuleNodeComponent } from "../../rules/rule-node-component/rule-node-component";
+import { emptyRoot } from "src/app/shared/models/constant";
 
 @Component({
   selector: "app-workflow-edit-component",
@@ -25,6 +31,7 @@ import { SelectedDropDownList } from "@proxy/common/dtos";
     RouterLink,
     SelectModule,
     BaseCoreModule,
+    RuleNodeComponent,
   ],
   templateUrl: "./workflow-edit-component.html",
   styleUrl: "./workflow-edit-component.scss",
@@ -39,6 +46,8 @@ export class WorkflowEditComponent implements OnInit {
   ruleExpression?: string | null = null;
   name = "";
   configId: number | null = null;
+  config = signal<RuleFormConfigDto | null>(null);
+  root = signal<RuleNodeDto>(emptyRoot());
   rejectionLevel = RejectionLevel.Activity;
   violationMessage ?: string | null = null;
 
@@ -76,6 +85,7 @@ export class WorkflowEditComponent implements OnInit {
       next: (workflow) => {
         this.name = workflow.name ?? "";
         this.configId = workflow.ruleFormConfigId ?? null;
+        this.root.set(workflow.root ?? emptyRoot());
         this.rejectionLevel =
           workflow.rejectionLevel ?? RejectionLevel.Activity;
         this.ruleCount.set(workflow.ruleCount ?? 0);
@@ -83,10 +93,25 @@ export class WorkflowEditComponent implements OnInit {
         this.ruleExpression = workflow.ruleExpression;
         this.violationMessage = workflow.violationMessage ?? "";
         this.selectedViolationType.set(workflow.violationType ?? ViolationType.Error);
+        if (this.configId) this.loadConfig(this.configId);
 
         this.loading.set(false);
       },
       error: () => this.loading.set(false),
+    });
+  }
+
+  onConfigChange(id: number | null) {
+    this.configId = id;
+    this.config.set(null);
+    this.root.set(emptyRoot());
+    if (id) this.loadConfig(id);
+  }
+
+  private loadConfig(id: number) {
+    this.formConfigService.get(id).subscribe({
+      next: (config) => this.config.set(config),
+      error: () => this.config.set(null),
     });
   }
 
@@ -105,6 +130,7 @@ export class WorkflowEditComponent implements OnInit {
       violationMessage:this.violationMessage??"",
       ruleFormConfigId:this.configId,
       violationType:this.selectedViolationType(),
+      root: this.configurationRoot(this.root()),
     };
     if (this.configId) dto.ruleFormConfigId = this.configId;
     const request = this.workflowId
@@ -115,5 +141,16 @@ export class WorkflowEditComponent implements OnInit {
       next: () => this.router.navigate(["/workflows"]),
       error: () => this.saving.set(false), // the interceptor already showed the server message
     });
+  }
+
+  private configurationRoot(node: RuleNodeDto): RuleNodeDto {
+    return {
+      ...node,
+      value: null,
+      activityTypeId: null,
+      children: node.children?.map((child) =>
+        this.configurationRoot(child)
+      ),
+    };
   }
 }
