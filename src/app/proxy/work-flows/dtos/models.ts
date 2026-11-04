@@ -1,5 +1,6 @@
 import type { RejectionLevel } from '../../common/enums/rejection-level.enum';
 import type { ViolationType } from '../../common/enums/violation-type.enum';
+import type { RuleNodeDto } from './rule-builders-dtos/models';
 import type { PagedAndSortedResultRequestDto } from '@abp/ng.core';
 
 export interface SaveWorkflowDto {
@@ -10,6 +11,7 @@ export interface SaveWorkflowDto {
   ruleExpression?: string;
   violationMessage?: string | null;
   violationType?: ViolationType;
+  root?: RuleNodeDto;
 }
 
 export interface WorkflowDto {
@@ -23,6 +25,7 @@ export interface WorkflowDto {
   ruleExpression?: string | null;
   violationMessage?: string | null;
   violationType?: ViolationType;
+  root?: RuleNodeDto;
 }
 
 export interface WorkflowForRuleDto {

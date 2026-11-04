@@ -2359,8 +2359,8 @@
                   "name": "GetWorkflowsDropDownList",
                   "parametersOnMethod": [],
                   "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListBylong>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListBylong]",
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
                     "summary": null,
                     "contentTypes": null,
                     "isRemoteStream": false
@@ -2507,8 +2507,8 @@
                   "name": "GetWorkflowsForCreateRuleDropDownList",
                   "parametersOnMethod": [],
                   "returnValue": {
-                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListBylong>",
-                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListBylong]",
+                    "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                    "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
                     "summary": null,
                     "contentTypes": null,
                     "isRemoteStream": false
@@ -2857,8 +2857,8 @@
               "parametersOnMethod": [],
               "parameters": [],
               "returnValue": {
-                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListBylong>",
-                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListBylong]",
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
                 "summary": null,
                 "contentTypes": [
                   "text/plain",
@@ -2889,8 +2889,8 @@
               "parametersOnMethod": [],
               "parameters": [],
               "returnValue": {
-                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownListBylong>",
-                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownListBylong]",
+                "type": "System.Collections.Generic.List<RulesEngine.Common.Dtos.SelectedDropDownList>",
+                "typeSimple": "[RulesEngine.Common.Dtos.SelectedDropDownList]",
                 "summary": null,
                 "contentTypes": [
                   "text/plain",
@@ -10760,67 +10760,6 @@
       "description": null,
       "displayName": null
     },
-    "RulesEngine.Common.Dtos.SelectedDropDownListBylong": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "Id",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "Disabled",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        }
-      ],
-      "summary": null,
-      "remarks": null,
-      "description": null,
-      "displayName": null
-    },
     "RulesEngine.Common.Enums.LogicalOperator": {
       "baseType": "System.Enum",
       "isEnum": true,
@@ -12698,28 +12637,12 @@
       "displayName": null
     },
     "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto": {
-      "baseType": null,
+      "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Guid>",
       "isEnum": false,
       "enumNames": null,
       "enumValues": null,
       "genericArguments": null,
       "properties": [
-        {
-          "name": "Id",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
         {
           "name": "NodeType",
           "jsonName": null,
@@ -13392,6 +13315,22 @@
           "summary": null,
           "description": null,
           "displayName": null
+        },
+        {
+          "name": "Root",
+          "jsonName": null,
+          "type": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
+          "typeSimple": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
         }
       ],
       "summary": null,
@@ -13555,6 +13494,22 @@
           "jsonName": null,
           "type": "RulesEngine.Common.Enums.ViolationType",
           "typeSimple": "enum",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "Root",
+          "jsonName": null,
+          "type": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
+          "typeSimple": "RulesEngine.WorkFlows.Dtos.RuleBuildersDtos.RuleNodeDto",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

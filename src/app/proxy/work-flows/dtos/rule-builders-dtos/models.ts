@@ -1,10 +1,9 @@
+import type { EntityDto } from '@abp/ng.core';
 import type { RuleNodeType } from '../../../common/enums/rule-node-type.enum';
 import type { LogicalOperator } from '../../../common/enums/logical-operator.enum';
 import type { RuleOperator } from '../../../common/enums/rule-operator.enum';
-import type { EntityDto } from '@abp/ng.core';
 
-export interface RuleNodeDto {
-  id?: number;
+export interface RuleNodeDto extends EntityDto<string> {
   nodeType?: RuleNodeType;
   logicalOperator?: LogicalOperator | null;
   logicalJoinOperator?: LogicalOperator | null;

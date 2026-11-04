@@ -1,6 +1,6 @@
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable, inject } from '@angular/core';
-import type { SelectedDropDownList, SelectedDropDownListBylong } from '../common/dtos/models';
+import type { SelectedDropDownList } from '../common/dtos/models';
 
 @Injectable({
   providedIn: 'root',
@@ -107,7 +107,7 @@ export class LookupService {
   
 
   getWorkflowsDropDownList = (config?: Partial<Rest.Config>) =>
-    this.restService.request<any, SelectedDropDownListBylong[]>({
+    this.restService.request<any, SelectedDropDownList[]>({
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/lookup/workflows-drop-down-list',
@@ -116,7 +116,7 @@ export class LookupService {
   
 
   getWorkflowsForCreateRuleDropDownList = (config?: Partial<Rest.Config>) =>
-    this.restService.request<any, SelectedDropDownListBylong[]>({
+    this.restService.request<any, SelectedDropDownList[]>({
       method: 'GET',
       headers: { Accept: 'application/json' },
       url: '/api/app/lookup/workflows-for-create-rule-drop-down-list',
