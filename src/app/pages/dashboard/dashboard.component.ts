@@ -14,8 +14,7 @@ import {
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { SelectedDropDownListByGuid } from "@proxy/common/dtos";
-import { LookupService } from "@proxy/lookups";
+ import { LookupService } from "@proxy/lookups";
 import { FormPageComponent } from "src/app/shared/components/CVA-Form/form-page/form-page.component";
 import type { Chart as ChartInstance } from "chart.js";
 import type { Observable } from "rxjs";
@@ -28,6 +27,7 @@ import type {
   RuleViolationsDto,
   WorkflowViolationsDto,
 } from "src/app/proxy/dashboards/dtos/models";
+import { SelectedDropDownList } from "@proxy/common/dtos";
 
 interface ViolationMetric {
   label: string;
@@ -78,7 +78,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy, OnInit {
   loading = true;
   errorMessage = "";
   metrics: ViolationMetric[] = [];
-  workflows = signal<SelectedDropDownListByGuid[]>([]);
+  workflows = signal<SelectedDropDownList[]>([]);
 
   readonly violationCharts: ViolationChart[] = [
        // { key: 'rule', title: 'Rule violations', icon: 'bi-journal-check', entries: [], loading: true, error: '' },

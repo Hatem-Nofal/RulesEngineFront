@@ -1,5 +1,5 @@
 
 export interface LookupDto {
-  id?: string;
+  id?: number;
   name?: string;
 }

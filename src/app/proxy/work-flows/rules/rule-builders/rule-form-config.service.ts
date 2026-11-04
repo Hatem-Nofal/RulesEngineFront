@@ -22,7 +22,7 @@ export class RuleFormConfigService {
     { apiName: this.apiName,...config });
   
 
-  delete = (id: string, config?: Partial<Rest.Config>) =>
+  delete = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'DELETE',
       url: `/api/app/rule-form-config/${id}`,
@@ -30,7 +30,7 @@ export class RuleFormConfigService {
     { apiName: this.apiName,...config });
   
 
-  get = (id: string, config?: Partial<Rest.Config>) =>
+  get = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleFormConfigDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
@@ -39,7 +39,7 @@ export class RuleFormConfigService {
     { apiName: this.apiName,...config });
   
 
-  getByWorkflow = (workflowId: string, config?: Partial<Rest.Config>) =>
+  getByWorkflow = (workflowId: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleFormConfigDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
@@ -76,7 +76,7 @@ export class RuleFormConfigService {
     { apiName: this.apiName,...config });
   
 
-  update = (id: string, input: CreateFormConfigEditDto, config?: Partial<Rest.Config>) =>
+  update = (id: number, input: CreateFormConfigEditDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, RuleFormConfigDto>({
       method: 'PUT',
       headers: { Accept: 'application/json' },

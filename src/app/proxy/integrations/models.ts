@@ -1,6 +1,6 @@
 
 export interface ClaimValidation {
-  workflows?: string[] | null;
+  workflows?: number[] | null;
   workflownames?: string[] | null;
   claimValidationRequests?: ClaimValidationByCodeRequestExtended[];
 }

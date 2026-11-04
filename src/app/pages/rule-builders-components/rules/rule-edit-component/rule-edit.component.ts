@@ -9,20 +9,18 @@ import {
 } from "@proxy/work-flows/dtos/rule-builders-dtos";
 import { RuleExpressionResultDto } from "@proxy/work-flows/rules/rule-expression-builders";
 import { emptyRoot } from "src/app/shared/models/constant";
- import { ButtonModule } from "primeng/button";
+import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { InputTextModule } from "primeng/inputtext";
 import { SelectModule } from "primeng/select";
- import {
-  SelectedDropDownList,
-  SelectedDropDownListByGuid,
-} from "@proxy/common/dtos";
+import { SelectedDropDownList } from "@proxy/common/dtos";
 import { ViolationType } from "@proxy/common/enums";
 
 import { CustomConfirmationService } from "src/app/shared/services/customConfirmation.service";
 import { LookupDto } from "@proxy/lookups/dtos";
 import { LookupService } from "@proxy/lookups";
 import { RuleFormConfigService } from "@proxy/work-flows/rules/rule-builders";
+import { WorkFlowService } from "@proxy/work-flows";
 @Component({
   selector: "app-rule-edit",
   imports: [
@@ -41,20 +39,21 @@ export class RuleEditComponent implements OnInit {
   private service = inject(RuleService);
   private lookupService = inject(LookupService);
   private ruleFormConfigService = inject(RuleFormConfigService);
+  private workFlowService = inject(WorkFlowService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   protected readonly customConfirmationService = inject(
     CustomConfirmationService
   );
 
-  ruleId: string | null = null;
+  ruleId: number | null = null;
   name = signal<string | null>("");
   violationMessage = "";
 
-  isActive = signal<boolean>(false);
+  isActive = signal<boolean>(true);
 
-  workflows = signal<SelectedDropDownListByGuid[]>([]);
-  workflowId = signal<string | null>(null);
+  workflows = signal<SelectedDropDownList[]>([]);
+  workflowId = signal<number | null>(null);
   config = signal<RuleFormConfigDto | null>(null);
   root = signal<RuleNodeDto>(emptyRoot());
   loading = signal(false);
@@ -76,7 +75,7 @@ export class RuleEditComponent implements OnInit {
     );
     this.lookupService.getWorkflowsDropDownList().subscribe({
       next: (result) => {
-        const options: SelectedDropDownListByGuid[] = [];
+        const options: SelectedDropDownList[] = [];
         for (const workflow of result ?? []) {
           if (workflow.id)
             options.push({ id: workflow.id, name: workflow.name });
@@ -88,9 +87,9 @@ export class RuleEditComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get("id");
     if (!id || id === "new") return;
 
-    this.ruleId = id;
+    this.ruleId = Number(id);
     this.loading.set(true);
-    this.service.get(id).subscribe({
+    this.service.get(this.ruleId).subscribe({
       next: (rule) => {
         let ruleExpressionResultDto: RuleExpressionResultDto = {
           expression: rule.expression ?? "",
@@ -102,7 +101,9 @@ export class RuleEditComponent implements OnInit {
         this.ruleExpression.set(rule.expression ?? "");
         this.expression.set(ruleExpressionResultDto);
         this.violationMessage = rule.violationMessage ?? "";
-        this.selectedViolationType.set(rule.violationType ?? ViolationType.Error);
+        this.selectedViolationType.set(
+          rule.violationType ?? ViolationType.Error
+        );
 
         this.root.set(rule.root ?? emptyRoot());
         if (rule.workflowId && !this.isWorkflowLevel())
@@ -113,27 +114,42 @@ export class RuleEditComponent implements OnInit {
     });
   }
 
-  onWorkflowChange(id: string | null) {
+  onWorkflowChange(id: number | null) {
     this.workflowId.set(id);
     this.config.set(null);
     this.expression.set(null);
     this.root.set(emptyRoot()); // conditions from another config may not fit
     if (id && !this.isWorkflowLevel()) this.loadConfig(id);
+    if (id) {
+      this.workFlowService.getWorkflowForRule(id).subscribe({
+        next: (workflow) => {
+          this.isWorkflowLevel.set(workflow.isWorkflowLevel ?? false);
+          this.violationMessage = workflow.violationMessage ?? "";
+          this.selectedViolationType.set(
+            workflow.violationType ?? ViolationType.Error
+          );
+        },
+      });
+    }
   }
 
   workflowName(): string {
     const workflowId = this.workflowId();
-    return this.workflows().find((workflow) => workflow.id === workflowId)?.name
-      ?? workflowId
-      ?? "Not specified";
+    return (
+      this.workflows().find((workflow) => workflow.id === workflowId)?.name ??
+      "Not specified"
+    );
   }
 
   violationTypeName(): string {
-    return this.violationTypes().find((type) => type.id === this.selectedViolationType())?.name
-      ?? "Not specified";
+    return (
+      this.violationTypes().find(
+        (type) => type.id === this.selectedViolationType()
+      )?.name ?? "Not specified"
+    );
   }
 
-  private loadConfig(workflowId: string) {
+  private loadConfig(workflowId: number) {
     this.loading.set(true);
     this.ruleFormConfigService.getByWorkflow(workflowId).subscribe({
       next: (cfg) => {
@@ -180,7 +196,7 @@ export class RuleEditComponent implements OnInit {
           workflowId: this.workflowId()!,
           isActive: this.isActive(),
           violationMessage: this.violationMessage,
-          violationType: this.selectedViolationType() ,
+          violationType: this.selectedViolationType(),
           root: this.root(),
         })
         .subscribe((e) => this.expression.set(e));
@@ -215,7 +231,6 @@ export class RuleEditComponent implements OnInit {
       root: this.root(),
       violationType: this.selectedViolationType(),
       violationMessage: this.violationMessage,
-
     };
     const request = this.ruleId
       ? this.service.update(this.ruleId, input)

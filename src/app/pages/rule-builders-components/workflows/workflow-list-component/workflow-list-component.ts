@@ -31,7 +31,7 @@ export class WorkflowListComponent implements OnInit {
 
   workflows = signal<WorkflowDto[]>([]);
   rejectionLevel = signal<RejectionLevel | null>(null);
-  ruleFormConfigId = signal<string | null>(null);
+  ruleFormConfigId = signal<number | null>(null);
   name = signal<string | null>(null);
 
   totalRecords = signal(0);

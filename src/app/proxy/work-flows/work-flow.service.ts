@@ -21,7 +21,7 @@ export class WorkFlowService {
     { apiName: this.apiName,...config });
   
 
-  delete = (id: string, config?: Partial<Rest.Config>) =>
+  delete = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'DELETE',
       url: `/api/app/work-flow/${id}`,
@@ -29,7 +29,7 @@ export class WorkFlowService {
     { apiName: this.apiName,...config });
   
 
-  get = (id: string, config?: Partial<Rest.Config>) =>
+  get = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, WorkflowDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
@@ -48,7 +48,7 @@ export class WorkFlowService {
     { apiName: this.apiName,...config });
   
 
-  getWorkflowForRule = (workflowId: string, config?: Partial<Rest.Config>) =>
+  getWorkflowForRule = (workflowId: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, WorkflowForRuleDto>({
       method: 'GET',
       headers: { Accept: 'application/json' },
@@ -57,7 +57,7 @@ export class WorkFlowService {
     { apiName: this.apiName,...config });
   
 
-  update = (id: string, input: SaveWorkflowDto, config?: Partial<Rest.Config>) =>
+  update = (id: number, input: SaveWorkflowDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, WorkflowDto>({
       method: 'PUT',
       headers: { Accept: 'application/json' },

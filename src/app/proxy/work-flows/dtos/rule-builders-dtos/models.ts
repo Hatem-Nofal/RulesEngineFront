@@ -4,7 +4,7 @@ import type { RuleOperator } from '../../../common/enums/rule-operator.enum';
 import type { EntityDto } from '@abp/ng.core';
 
 export interface RuleNodeDto {
-  id?: string;
+  id?: number;
   nodeType?: RuleNodeType;
   logicalOperator?: LogicalOperator | null;
   logicalJoinOperator?: LogicalOperator | null;
@@ -17,7 +17,7 @@ export interface RuleNodeDto {
 }
 
 export interface CreateFormConfigEditDto {
-  id?: string | null;
+  id?: number | null;
   name?: string;
   description?: string | null;
   isActive?: boolean;
@@ -26,14 +26,14 @@ export interface CreateFormConfigEditDto {
 }
 
 export interface FormConfigFieldInputDto {
-  fieldId?: string;
+  fieldId?: number;
   allowedOperators?: number[] | null;
   isMultiple?: boolean;
   isDefault?: boolean;
   isDeleted?: boolean;
 }
 
-export interface FormConfigListDto extends EntityDto<string> {
+export interface FormConfigListDto extends EntityDto<number> {
   name?: string;
   description?: string | null;
   isActive?: boolean;
@@ -44,7 +44,7 @@ export interface FormConfigListDto extends EntityDto<string> {
 }
 
 export interface RuleFieldCatalogDto {
-  id?: string;
+  id?: number;
   key?: string;
   label?: string;
   dataType?: string;
@@ -52,7 +52,7 @@ export interface RuleFieldCatalogDto {
 }
 
 export interface RuleFormConfigDto {
-  id?: string;
+  id?: number;
   name?: string;
   allowNestedGroups?: boolean;
   strategyKey?: string | null;
@@ -60,7 +60,7 @@ export interface RuleFormConfigDto {
 }
 
 export interface RuleFormFieldDto {
-  id?: string;
+  id?: number;
   key?: string;
   label?: string;
   dataType?: string;

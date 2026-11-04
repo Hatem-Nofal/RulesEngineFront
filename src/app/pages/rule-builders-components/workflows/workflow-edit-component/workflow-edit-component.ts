@@ -35,10 +35,10 @@ export class WorkflowEditComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  workflowId: string | null = null;
+  workflowId: number | null = null;
   ruleExpression?: string | null = null;
   name = "";
-  configId: string | null = null;
+  configId: number | null = null;
   rejectionLevel = RejectionLevel.Activity;
   violationMessage ?: string | null = null;
 
@@ -71,8 +71,8 @@ export class WorkflowEditComponent implements OnInit {
       return;
     }
 
-    this.workflowId = id;
-    this.service.get(id).subscribe({
+    this.workflowId = Number(id);
+    this.service.get(this.workflowId).subscribe({
       next: (workflow) => {
         this.name = workflow.name ?? "";
         this.configId = workflow.ruleFormConfigId ?? null;

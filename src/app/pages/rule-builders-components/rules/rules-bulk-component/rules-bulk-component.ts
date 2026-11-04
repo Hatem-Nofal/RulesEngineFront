@@ -36,7 +36,7 @@ export class RulesBulkComponent implements OnInit {
   workflows = signal<LookupDto[]>([]);
   isLoading = signal(false);
 
-  selectedWorkflowId = "";
+  selectedWorkflowId = 0;
 
   ngOnInit() {
     this.loadWorkflows();

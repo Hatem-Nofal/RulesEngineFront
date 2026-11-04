@@ -27,7 +27,7 @@ export class FormConfigEditComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  configId: string | null = null;
+  configId: number | null = null;
   name = '';
   description = '';
   isActive = true;
@@ -42,7 +42,7 @@ export class FormConfigEditComponent implements OnInit {
   available = computed(() => {
      return this.catalog();
   });
-  picked = signal<Set<string>>(new Set());
+  picked = signal<Set<number>>(new Set());
   defaultCount = computed(() => this.selected().filter(field => field.isDefault).length);
   allPicked = computed(
     () =>
@@ -66,13 +66,13 @@ export class FormConfigEditComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id || id === 'new') return;
 
-    this.configId = id;
+    this.configId = Number(id);
     this.loading.set(true);
     this.metadataLoaded.set(false);
     this.service
-      .get(id)
+      .get(this.configId)
       .pipe(
-        switchMap(config => this.findListItem(id).pipe(map(metadata => ({ config, metadata })))),
+        switchMap(config => this.findListItem(this.configId??0).pipe(map(metadata => ({ config, metadata })))),
       )
       .subscribe({
         next: ({ config, metadata }) => {
@@ -199,7 +199,7 @@ export class FormConfigEditComponent implements OnInit {
     });
   }
 
-  private findListItem(id: string, skipCount = 0): Observable<FormConfigListDto | null> {
+  private findListItem(id: number, skipCount = 0): Observable<FormConfigListDto | null> {
     const pageSize = 100;
     return this.service.getList({ skipCount, maxResultCount: pageSize }).pipe(
       switchMap(result => {
@@ -215,7 +215,7 @@ export class FormConfigEditComponent implements OnInit {
     );
   }
 
-  togglePick(id: string) {
+  togglePick(id: number) {
     this.picked.update(set => {
       const next = new Set(set);
       if (next.has(id)) next.delete(id);
@@ -231,7 +231,7 @@ export class FormConfigEditComponent implements OnInit {
         : new Set(
             this.available()
               .map(f => (f.id !== undefined ? f.id : null))
-              .filter((v): v is string => !!v),
+              .filter((v): v is number => !!v),
           ),
     );
   }
@@ -249,7 +249,7 @@ export class FormConfigEditComponent implements OnInit {
     this.selected.update(list => [...list, ...toAdd]);
     this.picked.set(new Set());
   }
-  fieldOf(id: string) {
+  fieldOf(id: number): RuleFieldCatalogDto | undefined {
     return this.catalog().find(f => f.id === id);
   }
 }

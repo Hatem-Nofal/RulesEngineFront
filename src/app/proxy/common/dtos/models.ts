@@ -6,8 +6,8 @@ export interface SelectedDropDownList {
   code?: string | null;
 }
 
-export interface SelectedDropDownListByGuid {
-  id?: string;
+export interface SelectedDropDownListBylong {
+  id?: number;
   name?: string;
   disabled?: boolean;
 }

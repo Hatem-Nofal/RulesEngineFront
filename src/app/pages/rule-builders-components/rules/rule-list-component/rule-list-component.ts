@@ -10,8 +10,7 @@ import {
 import { RouterLink } from "@angular/router";
 import {
   SelectedDropDownList,
-  SelectedDropDownListByGuid,
-} from "@proxy/common/dtos";
+ } from "@proxy/common/dtos";
 import { LookupService } from "@proxy/lookups";
 import { RuleListItemDto } from "@proxy/work-flows/dtos/rules-dtos";
 import { RuleService } from "@proxy/work-flows/rules";
@@ -42,8 +41,8 @@ export class RuleListComponent extends AppComponentBase implements OnInit {
   private lookupservice = inject(LookupService);
   rules = signal<RuleListItemDto[]>([]);
   rulename = signal<string>("");
-  workflowId = signal<string>("");
-  workflows = signal<SelectedDropDownListByGuid[]>([]);
+  workflowId = signal<number | null>(null);
+  workflows = signal<SelectedDropDownList[]>([]);
   totalRecords = signal(0);
   loading = signal(false);
   first = signal(0);
@@ -116,7 +115,7 @@ export class RuleListComponent extends AppComponentBase implements OnInit {
   }
   resetFilter() {
     this.rulename.set("");
-    this.workflowId.set("");
+    this.workflowId.set(null);
 
     const currentMetadata = this.table.createLazyLoadMetadata();
 

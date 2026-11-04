@@ -14,7 +14,7 @@ import type {
 } from 'src/app/proxy/logers/dtos/models';
 import { RulesEngineExecutionLogService } from 'src/app/proxy/logers/rules-engine-execution-log.service';
 import { LookupService } from 'src/app/proxy/lookups/lookup.service';
-import type { SelectedDropDownListByGuid } from 'src/app/proxy/common/dtos/models';
+import type { SelectedDropDownList } from 'src/app/proxy/common/dtos/models';
 
 @Component({
   selector: 'app-execution-log-list',
@@ -31,7 +31,7 @@ export class ExecutionLogListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   logs = signal<RulesEngineExecutionLogListDto[]>([]);
-  workflows = signal<SelectedDropDownListByGuid[]>([]);
+  workflows = signal<SelectedDropDownList[]>([]);
   totalRecords = signal(0);
   first = signal(0);
   loading = signal(false);
