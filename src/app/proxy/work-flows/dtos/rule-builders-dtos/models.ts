@@ -28,7 +28,6 @@ export interface FormConfigFieldInputDto {
   fieldId?: number;
   allowedOperators?: number[] | null;
   isMultiple?: boolean;
-  isDefault?: boolean;
   isDeleted?: boolean;
 }
 
@@ -66,6 +65,5 @@ export interface RuleFormFieldDto {
   options?: string[] | null;
   allowedOperators?: number[] | null;
   isMultiple?: boolean;
-  isDefault?: boolean;
   isDeleted?: boolean;
 }

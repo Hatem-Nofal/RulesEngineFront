@@ -12131,22 +12131,6 @@
           "displayName": null
         },
         {
-          "name": "IsDefault",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
           "name": "IsDeleted",
           "jsonName": null,
           "type": "System.Boolean",
@@ -12584,22 +12568,6 @@
         },
         {
           "name": "IsMultiple",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null,
-          "isNullable": false,
-          "summary": null,
-          "description": null,
-          "displayName": null
-        },
-        {
-          "name": "IsDefault",
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",

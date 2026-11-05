@@ -43,7 +43,6 @@ export class FormConfigEditComponent implements OnInit {
      return this.catalog();
   });
   picked = signal<Set<number>>(new Set());
-  defaultCount = computed(() => this.selected().filter(field => field.isDefault).length);
   allPicked = computed(
     () =>
       this.available().length > 0 &&
@@ -120,31 +119,12 @@ export class FormConfigEditComponent implements OnInit {
     );
   }
 
-  setDefault(index: number, isDefault: boolean) {
-
-    this.selected.update(fields =>
-      fields.map((field, fieldIndex) =>
-        fieldIndex === index ? { ...field, isDefault } : field,
-      ),
-    );
-  }
-
-  move(index: number, offset: number) {
-    this.selected.update(fields => {
-      const nextIndex = index + offset;
-      if (nextIndex < 0 || nextIndex >= fields.length) return fields;
-      const reordered = [...fields];
-      [reordered[index], reordered[nextIndex]] = [reordered[nextIndex], reordered[index]];
-      return reordered;
-    });
-  }
-
   remove(index: number) {
 
     this.selected.update(fields =>
     fields.map((field, fieldIndex) =>
       fieldIndex === index
-        ? { ...field, isDeleted: true ,isDefault:false }
+        ? { ...field, isDeleted: true }
         : field
     )
   );
@@ -178,7 +158,7 @@ export class FormConfigEditComponent implements OnInit {
         fieldId: field.id!,
         allowedOperators: field.allowedOperators?.length ? field.allowedOperators : null,
         isMultiple: field.dataType === 'List' ? (field.isMultiple ?? false) : false,
-        isDefault: field.isDefault,
+        isDefault: false,
         dataType: field.dataType
       })),
     };
@@ -237,7 +217,6 @@ export class FormConfigEditComponent implements OnInit {
         id: f.id,
         allowedOperators: [] as number[],
         isMultiple: f.dataType === 'List',
-        isDefault: false,
         dataType: f.dataType,
       }));
     if (!toAdd.length) return;

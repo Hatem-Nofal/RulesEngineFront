@@ -78,10 +78,8 @@
       </div>
 
       <div class="col-md-8">
-        <div class="text-muted small mb-1">
-          Selected (order = order in the builder) · Default fields: {{ defaultCount() }}/2
-        </div>
-        @for ( s of selected(); track s.id; let i = $index; let first = $first; let last = $last ) {
+        <div class="text-muted small mb-1">Selected fields</div>
+        @for ( s of selected(); track s.id; let i = $index ) {
         @let f = fieldOf(s.id);
 
         <div class="card mb-2">
@@ -92,22 +90,6 @@
                 <span class="small text-muted ms-2">{{ f?.key }} · {{ f?.dataType }}</span>
               </div>
               <div class="btn-group btn-group-sm">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  [disabled]="first"
-                  (click)="move(i, -1)"
-                >
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  [disabled]="last"
-                  (click)="move(i, 1)"
-                >
-                  ↓
-                </button>
                 <button type="button" class="btn btn-outline-danger" (click)="remove(i)">✕</button>
               </div>
             </div>
@@ -144,18 +126,6 @@
                   >
                 </div>
                }
-              <div class="form-check form-check-inline m-0">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  [id]="'field-' + (s.id || i) + '-default'"
-                  [ngModel]="s.isDefault"
-                  (ngModelChange)="setDefault(i, $event)"
-                />
-                <label class="form-check-label" [for]="'field-' + (s.id || i) + '-default'"
-                  >Rule Sample field</label
-                >
-              </div>
               <span class="small text-muted">(none checked = all)</span>
             </div>
             }

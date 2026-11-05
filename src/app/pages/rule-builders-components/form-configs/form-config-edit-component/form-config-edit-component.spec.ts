@@ -21,32 +21,16 @@ describe('FormConfigEditComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('allows exactly two fields to be marked as default', () => {
-    component.selected.set([
-      { id: 'field-1', isDefault: false },
-      { id: 'field-2', isDefault: false },
-      { id: 'field-3', isDefault: false },
+  it('adds selected fields in selection order without default markers', () => {
+    component.catalog.set([
+      { id: 1, key: 'first', label: 'First' },
+      { id: 2, key: 'second', label: 'Second' },
     ]);
+    component.picked.set(new Set([1, 2]));
 
-    component.setDefault(0, true);
-    component.setDefault(1, true);
-    component.setDefault(2, true);
+    component.addPicked();
 
-    expect(component.defaultCount()).toBe(2);
-    expect(component.selected().map(field => field.isDefault)).toEqual([true, true, false]);
-  });
-
-  it('allows changing which two fields are marked as default', () => {
-    component.selected.set([
-      { id: 'field-1', isDefault: true },
-      { id: 'field-2', isDefault: true },
-      { id: 'field-3', isDefault: false },
-    ]);
-
-    component.setDefault(0, false);
-    component.setDefault(2, true);
-
-    expect(component.defaultCount()).toBe(2);
-    expect(component.selected().map(field => field.isDefault)).toEqual([false, true, true]);
+    expect(component.selected().map(field => field.id)).toEqual([1, 2]);
+    expect(component.selected().map(field => field.isDefault)).toEqual([undefined, undefined]);
   });
 });
