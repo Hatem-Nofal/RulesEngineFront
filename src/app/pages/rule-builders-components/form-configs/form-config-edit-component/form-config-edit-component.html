@@ -57,7 +57,76 @@
           </div>
         </div>
 
-        <div class="list-group">
+        @if (groupedAvailable().length > 1) {
+        <div class="field-groups__toolbar">
+          <button type="button" class="btn btn-link btn-sm p-0" (click)="expandAll()">
+            Expand all
+          </button>
+          <span class="text-muted" aria-hidden="true">·</span>
+          <button type="button" class="btn btn-link btn-sm p-0" (click)="collapseAll()">
+            Collapse all
+          </button>
+        </div>
+        }
+
+        <div class="field-groups">
+          @for (group of groupedAvailable(); track group.name) {
+          <section class="field-group">
+            <header class="field-group__header">
+              <input
+                class="form-check-input field-group__check"
+                type="checkbox"
+                [checked]="isGroupAllPicked(group)"
+                [indeterminate]="isGroupPartiallyPicked(group)"
+                [attr.aria-label]="'Select all fields in ' + group.name"
+                (change)="toggleGroup(group)"
+              />
+
+              <button
+                type="button"
+                class="field-group__toggle"
+                [attr.aria-expanded]="!isCollapsed(group.name)"
+                (click)="toggleCollapse(group.name)"
+              >
+                <span class="field-group__title">{{ group.name }}</span>
+                <span class="field-group__count">
+                  {{ pickedCount(group) }}/{{ group.fields.length }}
+                </span>
+                <span
+                  class="field-group__chevron"
+                  [class.field-group__chevron--collapsed]="isCollapsed(group.name)"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </header>
+
+            @if (!isCollapsed(group.name)) {
+            <div class="list-group list-group-flush field-group__body">
+              @for (f of group.fields; track f.id) {
+              <label class="list-group-item field-item d-flex gap-2 align-items-start">
+                <input
+                  class="form-check-input mt-1"
+                  type="checkbox"
+                  [checked]="picked().has(f.id)"
+                  (change)="togglePick(f.id)"
+                />
+                <span class="field-item__text">
+                  <span class="field-item__label">{{ f.label }}</span>
+                  <span class="field-item__meta small text-muted">
+                    {{ f.key }} · {{ f.dataType }}
+                  </span>
+                </span>
+              </label>
+              }
+            </div>
+            }
+          </section>
+          } @empty {
+          <div class="text-muted small">All fields are added.</div>
+          }
+        </div>
+
+        <!-- <div class="list-group">
           @for (f of available(); track f.id) {
           <label class="list-group-item d-flex gap-2 align-items-start">
             <input
@@ -74,13 +143,12 @@
           } @empty {
           <div class="text-muted small">All fields are added.</div>
           }
-        </div>
+        </div> -->
       </div>
 
       <div class="col-md-8">
         <div class="text-muted small mb-1">Selected fields</div>
-        @for ( s of selected(); track s.id; let i = $index ) {
-        @let f = fieldOf(s.id);
+        @for ( s of selected(); track s.id; let i = $index ) { @let f = fieldOf(s.id);
 
         <div class="card mb-2">
           <div class="card-body py-2">
@@ -113,19 +181,19 @@
 
               } @if (s.dataType == 'List') {
 
-                 <div class="form-check form-check-inline m-0">
-                  <input
-                    [id]="'field-' + (s.id || i) + '-multiple'"
-                    type="checkbox"
-                    [ngModel]="s.isMultiple ?? false"
-                    (change)="setMultiple(i, $any($event.target).checked)"
-                    class="form-check-input"
-                  />
-                  <label class="form-check-label" [for]="'field-' + (s.id || i) + '-multiple'"
-                    >Allow multiple selections</label
-                  >
-                </div>
-               }
+              <div class="form-check form-check-inline m-0">
+                <input
+                  [id]="'field-' + (s.id || i) + '-multiple'"
+                  type="checkbox"
+                  [ngModel]="s.isMultiple ?? false"
+                  (change)="setMultiple(i, $any($event.target).checked)"
+                  class="form-check-input"
+                />
+                <label class="form-check-label" [for]="'field-' + (s.id || i) + '-multiple'"
+                  >Allow multiple selections</label
+                >
+              </div>
+              }
               <span class="small text-muted">(none checked = all)</span>
             </div>
             }
@@ -140,7 +208,6 @@
     <button type="button" class="btn btn-primary mt-3" [disabled]="!canSave()" (click)="save()">
       Save
     </button>
-
   </div>
 </div>
 
