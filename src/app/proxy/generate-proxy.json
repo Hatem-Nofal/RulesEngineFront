@@ -1980,6 +1980,17 @@
                       "summary": null,
                       "description": null,
                       "displayName": null
+                    },
+                    {
+                      "name": "cancellationToken",
+                      "typeAsString": "System.Threading.CancellationToken, System.Private.CoreLib",
+                      "type": "System.Threading.CancellationToken",
+                      "typeSimple": "System.Threading.CancellationToken",
+                      "isOptional": true,
+                      "defaultValue": null,
+                      "summary": null,
+                      "description": null,
+                      "displayName": null
                     }
                   ],
                   "returnValue": {
@@ -1994,8 +2005,8 @@
             }
           ],
           "actions": {
-            "ValidateClaimsIntegrationExtendedByInput": {
-              "uniqueName": "ValidateClaimsIntegrationExtendedByInput",
+            "ValidateClaimsIntegrationExtendedByInputAndCancellationToken": {
+              "uniqueName": "ValidateClaimsIntegrationExtendedByInputAndCancellationToken",
               "name": "ValidateClaimsIntegrationExtended",
               "httpMethod": "POST",
               "url": "api/app/integrations/validate-claims-integration-extended",
@@ -2007,6 +2018,17 @@
                   "type": "RulesEngine.Integrations.ClaimValidation",
                   "typeSimple": "RulesEngine.Integrations.ClaimValidation",
                   "isOptional": false,
+                  "defaultValue": null,
+                  "summary": null,
+                  "description": null,
+                  "displayName": null
+                },
+                {
+                  "name": "cancellationToken",
+                  "typeAsString": "System.Threading.CancellationToken, System.Private.CoreLib",
+                  "type": "System.Threading.CancellationToken",
+                  "typeSimple": "System.Threading.CancellationToken",
+                  "isOptional": true,
                   "defaultValue": null,
                   "summary": null,
                   "description": null,
@@ -2565,13 +2587,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2651,13 +2668,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2711,13 +2723,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2743,13 +2750,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2775,13 +2777,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2835,13 +2832,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2867,13 +2859,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2899,13 +2886,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -2959,13 +2941,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3019,13 +2996,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3079,13 +3051,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -3111,13 +3078,8 @@
                 ],
                 "isRemoteStream": false
               },
-              "allowAnonymous": false,
-              "authorizeDatas": [
-                {
-                  "policy": "RulesEngine.Lookups",
-                  "roles": null
-                }
-              ],
+              "allowAnonymous": null,
+              "authorizeDatas": [],
               "implementFrom": "RulesEngine.Lookups.ILookupAppService",
               "summary": null,
               "remarks": null,
@@ -10683,6 +10645,47 @@
       "description": null,
       "displayName": null
     },
+    "Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid": {
+      "baseType": "System.Runtime.InteropServices.SafeHandle",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "IsInvalid",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "Microsoft.Win32.SafeHandles.SafeWaitHandle": {
+      "baseType": "Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
     "RulesEngine.Common.Dtos.SelectedDropDownList": {
       "baseType": null,
       "isEnum": false,
@@ -12349,6 +12352,22 @@
           "displayName": null
         },
         {
+          "name": "GroupName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
           "name": "Options",
           "jsonName": null,
           "type": "[System.String]",
@@ -12726,7 +12745,7 @@
         {
           "name": "ActivityTypeId",
           "jsonName": null,
-          "type": "System.Int32?",
+          "type": "System.Int64?",
           "typeSimple": "number?",
           "isRequired": false,
           "minLength": null,
@@ -13694,6 +13713,18 @@
       "description": null,
       "displayName": null
     },
+    "System.MarshalByRefObject": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
     "System.Nullable<T0>": {
       "baseType": "System.ValueType",
       "isEnum": false,
@@ -13724,6 +13755,63 @@
           "jsonName": null,
           "type": "T",
           "typeSimple": "T",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "System.Runtime.ConstrainedExecution.CriticalFinalizerObject": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "System.Runtime.InteropServices.SafeHandle": {
+      "baseType": "System.Runtime.ConstrainedExecution.CriticalFinalizerObject",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "IsClosed",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "IsInvalid",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -13811,6 +13899,112 @@
       ],
       "genericArguments": null,
       "properties": null,
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "System.Threading.CancellationToken": {
+      "baseType": "System.ValueType",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "IsCancellationRequested",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "CanBeCanceled",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "WaitHandle",
+          "jsonName": null,
+          "type": "System.Threading.WaitHandle",
+          "typeSimple": "System.Threading.WaitHandle",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
+      "summary": null,
+      "remarks": null,
+      "description": null,
+      "displayName": null
+    },
+    "System.Threading.WaitHandle": {
+      "baseType": "System.MarshalByRefObject",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Handle",
+          "jsonName": null,
+          "type": "System.IntPtr",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        },
+        {
+          "name": "SafeWaitHandle",
+          "jsonName": null,
+          "type": "Microsoft.Win32.SafeHandles.SafeWaitHandle",
+          "typeSimple": "Microsoft.Win32.SafeHandles.SafeWaitHandle",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null,
+          "isNullable": false,
+          "summary": null,
+          "description": null,
+          "displayName": null
+        }
+      ],
       "summary": null,
       "remarks": null,
       "description": null,

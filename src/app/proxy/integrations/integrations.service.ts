@@ -10,7 +10,7 @@ export class IntegrationsService {
   apiName = 'Default';
   
 
-  validateClaimsIntegrationExtendedByInput = (input: ClaimValidation, config?: Partial<Rest.Config>) =>
+  validateClaimsIntegrationExtendedByInputAndCancellationToken = (input: ClaimValidation, cancellationToken?: any, config?: Partial<Rest.Config>) =>
     this.restService.request<any, ClaimValidationResponse>({
       method: 'POST',
       headers: { Accept: 'application/json' },

@@ -46,6 +46,7 @@ export interface RuleFieldCatalogDto {
   key?: string;
   label?: string;
   dataType?: string;
+  groupName?: string;
   options?: string[] | null;
 }
 
