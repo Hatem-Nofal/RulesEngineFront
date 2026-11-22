@@ -1,83 +1,88 @@
-import { authGuard, permissionGuard } from '@abp/ng.core';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { loginGuard } from 'src/app/shared/guards/login/login.guard';
+import { authGuard, permissionGuard } from "@abp/ng.core";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { loginGuard } from "src/app/shared/guards/login/login.guard";
 
 export const routes: Routes = [
   /* *** *** *** *project Modules* *** *** *** */
   {
-    path: '',
+    path: "",
     canActivate: [authGuard, loginGuard],
-    loadChildren: () => import('src/app/pages/home/home.module').then(m => m.HomeModule),
-    data: { breadcrumb: 'Home' },
+    loadChildren: () =>
+      import("src/app/pages/home/home.module").then((m) => m.HomeModule),
+    data: { breadcrumb: "Home" },
   },
   {
-    path: 'dashboard',
-    canActivate: [authGuard, loginGuard],
+    path: "dashboard",
     loadComponent: () =>
-      import('../pages/dashboard/dashboard.component').then(
-        (module) => module.DashboardComponent,
+      import("../pages/dashboard/dashboard.component").then(
+        (m) => m.DashboardComponent
       ),
-    data: { breadcrumb: 'Dashboard' },
   },
 
   /* *** *** *** *abp Modules* *** *** *** */
   {
-    path: 'account',
-    loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
-  },
-   {
-    path: 'identity',
-    loadChildren: () => import('@abp/ng.identity').then(c => c.createRoutes()),
+    path: "account",
+    loadChildren: () =>
+      import("@abp/ng.account").then((m) => m.AccountModule.forLazy()),
   },
   {
-    path: 'tenant-management',
-    canActivate: [authGuard, loginGuard],
+    path: "identity",
     loadChildren: () =>
-      import('@abp/ng.tenant-management').then(m => m.TenantManagementModule.forLazy()),
+      import("@abp/ng.identity").then((c) => c.createRoutes()),
   },
   {
-    path: 'setting-management',
+    path: "tenant-management",
     canActivate: [authGuard, loginGuard],
     loadChildren: () =>
-      import('@abp/ng.setting-management').then(m => m.SettingManagementModule.forLazy()),
-  },
-  {
-    path: 'rules',
-    canActivate: [authGuard, loginGuard],
-    // data: { requiredPolicy: RulesPermissions.Rules_View },
-    loadChildren: () =>
-      import('../pages/rule-builders-components/rules/rules.routes').then(m => m.RULES_ROUTES),
-  },
-  {
-    path: 'workflows',
-    canActivate: [authGuard, loginGuard],
-    loadChildren: () =>
-      import('../pages/rule-builders-components/workflows/workflows.routes').then(
-        m => m.WORKFLOWS_ROUTES,
+      import("@abp/ng.tenant-management").then((m) =>
+        m.TenantManagementModule.forLazy()
       ),
   },
   {
-    path: 'form-configs',
+    path: "setting-management",
+    canActivate: [authGuard, loginGuard],
+    loadChildren: () =>
+      import("@abp/ng.setting-management").then((m) =>
+        m.SettingManagementModule.forLazy()
+      ),
+  },
+  {
+    path: "rules",
+    loadChildren: () =>
+      import("../pages/rule-builders-components/rules/rules.routes").then(
+        (m) => m.RULES_ROUTES
+      ),
+  },
+  {
+    path: "workflows",
+    canActivate: [authGuard, loginGuard],
+    loadChildren: () =>
+      import(
+        "../pages/rule-builders-components/workflows/workflows.routes"
+      ).then((m) => m.WORKFLOWS_ROUTES),
+  },
+  {
+    path: "form-configs",
     canActivate: [authGuard, loginGuard],
     // data: { requiredPolicy: WorkflowsPermissions.Workflows_View },
     loadChildren: () =>
-      import('../pages/rule-builders-components/form-configs/form-configs.routes').then(
-        m => m.FORM_CONFIGS_ROUTES,
-      ),
+      import(
+        "../pages/rule-builders-components/form-configs/form-configs.routes"
+      ).then((m) => m.FORM_CONFIGS_ROUTES),
   },
   {
-    path: 'execution-logs',
+    path: "execution-logs",
     canActivate: [authGuard, loginGuard],
     loadChildren: () =>
-      import('../pages/execution-logs/execution-logs.routes').then(
-        (module) => module.EXECUTION_LOGS_ROUTES,
+      import("../pages/execution-logs/execution-logs.routes").then(
+        (module) => module.EXECUTION_LOGS_ROUTES
       ),
   },
   {
-    path: '**',
-    redirectTo: '',
-    data: { breadcrumb: '404' },
+    path: "**",
+    redirectTo: "",
+    data: { breadcrumb: "404" },
   },
 ];
 

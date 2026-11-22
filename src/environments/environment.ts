@@ -1,31 +1,35 @@
 import { Environment } from "@abp/ng.core";
 
-const baseUrl = "http://localhost:4200";
+const baseUrl = "https://refrontend-dev.ehealth.com.eg";
 
 const oAuthConfig = {
-  issuer: "https://localhost:44396/",
+  issuer: "https://rebackend-dev.ehealth.com.eg/",
   redirectUri: baseUrl,
   clientId: "RulesEngine_App",
-  responseType: "id_token token",
+  // responseType: 'code',
   scope: "offline_access RulesEngine",
-  requireHttps: false,
+  requireHttps: true,
 };
 
 export const environment = {
-  production: false,
+  production: true,
   application: {
     baseUrl,
-    name: "RulesEngine",
+    name: "RulesEngines",
   },
   oAuthConfig,
   apis: {
     default: {
-      url: "https://localhost:44396",
-      rootNamespace: "RulesEngine",
+      url: "https://rebackend-dev.ehealth.com.eg",
+      rootNamespace: "RulesEngines",
     },
     AbpAccountPublic: {
       url: oAuthConfig.issuer,
       rootNamespace: "AbpAccountPublic",
     },
+  },
+  remoteEnv: {
+    url: "/getEnvConfig",
+    mergeStrategy: "deepmerge",
   },
 } as Environment;

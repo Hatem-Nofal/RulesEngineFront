@@ -1,13 +1,13 @@
-import { Environment } from '@abp/ng.core';
+import { Environment } from "@abp/ng.core";
 
-const baseUrl = 'https://emrfrontend-dev.ehealth.com.eg';
+const baseUrl = "https://refrontend-dev.ehealth.com.eg";
 
 const oAuthConfig = {
-  issuer: 'https://emrbackend-dev.ehealth.com.eg/',
+  issuer: "https://rebackend-dev.ehealth.com.eg/",
   redirectUri: baseUrl,
-  clientId: 'RuleApplication_App',
+  clientId: "RulesEngine_App",
   // responseType: 'code',
-  scope: 'offline_access RuleApplication',
+  scope: "offline_access RulesEngine",
   requireHttps: true,
 };
 
@@ -15,21 +15,21 @@ export const environment = {
   production: true,
   application: {
     baseUrl,
-    name: 'RuleApplication',
+    name: "RulesEngines",
   },
   oAuthConfig,
   apis: {
     default: {
-      url: 'https://emrbackend-dev.ehealth.com.eg',
-      rootNamespace: 'RuleApplication',
+      url: "https://rebackend-dev.ehealth.com.eg",
+      rootNamespace: "RulesEngines",
     },
     AbpAccountPublic: {
       url: oAuthConfig.issuer,
-      rootNamespace: 'AbpAccountPublic',
+      rootNamespace: "AbpAccountPublic",
     },
   },
   remoteEnv: {
-    url: '/getEnvConfig',
-    mergeStrategy: 'deepmerge'
-  }
+    url: "/getEnvConfig",
+    mergeStrategy: "deepmerge",
+  },
 } as Environment;
